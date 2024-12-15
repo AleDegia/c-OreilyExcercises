@@ -1,0 +1,134 @@
+﻿using GestioneBiblioteca;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        DateTime publicationDate = new DateTime(2008, 6, 1);
+        Book book = new Book("Libro Cronache", "Adventure", 29.99, 5, 1275, "Le cronache di Narnia", "C.S. Lewis", publicationDate);
+        //book.CheckDetails();
+        Magazine magazine = new Magazine("Rivista Focus", "Scienza", 9.99, 13, "Focus", "Bella rivista", "modella.png");
+
+        Library.Products.Add(book);
+        Library.Products.Add(magazine);
+        foreach (LibraryProduct product in Library.Products)
+            product.CheckDetails();    //'Libro Cronache'
+
+        Client client = new Client(100.0);
+        ClientInventory inventory = client.GetInventory();
+        //client.Buy("Libro Cronache", 2 );
+        //client.Buy("Rivista Focus", 1);
+
+
+        Console.WriteLine("---- \n");
+        string choice = "we";
+        while(choice != "6")
+        {
+
+            Console.WriteLine("\nScegli un'azione: ");
+            Console.WriteLine("1) Vedi libri, 2) vedi riviste, 3)vedi inventario, 4) vedi balance, 5) compra oggetto, 6) esci");
+            choice = Console.ReadLine();
+
+            switch(choice)
+            {
+                case "1":
+                    Console.WriteLine("Hai scelto di vedere i libri.");
+                    // Logica per mostrare i libri
+                    client.SeeAllBooks();
+                    break;
+                case "2":
+                    Console.WriteLine("Hai scelto di vedere le riviste");
+                    client.SeeAllMagazines();
+                    break;
+                case "3":
+                    Console.WriteLine("Hai scelto di vedere l'inventario dei libri acquistati");
+                    List<string> names = inventory.RetriveNames();
+                    if(names.Count==0)
+                        Console.WriteLine("L'inventario è vuoto");
+                    foreach (string name in names)
+                        Console.WriteLine(name);
+
+                    break;
+                case "4":
+                    Console.WriteLine("Ecco il tuo balance: ");
+                    Console.WriteLine(client.GetMoney() + "$");
+                    break;
+                case "5":
+                    Console.WriteLine("Cosa vuoi comprare?");
+                    string buyChoice  = Console.ReadLine();
+                    Console.WriteLine("Quantità?");
+                    int quantity = Convert.ToInt32(Console.ReadLine());
+                    client.Buy(buyChoice, quantity);
+
+                    break;
+
+                case "6":
+                    break;
+            }
+        }
+
+
+
+
+
+
+        //Title è una proprietà specifica della classe Book, mentre la variabile product nel foreach è del tipo base LibraryProduct
+        //Per stampare Title, devi verificare se l'oggetto product è del tipo Book prima di accedere alla
+        //proprietà Title. Puoi farlo utilizzando un controllo con is o un cast esplicito (tipo filtro prodotti)
+
+        foreach (LibraryProduct product in inventory.Products)
+        {
+            if (product is Book)
+            {
+                Console.WriteLine($"Name: {product.Name}, Title: {book.Title}");
+            }
+            else
+                Console.WriteLine(product.Name);
+
+            //Un'altra opzione è aggiungere un metodo ToString personalizzato alle classi figlie,
+
+        }
+
+
+        //inventory.ShowInventory();
+        //client.SeeInventory();
+    }
+        
+    
+}
+
+
+/*
+ altra opzione al posto di 'if (product is Book)': ToString() personalizzato
+
+Nella classe base LibraryProduct:
+
+public override string ToString()
+{
+    return $"Name: {Name}";
+}
+
+Nella classe figlia Book:
+
+public override string ToString()
+{
+    return $"{base.ToString()}, Title: {Title}";
+}
+
+Uso del foreach:
+
+foreach (LibraryProduct product in inventory.Products)
+{
+    Console.WriteLine(product.ToString());
+}
+
+
+
+- Oppure posso filtrare i prodotti specifici prima del ciclo:
+
+foreach (Book book in inventory.Products.OfType<Book>())
+{
+    Console.WriteLine($"Name: {book.Name}, Title: {book.Title}");
+}
+
+*/
