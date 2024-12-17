@@ -78,7 +78,7 @@ namespace overridingInterface
             
             Console.WriteLine("\n");
             // directly call the methods
-            note2.Read();
+            note2.Read();   //Overriding the Read method for Note!
             note2.Write();
         }
     }
@@ -145,7 +145,8 @@ public class Note : Document
 
 come puo Note non implementare Read se l'interfaccia vuole che lo implementi?
 
-IMPO -> La classe Note non implementa Read(). Infatti, Note eredita Document, ma la classe base Document implementa già Read(). In questo caso, Note non è obbligata a ridefinire Read(), perché ereditando Document, ha già l'implementazione di Read().
+IMPO -> La classe Note non implementa Read(). Infatti, Note eredita Document, ma la classe base Document implementa già Read(). 
+In questo caso, Note non è obbligata a ridefinire Read(), perché ereditando Document, ha già l'implementazione di Read().
 
 
 */
