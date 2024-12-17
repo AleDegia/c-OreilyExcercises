@@ -5,6 +5,10 @@ namespace GestioneBiblioteca
     {
         public List<LibraryProduct> Products { get; set; } = new List<LibraryProduct>();
 
+        public List<LibraryProduct> GetProducts()
+        {
+            return Products;
+        }
 
         public void ShowInventory()
         {

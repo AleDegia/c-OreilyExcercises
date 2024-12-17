@@ -15,9 +15,47 @@ namespace GestioneBiblioteca
             Img = img;
         }
 
+        Magazine magazineProduct;
+
         public override void CheckDetails()
         {
             Console.WriteLine($"Rivista: {Name}, Titolo: {Title}");
         }
+
+        //public void BuyMagazine(string name, int quantity, ref double availableMoney, ClientInventory inventory, LibraryProduct existingProduct)
+        //{
+        //    if (existingProduct != null && existingProduct.Quantity >= quantity && availableMoney >= 0)
+        //    {
+        //        if (existingProduct is Magazine)
+        //        {
+        //            magazineProduct = (Magazine)existingProduct;
+        //            LibraryProduct purchasedProduct = new Magazine(
+        //                magazineProduct.Name,
+        //                magazineProduct.Category,
+        //                magazineProduct.Price,
+        //                magazineProduct.Quantity,
+        //                magazineProduct.Title,      //trovare un modo per accedere tenendo private -> faccio il metodo direttamente nella sua classe
+        //                magazineProduct.Description,
+        //                magazineProduct.Img
+        //            );
+        //            inventory.Products.Add(purchasedProduct);
+        //            Console.WriteLine("Acquisto avvenuto con successo");
+        //        }
+        //    }
+        //}
+
+        public string GetTitle()
+        {
+            return Title;
+        }
+        public string GetDescription()
+        {
+            return Description;
+        }
+        public string GetImg()
+        {
+            return Img;
+        }
+       
     }
 }
