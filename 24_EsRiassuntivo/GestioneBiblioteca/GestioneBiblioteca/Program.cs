@@ -10,20 +10,21 @@ public class Program
         Book book = new Book("Libro Cronache", "Adventure", 29.99, 5, 1275, "Le cronache di Narnia", "C.S. Lewis", publicationDate);
         Book book2 = new Book("Libro Harry Potter", "Fantasy", 25.99, 16, 654, "Harry Potter", "J. K. Rowling", publicationDate2);
         //Book book3 = new Book("Libro Cronache", "Adventure", 29.99, 5, 1275, "Le cronache di Narnia", "C.S. Lewis", publicationDate);
-
-        //book.CheckDetails();
         Magazine magazine = new Magazine("Rivista Focus", "Scienza", 9.99, 13, "Focus", "Bella rivista", "modella.png");
 
         Library.Products.Add(book);
         Library.Products.Add(book2);
         Library.Products.Add(magazine);
+
         foreach (LibraryProduct product in Library.Products)
             product.CheckDetails();    //'Libro Cronache'
 
+        int booksQuantity = Library.Products.Count;
+        Console.WriteLine("totale libri:" + booksQuantity.ToString());
+        
         Client client = new Client(100.0);
         ClientInventory inventory = client.GetInventory();
-        //client.Buy("Libro Cronache", 2 );
-        //client.Buy("Rivista Focus", 1);
+        
 
         foreach (var item in Library.Products)
         {

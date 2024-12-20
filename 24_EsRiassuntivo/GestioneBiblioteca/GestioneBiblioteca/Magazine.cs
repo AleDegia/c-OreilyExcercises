@@ -15,7 +15,7 @@ namespace GestioneBiblioteca
             Img = img;
         }
 
-        Magazine magazineProduct;
+        //Magazine magazineProduct;
 
         public override void CheckDetails()
         {
