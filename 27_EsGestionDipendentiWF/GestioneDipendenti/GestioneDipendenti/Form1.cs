@@ -93,5 +93,10 @@ namespace GestioneDipendenti
             RegisterForm registerForm = new RegisterForm();
             registerForm.Show();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            login_username.Text = "degia";
+        }
     }
 }

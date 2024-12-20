@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.login_registerBtn = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.exit = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -37,8 +39,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.login_showPass = new System.Windows.Forms.CheckBox();
             this.login_btn = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.login_registerBtn = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,6 +52,28 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(398, 450);
             this.panel1.TabIndex = 0;
+            // 
+            // login_registerBtn
+            // 
+            this.login_registerBtn.Location = new System.Drawing.Point(88, 391);
+            this.login_registerBtn.Name = "login_registerBtn";
+            this.login_registerBtn.Size = new System.Drawing.Size(194, 35);
+            this.login_registerBtn.TabIndex = 1;
+            this.login_registerBtn.Text = "REGISER";
+            this.login_registerBtn.UseVisualStyleBackColor = true;
+            this.login_registerBtn.Click += new System.EventHandler(this.login_registerBtn_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.SystemColors.Window;
+            this.label5.Location = new System.Drawing.Point(99, 348);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(170, 20);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Register Your Account";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // exit
             // 
@@ -132,28 +154,6 @@
             this.login_btn.UseVisualStyleBackColor = false;
             this.login_btn.Click += new System.EventHandler(this.login_btn_Click);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.SystemColors.Window;
-            this.label5.Location = new System.Drawing.Point(99, 348);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(170, 20);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Register Your Account";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
-            // 
-            // login_registerBtn
-            // 
-            this.login_registerBtn.Location = new System.Drawing.Point(88, 391);
-            this.login_registerBtn.Name = "login_registerBtn";
-            this.login_registerBtn.Size = new System.Drawing.Size(194, 35);
-            this.login_registerBtn.TabIndex = 1;
-            this.login_registerBtn.Text = "REGISER";
-            this.login_registerBtn.UseVisualStyleBackColor = true;
-            this.login_registerBtn.Click += new System.EventHandler(this.login_registerBtn_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -173,6 +173,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
