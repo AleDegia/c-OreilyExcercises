@@ -18,6 +18,7 @@ namespace EsRiassuntivoWF
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            //--------------------------------
 
             DateTime publicationDate = new DateTime(2008, 6, 1);
             DateTime publicationDate2 = new DateTime(1997, 6, 26);

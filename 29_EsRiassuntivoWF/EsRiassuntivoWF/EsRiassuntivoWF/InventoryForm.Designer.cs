@@ -28,12 +28,48 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.label1 = new System.Windows.Forms.Label();
+            this.listBoxInventario = new System.Windows.Forms.ListBox();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(277, 49);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(223, 29);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Prodotti acquistati";
+            // 
+            // listBoxInventario
+            // 
+            this.listBoxInventario.FormattingEnabled = true;
+            this.listBoxInventario.ItemHeight = 16;
+            this.listBoxInventario.Location = new System.Drawing.Point(122, 124);
+            this.listBoxInventario.Name = "listBoxInventario";
+            this.listBoxInventario.Size = new System.Drawing.Size(545, 196);
+            this.listBoxInventario.TabIndex = 1;
+            this.listBoxInventario.SelectedIndexChanged += new System.EventHandler(this.listBoxInventario_SelectedIndexChanged);
+            // 
+            // InventoryForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.listBoxInventario);
+            this.Controls.Add(this.label1);
+            this.Name = "InventoryForm";
             this.Text = "InventoryForm";
+            this.Load += new System.EventHandler(this.InventoryForm_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox listBoxInventario;
     }
 }

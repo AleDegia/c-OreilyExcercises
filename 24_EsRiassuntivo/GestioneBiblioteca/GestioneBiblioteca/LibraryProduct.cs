@@ -22,7 +22,5 @@ namespace GestioneBiblioteca
         {
             Console.WriteLine($"Nome: {Name}, Categoria: {Category}, Quantità: {Quantity}, Prezzo: {Price}");
         }
-
-        
     }
 }

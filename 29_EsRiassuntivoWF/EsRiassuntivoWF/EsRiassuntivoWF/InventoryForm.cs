@@ -16,5 +16,21 @@ namespace EsRiassuntivoWF
         {
             InitializeComponent();
         }
+
+        // Metodo pubblico per aggiungere un prodotto alla ListBox
+        public void AddProductToList(string productName)
+        {
+            listBoxInventario.Items.Add(productName);
+        }
+
+        private void InventoryForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBoxInventario_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
