@@ -1,21 +1,25 @@
 ﻿using System;
 namespace DelegatesDemo
 {
+    //step-1 Creating the delegate
     public delegate void WorkPerformedHandler(int hours, WorkType workType);
 
     class Program
     {
         static void Main(string[] args)
         {
+            //Step-3
             //Creo delegate che prende come parametro un metodo con numero e tipo di param uguali a quelli nella definizione del delegate
-            WorkPerformedHandler del1 =
-                        new WorkPerformedHandler(Manager_WorkPerformed);
+            WorkPerformedHandler del1 = new WorkPerformedHandler(Manager_WorkPerformed);
+
+            //Step-4 Invoking the delegate
             del1(10, WorkType.Golf);    //chiamo il delegate come se fosse un metodo
             //del1.Invoke(50, WorkType.GotoMeetings);
 
             Console.ReadKey();
         }
 
+        //Step-2 Creating the handler method
         public static void Manager_WorkPerformed(int workHours, WorkType wType)
         {
             Console.WriteLine("Work Performed by Event Handler");

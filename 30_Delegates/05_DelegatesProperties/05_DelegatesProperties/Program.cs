@@ -13,7 +13,7 @@ namespace DelegatesDemo
             DoSomeMethodHandler del1 = new DoSomeMethodHandler(obj.DoSomework);
 
             MethodInfo Method = del1.Method;    //info del metodo a cui il delegate è associato.
-            object Target = del1.Target;    //l'oggetto che contiene il metodo che vado a dare come parametro al delegate
+            object Target = del1.Target;    //la classe che contiene il metodo che vado a dare come parametro al delegate
             Delegate[] InvocationList = del1.GetInvocationList();
 
             Console.WriteLine($"Method Property: {Method}");
@@ -21,7 +21,7 @@ namespace DelegatesDemo
 
             foreach (var item in InvocationList)
             {
-                Console.WriteLine($"InvocationList: {item}");
+                Console.WriteLine($"InvocationList: {item}");   //stampo il nome di ogni istanza del delegato
             }
 
             Console.ReadKey();
@@ -54,4 +54,19 @@ Il "target object" è l'oggetto che contiene il metodo che vado a dare come para
 
 La funzione GetInvocationList in C# è un metodo che restituisce un array di delegati associati a un delegate. 
 Questa funzionalità è utile quando un delegate è multicast, ovvero quando è associato a più metodi 
+
+Un delegato può essere associato a (avere come parametri) uno o più metodi. 
+Quando un delegato viene invocato, tutti i metodi a cui è associato vengono chiamati in ordine.
+
+del += Method2; // Aggiungo un altro metodo al delegato
+
+Delegate[] invocationList = del.GetInvocationList(); // Ottieni un array di oggetti delegate. 
+Ogni delegate di questo array rappresenta un metodo che è stato registrato nel delegato (nel tuo caso, c'è solo uno: obj.DoSomework).
+Quando stampi uno di questi delegati, (item nel ciclo foreach) il suo tipo (cioè DoSomeMethodHandler) viene visualizzato.
+ la proprietà GetInvocationList() restituirà solo la lista di invocazione di quel delegato specifico,
+
+Se un delegato è multicast (cioè associa più metodi) senno no
+
+Delegato multicast (associato a più metodi)
+
 */

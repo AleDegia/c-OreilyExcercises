@@ -1,0 +1,17 @@
+﻿<Window x:Class="ZooManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZooManager"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="800">
+    <Grid>
+        <Label Content="Zoo List" HorizontalAlignment="Left" Margin="25,10,0,0" VerticalAlignment="Top" Height="27" Width="59"/>
+        <ListBox Name ="listZoos" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="25,71,574,272" SelectionChanged="listZoos_SelectionChanged"/>
+        <Label Content="Associated Animals List" HorizontalAlignment="Left" Margin="382,10,0,0" VerticalAlignment="Top" Height="27" Width="59"/>
+        <ListBox x:Name ="associatedAnimalsList" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="382,71,217,272" SelectionChanged="listZoos_Copy_SelectionChanged" />
+        <ListBox Name ="listAllAnimals"  Margin="0,306,0,0"/>
+
+    </Grid>
+</Window>

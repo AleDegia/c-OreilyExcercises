@@ -20,7 +20,7 @@ namespace DelegatesDemo
         public static void DoSomework(CallbackMethodHandler del)
         {
             Console.WriteLine("Processing some Task");
-            del("Pranaya");
+            del("Pranaya"); //chiamo tramite il delegate il metodo CallbackMethod
         }
 
         //non essendo static devo accederci creando oggetto della classe Program (obj)
