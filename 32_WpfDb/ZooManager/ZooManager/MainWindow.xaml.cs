@@ -93,11 +93,11 @@ namespace ZooManager
                     sqlDataAdapter.Fill(animalTable);
 
                     //Which Information of the Table in DataTable should be shown in our ListBox?
-                    associatedAnimalsList.DisplayMemberPath = "Name";
+                    listAllAnimals.DisplayMemberPath = "Name";
                     //Which Value should be delivered, when an Item from our ListBox is selected?
-                    associatedAnimalsList.SelectedValuePath = "Id";
+                    listAllAnimals.SelectedValuePath = "Id";
                     //The Reference to the Data the ListBox should populate
-                    associatedAnimalsList.ItemsSource = animalTable.DefaultView;
+                    listAllAnimals.ItemsSource = animalTable.DefaultView;
                 }
             }
             catch (Exception e)
@@ -142,6 +142,69 @@ namespace ZooManager
         }
 
         private void listZoos_Copy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "insert into Zoo values (@Location)";
+                //SqlCommand associa una query a una connessione al database, che è dove il comando verrà eseguito
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@Location", myTextbox.Text);
+                sqlCommand.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                ShowZoos(); //per aggiornare la listbox senza il record cancellato
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteZoo_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MessageBox.Show("Delete zoo was clicked");
+                string query = "delete from Zoo where id = @ZooId";
+                //SqlCommand associa una query a una connessione al database, che è dove il comando verrà eseguito
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.Parameters.AddWithValue("@ZooId", listZoos.SelectedValue);
+                sqlCommand.ExecuteScalar();
+                sqlConnection.Close();
+                ShowZoos(); //per aggiornare la listbox senza il record cancellato
+            } 
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            finally 
+            { 
+                sqlConnection.Close();
+                ShowZoos();
+            }
+            
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }

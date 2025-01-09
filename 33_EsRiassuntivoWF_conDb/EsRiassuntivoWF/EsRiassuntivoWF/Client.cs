@@ -38,13 +38,14 @@ namespace GestioneBiblioteca
 
         Book bookProduct;
         Magazine magazineProduct;
+        Library library;
 
 
         //mettendo 1 libro mette 2 oggetti dentro inventory
         public bool Buy(string name, int quantity, ClientInventory inventory)
         {
             //se il prodotto è disponibile in magazzino(Library)
-            var existingProduct = Library.Products.FirstOrDefault(p => p.Name == name);
+            var existingProduct = library.Products.FirstOrDefault(p => p.Name == name);
 
             Money -= (existingProduct.Price * quantity);
 
@@ -110,7 +111,7 @@ namespace GestioneBiblioteca
         public void SeeAllBooks()
         {
             Console.WriteLine("Ecco i libri disponibili: ");
-            foreach (var item in Library.Products)
+            foreach (var item in library.Products)
             {
                 if (item is Book book)
                 {
@@ -123,7 +124,7 @@ namespace GestioneBiblioteca
         public void SeeAllMagazines()
         {
             Console.WriteLine("Ecco le riviste disponibili: ");
-            foreach (var item in Library.Products)
+            foreach (var item in library.Products)
             {
                 if (item is Magazine magazine)
                 {

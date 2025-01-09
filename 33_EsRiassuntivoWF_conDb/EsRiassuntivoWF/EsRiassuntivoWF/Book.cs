@@ -77,6 +77,12 @@ namespace GestioneBiblioteca
             return PublishingDate;
         }
 
+        // Override di ToString per restituire il titolo (why??)
+        public override string ToString()
+        {
+            return this.Title;  // Restituisci il titolo del libro come rappresentazione dell'oggetto
+        }
+
 
     }
 }
