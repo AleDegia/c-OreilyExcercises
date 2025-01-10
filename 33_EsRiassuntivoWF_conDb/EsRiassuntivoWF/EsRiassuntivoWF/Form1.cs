@@ -46,20 +46,31 @@ namespace EsRiassuntivoWF
         string connectionString;
         List<LibraryProduct> libraryItems = new List<LibraryProduct>();
         InventoryForm inventoryForm = new InventoryForm();  //da mettere il new nel Load?
+        double spesaTotale = 0;
+
+
 
 
         private void button1_Click(object sender, EventArgs e)
         {
             //se il prodotto è disponibile in magazzino(Library)
-            string existingProductName = label2.Text;
-            var existingProduct = libraryItems.FirstOrDefault(p => p.Name == existingProductName);
-            Console.WriteLine(existingProduct);
-            double money = currentClient.GetMoney();    //va messo globalmente 
-            money -= existingProduct.Price;
-            currentClient.SetMoney(money);
-            lblBalance.Text = money.ToString();
+            //non devo piu recuperare dal label il prodotto ma dal listbox carrello
+            List<string> itemsNames = new List<string>();
+            foreach (var item in checkout.Items)
+            {
+                if (item.ToString().Contains("Libro") || item.ToString().Contains("Rivista"))
+                    itemsNames.Add(item.ToString());
+            }
 
-            
+            foreach (var item in itemsNames)
+            {
+                var existingProduct = libraryItems.FirstOrDefault(p => p.Name == item);
+                Console.WriteLine(existingProduct);
+                double money = currentClient.GetMoney();    //va messo globalmente 
+                money -= existingProduct.Price;
+                currentClient.SetMoney(money);
+                lblBalance.Text = money.ToString();
+
 
 
             //bookProduct.BuyBook(name, quantity, ref availableMoney, Inventory, existingProduct);
@@ -80,8 +91,8 @@ namespace EsRiassuntivoWF
                        bookProduct.GetPublishingDate()
                    );
                     inventory.Products.Add(purchasedProduct);
-                    MessageBox.Show("Acquisto avvenuto con successo");
-                    
+                    //MessageBox.Show("Acquisto avvenuto con successo");
+
                     inventoryForm.AddProductToList(purchasedProduct.Name);
                     inventoryForm.Show();
                     //this.Hide();
@@ -102,12 +113,12 @@ namespace EsRiassuntivoWF
                         magazineProduct.Category,
                         magazineProduct.Price,
                         magazineProduct.Quantity,
-                        magazineProduct.GetTitle(),      
+                        magazineProduct.GetTitle(),
                         magazineProduct.GetDescription(),
                         magazineProduct.GetImg()
                     );
                     inventory.Products.Add(purchasedProduct);
-                    MessageBox.Show("Acquisto avvenuto con successo");
+                    //MessageBox.Show("Acquisto avvenuto con successo");
 
                     inventoryForm.AddProductToList(purchasedProduct.Name);
                     inventoryForm.Show();
@@ -119,6 +130,10 @@ namespace EsRiassuntivoWF
                     MessageBox.Show("Non hai abbastanza soldi");
                 }
             }
+            }
+            MessageBox.Show("Acquisto avvenuto con successo");
+            checkout.Items.Clear();
+            SommaSpesa.Text="";
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -150,6 +165,8 @@ namespace EsRiassuntivoWF
 
                 checkout.Items.Add(selectedItem.Name);
                 checkout.Items.Add(selectedItem.Price);
+                spesaTotale += selectedItem.Price;
+                SommaSpesa.Text = spesaTotale.ToString();
             }
         }
 
@@ -176,7 +193,7 @@ namespace EsRiassuntivoWF
 
             try
             {
-                string queryBooks = "SELECT * FROM BookTb ORDER BY Title ASC"; 
+                string queryBooks = "SELECT * FROM BooksTb ORDER BY Title ASC"; 
                 string queryMagazines = "SELECT * FROM MagazinesTb";
 
                 //Il SqlDataAdapter si occupa di:
@@ -248,6 +265,16 @@ namespace EsRiassuntivoWF
         }
 
         private void label2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkout_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
