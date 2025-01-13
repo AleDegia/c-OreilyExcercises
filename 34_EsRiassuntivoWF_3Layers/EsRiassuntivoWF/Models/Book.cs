@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System;
 using System.Xml.Linq;
 
-namespace GestioneBiblioteca
+namespace GestioneBiblioteca2
 {
     public class Book : LibraryProduct
     {
