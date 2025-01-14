@@ -58,6 +58,7 @@ namespace GestioneBiblioteca3
                     bookProduct = (Book)existingProduct;
                     //aggiungo prodotto a inventario cliente
                     LibraryProduct purchasedProduct = new Book(
+                       bookProduct.Id,
                        bookProduct.Name,
                        bookProduct.Category,
                        bookProduct.Price,
@@ -84,6 +85,7 @@ namespace GestioneBiblioteca3
                 {
                     magazineProduct = (Magazine)existingProduct;
                     LibraryProduct purchasedProduct = new Magazine(
+                        magazineProduct.Id,
                         magazineProduct.Name,
                         magazineProduct.Category,
                         magazineProduct.Price,

@@ -38,13 +38,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.checkout = new System.Windows.Forms.ListBox();
             this.SommaSpesa = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(777, 444);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(129, 50);
             this.button1.TabIndex = 0;
@@ -57,7 +58,7 @@
             this.libraryProducts.FormattingEnabled = true;
             this.libraryProducts.ItemHeight = 16;
             this.libraryProducts.Location = new System.Drawing.Point(52, 70);
-            this.libraryProducts.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.libraryProducts.Margin = new System.Windows.Forms.Padding(4);
             this.libraryProducts.Name = "libraryProducts";
             this.libraryProducts.Size = new System.Drawing.Size(211, 148);
             this.libraryProducts.TabIndex = 4;
@@ -70,7 +71,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.lblCliente);
             this.panel1.Location = new System.Drawing.Point(656, 70);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(304, 149);
             this.panel1.TabIndex = 5;
@@ -110,7 +111,7 @@
             // Add_btn
             // 
             this.Add_btn.Location = new System.Drawing.Point(68, 226);
-            this.Add_btn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Add_btn.Margin = new System.Windows.Forms.Padding(4);
             this.Add_btn.Name = "Add_btn";
             this.Add_btn.Size = new System.Drawing.Size(177, 28);
             this.Add_btn.TabIndex = 6;
@@ -134,7 +135,7 @@
             this.checkout.FormattingEnabled = true;
             this.checkout.ItemHeight = 16;
             this.checkout.Location = new System.Drawing.Point(404, 102);
-            this.checkout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkout.Margin = new System.Windows.Forms.Padding(4);
             this.checkout.Name = "checkout";
             this.checkout.Size = new System.Drawing.Size(159, 116);
             this.checkout.TabIndex = 8;
@@ -150,11 +151,22 @@
             this.SommaSpesa.Text = "label3";
             this.SommaSpesa.Click += new System.EventHandler(this.label3_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(68, 261);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(177, 28);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "Show Info";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.SommaSpesa);
             this.Controls.Add(this.checkout);
             this.Controls.Add(this.label2);
@@ -162,7 +174,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.libraryProducts);
             this.Controls.Add(this.button1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -185,6 +197,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox checkout;
         private System.Windows.Forms.Label SommaSpesa;
+        private System.Windows.Forms.Button button2;
     }
 }
 

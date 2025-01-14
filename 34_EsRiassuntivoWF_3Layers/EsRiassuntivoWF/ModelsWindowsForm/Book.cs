@@ -7,7 +7,6 @@ namespace GestioneBiblioteca3
 {
     public class Book : LibraryProduct
     {
-
         private int PagesNumber { get; set; }
 
         private string Title { get; set; }
@@ -15,14 +14,15 @@ namespace GestioneBiblioteca3
         private string Author { get; set; }
         private DateTime PublishingDate { get; set; }
 
-        public Book(string name, string category, double price, int quantity, int pages, string title, string author, DateTime publishingDate)
-            : base(name, category, price, quantity)
+        public Book(int id, string name, string category, double price, int quantity, int pages, string title, string author, DateTime publishingDate)
+            : base(id, name, category, price, quantity)
         {
             Title = title;
             Author = author;
             PagesNumber = pages;
             PublishingDate = publishingDate;
         }
+
 
         Book bookProduct;
 
@@ -38,13 +38,32 @@ namespace GestioneBiblioteca3
         {
             return PagesNumber;
         }
+
+        public void SetPagesNumber(int pages)
+        {
+            PagesNumber = pages;
+        }
         public string GetTitle()
         {
             return Title;
         }
+        public void SetTitle(string title)
+        {
+            Title = title;
+        }
+
+        public void SetAuthor(string name)
+        {
+            Author = name;
+        }
         public string GetAuthor()
         {
             return Author;
+        }
+
+        public void SetPublishingDate(DateTime date)
+        {
+            PublishingDate = date;
         }
         public DateTime GetPublishingDate()
         {

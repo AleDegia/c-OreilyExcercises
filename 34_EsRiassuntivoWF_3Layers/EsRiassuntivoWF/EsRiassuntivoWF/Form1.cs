@@ -37,6 +37,8 @@ namespace EsRiassuntivoWF
 
         private void button1_Click(object sender, EventArgs e)
         {
+            inventoryForm.Show();
+
             //se il prodotto è disponibile in magazzino(Library)
             //non devo piu recuperare dal label il prodotto ma dal listbox carrello
             List<string> itemsNames = new List<string>();
@@ -50,6 +52,8 @@ namespace EsRiassuntivoWF
             {
                 var existingProduct = libraryItems.FirstOrDefault(p => p.Name == item);
                 Console.WriteLine(existingProduct);
+                bool result = libraryService.InsertProduct(existingProduct);
+                if (result == false) break;
                 double money = currentClient.GetMoney();    //va messo globalmente 
                 money -= existingProduct.Price;
                 currentClient.SetMoney(money);
@@ -59,13 +63,13 @@ namespace EsRiassuntivoWF
                 LibraryProduct purchasedProduct = libraryService.checkProduct(existingProduct, money);
             
                 inventoryForm.AddProductToList(purchasedProduct.Name);
-                inventoryForm.Show();
+                
                 //this.Hide();
                
             }
-            MessageBox.Show("Acquisto avvenuto con successo");
             checkout.Items.Clear();
             SommaSpesa.Text="";
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -109,9 +113,9 @@ namespace EsRiassuntivoWF
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string connectionString = dal.GetConnectionString();
+            
 
-            ShowProducts(connectionString);
+            ShowProducts();
             lblBalance.Text = "100";
 
             /*non serve piu perchè popolo la listBox con ShowProducts()*/
@@ -119,7 +123,7 @@ namespace EsRiassuntivoWF
             //    libraryProducts.Items.Add(product.Name);
         }
 
-        private void ShowProducts(string connectionString)
+        private void ShowProducts()
         {
 
             List<LibraryProduct> libraryItems = libraryService.GetLibraryItems();
@@ -145,6 +149,22 @@ namespace EsRiassuntivoWF
         private void checkout_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            if (libraryProducts.SelectedItem != null)
+            {
+                string selectedItem = libraryProducts.SelectedItem.ToString();
+                var existingProduct = libraryService.GetProduct(selectedItem.ToString());
+                if(existingProduct is Book book)
+                MessageBox.Show(
+                $"Name: {existingProduct.Name}\nPrice: {existingProduct.Price}\nCategory: {existingProduct.Category}\nPages: {book.GetPagesNumber()} ",
+                "Product Details",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+                );
+            }
         }
     }
 }

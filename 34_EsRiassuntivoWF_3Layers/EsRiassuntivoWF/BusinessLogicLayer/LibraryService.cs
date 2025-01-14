@@ -32,6 +32,28 @@ namespace EsRiassuntivoWF.BLL
             return items;
         }
 
+        public List<LibraryProduct> GetInventoryItems()
+        {
+            List<LibraryProduct> products = new List<LibraryProduct>();
+            List<Book> books = dal.GetBooksFromInventory();
+            products.AddRange(books);
+            return products;
+        }
+
+        public LibraryProduct GetProduct(string name)
+        {
+            //se name è di tipo libro
+            Book prod = dal.GetBook(name);
+            return prod;
+        }
+
+        public bool InsertProduct(LibraryProduct product)
+        {
+            bool result = dal.InsertProduct(product);
+            if(result) MessageBox.Show("Acquisto avvenuto con successo"); //da far vedere solo se avviene
+            return result;
+        }
+
         public bool PurchaseItem(LibraryProduct product, Client client)
         {
             if (client.GetMoney() < product.Price)
@@ -49,6 +71,7 @@ namespace EsRiassuntivoWF.BLL
                 var bookProduct = (Book)existingProduct;
                 //aggiungo prodotto a inventario cliente
                 LibraryProduct purchasedProduct = new Book(
+                   bookProduct.Id,
                    bookProduct.Name,
                    bookProduct.Category,
                    bookProduct.Price,
@@ -66,6 +89,7 @@ namespace EsRiassuntivoWF.BLL
             { 
                 Magazine magazineProduct = (Magazine)existingProduct;
                 LibraryProduct purchasedProduct = new Magazine(
+                    magazineProduct.Id,
                     magazineProduct.Name,
                     magazineProduct.Category,
                     magazineProduct.Price,
