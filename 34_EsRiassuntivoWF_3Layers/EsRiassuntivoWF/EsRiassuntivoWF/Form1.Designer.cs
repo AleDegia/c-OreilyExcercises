@@ -39,6 +39,8 @@
             this.checkout = new System.Windows.Forms.ListBox();
             this.SommaSpesa = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.Update = new DevExpress.XtraEditors.SimpleButton();
+            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -161,11 +163,31 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
+            // Update
+            // 
+            this.Update.Location = new System.Drawing.Point(68, 295);
+            this.Update.Name = "Update";
+            this.Update.Size = new System.Drawing.Size(177, 29);
+            this.Update.TabIndex = 11;
+            this.Update.Text = "Update Info";
+            this.Update.Click += new System.EventHandler(this.Update_Click);
+            // 
+            // simpleButton1
+            // 
+            this.simpleButton1.Location = new System.Drawing.Point(68, 331);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(177, 29);
+            this.simpleButton1.TabIndex = 12;
+            this.simpleButton1.Text = "Delete";
+            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.Controls.Add(this.simpleButton1);
+            this.Controls.Add(this.Update);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.SommaSpesa);
             this.Controls.Add(this.checkout);
@@ -198,6 +220,8 @@
         private System.Windows.Forms.ListBox checkout;
         private System.Windows.Forms.Label SommaSpesa;
         private System.Windows.Forms.Button button2;
+        private DevExpress.XtraEditors.SimpleButton Update;
+        private DevExpress.XtraEditors.SimpleButton simpleButton1;
     }
 }
 

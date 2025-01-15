@@ -11,6 +11,8 @@ using System.Xml.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Collections;
+using System.Diagnostics;
+using System.Net;
 
 
 namespace EsRiassuntivoWF.DAL
@@ -130,6 +132,7 @@ namespace EsRiassuntivoWF.DAL
             }
         }
 
+
         public List<Book> GetBooksFromInventory()
         {
             var books = new List<Book>();
@@ -172,15 +175,13 @@ namespace EsRiassuntivoWF.DAL
 
                     using (SqlCommand command = new SqlCommand(query, openCon))  // Prepara la query
                     {
-                        // Aggiungi il parametro per prevenire SQL Injection
                         command.Parameters.AddWithValue("@name", name);
 
-                        // Esegui la query e ottieni il risultato
+                        // Eseguo la query
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())  // Se trova un record
                             {
-                                // Mappa i dati letti in un oggetto Book
                                 book = new Book(
                                     reader.GetInt32(reader.GetOrdinal("Id")),
                                     reader.GetString(reader.GetOrdinal("Name")),
@@ -192,7 +193,6 @@ namespace EsRiassuntivoWF.DAL
                                     reader.GetString(reader.GetOrdinal("Author")),
                                     reader.GetDateTime(reader.GetOrdinal("PublishingDate"))
                                     );
-                            
                             }
                         }
                     }
@@ -200,11 +200,70 @@ namespace EsRiassuntivoWF.DAL
                 }
                 catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.ToString()); 
                 }
 
                 return book;
             }
         }
+
+
+        public void UpdateBooks(Book prod)
+        {
+            string query = $"UPDATE BooksTb SET Name = @Name, Category = @Category,  Price = @Price,  Quantity = @Quantity,  PagesNumber = @PagesNumber, Title = @Title, Author = @Author, PublishingDate = @PublishingDate WHERE Id = @BookId";
+
+            using (SqlConnection openCon = new SqlConnection(connectionString))  // Connetto al DB
+            {
+                try
+                {
+                    openCon.Open();  
+
+                    //UPDATE table1 SET table1.column = table2.expression1 FROM table1 [WHERE conditions];
+                    using (SqlCommand cmd = new SqlCommand(query, openCon))  // Prepara la query
+                    {
+                        cmd.Parameters.AddWithValue("@Name", prod.Name);
+                        cmd.Parameters.AddWithValue("@Category", prod.Category);
+                        cmd.Parameters.AddWithValue("@Price", prod.Price);
+                        cmd.Parameters.AddWithValue("@Quantity", prod.Quantity);
+                        cmd.Parameters.AddWithValue("@PagesNumber", prod.GetPagesNumber());
+                        cmd.Parameters.AddWithValue("@Title", prod.GetTitle());
+                        cmd.Parameters.AddWithValue("@Author", prod.GetAuthor());
+                        cmd.Parameters.AddWithValue("@PublishingDate", prod.GetPublishingDate());
+                        cmd.Parameters.AddWithValue("@BookId", prod.Id); 
+
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Prodotto Aggiornato!");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("qualcosa non ha funzionato");
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+        }
+
+        public void DeleteProduct(string name)
+        {
+            string query = $"DELETE FROM BooksTb WHERE Title = @name";
+            using (SqlConnection openCon = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    openCon.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, openCon))
+                    {
+                        // Aggiungi il parametro con il valore della variabile name
+                        cmd.Parameters.AddWithValue("@name", name);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex) 
+                {
+                    MessageBox.Show("qualcosa non ha funzionato");
+                    Console.WriteLine(ex.ToString());
+                }
+             }
+        }   
     }
 }

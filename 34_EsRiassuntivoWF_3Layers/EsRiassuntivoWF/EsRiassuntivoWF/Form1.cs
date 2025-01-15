@@ -22,6 +22,7 @@ namespace EsRiassuntivoWF
             InitializeComponent();
             libraryService = new LibraryService(); // Inizializza dal nel costruttore
             dal = new Dal();
+            updateForm = new UpdateForm(this);
         }
 
         Client currentClient = new Client(100);
@@ -31,7 +32,7 @@ namespace EsRiassuntivoWF
         double spesaTotale = 0;
         private LibraryService libraryService;
         private Dal dal;
-
+        private UpdateForm updateForm;
 
 
 
@@ -123,13 +124,16 @@ namespace EsRiassuntivoWF
             //    libraryProducts.Items.Add(product.Name);
         }
 
-        private void ShowProducts()
+
+
+        public void ShowProducts()
         {
 
             List<LibraryProduct> libraryItems = libraryService.GetLibraryItems();
             libraryProducts.DataSource = libraryItems;
-            libraryProducts.DisplayMember = "Title"; // Mostra il titolo dell'articolo
+            libraryProducts.DisplayMember = "Title"; //Mostra il titolo dell'articolo
         }
+
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -164,6 +168,45 @@ namespace EsRiassuntivoWF
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
                 );
+            }
+        }
+
+        private void Update_Click(object sender, EventArgs e)
+        {
+            if (libraryProducts.SelectedItem != null)
+            {
+                string selectedItem = libraryProducts.SelectedItem.ToString();
+                //prendo i dati dal db e li metto nelle caselle 
+                var existingProduct = libraryService.GetProduct(selectedItem.ToString());
+                if (existingProduct is Book book)
+                {
+                    updateForm.TextBox9.Text = existingProduct.Id.ToString();
+                    updateForm.TextBox7.Text = existingProduct.Name;
+                    updateForm.TextBox1.Text = existingProduct.Category;
+                    updateForm.TextBox2.Text = existingProduct.Price.ToString();
+                    updateForm.TextBox8.Text = existingProduct.Quantity.ToString();
+                    updateForm.TextBox3.Text = book.GetPagesNumber().ToString();
+                    updateForm.TextBox4.Text = book.GetTitle().ToString();
+                    updateForm.TextBox5.Text = book.GetAuthor();
+                    updateForm.TextBox6.Text = book.GetPublishingDate().ToString();  
+                }
+
+                updateForm.Show();
+            }
+        }
+
+        private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            if (libraryProducts.SelectedItem != null)
+            {
+                string selectedItem = libraryProducts.SelectedItem.ToString();
+                libraryService.DeleteProduct(selectedItem);
+                MessageBox.Show("prodotto eliminato");
+                ShowProducts();
+            }
+            else
+            {
+                Console.WriteLine("Errore");
             }
         }
     }

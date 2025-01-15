@@ -54,6 +54,16 @@ namespace EsRiassuntivoWF.BLL
             return result;
         }
 
+        public void UpdateBooks(Book book)
+        {
+            dal.UpdateBooks(book);
+        }
+
+        public void DeleteProduct(string name)
+        {
+            dal.DeleteProduct(name);
+        }
+
         public bool PurchaseItem(LibraryProduct product, Client client)
         {
             if (client.GetMoney() < product.Price)
