@@ -36,15 +36,26 @@ namespace EsRiassuntivoWF.BLL
         {
             List<LibraryProduct> products = new List<LibraryProduct>();
             List<Book> books = dal.GetBooksFromInventory();
+            List<Magazine> magazines = dal.GetAllMagazines();
             products.AddRange(books);
+            products.AddRange(magazines);
             return products;
         }
 
         public LibraryProduct GetProduct(string name)
         {
             //se name è di tipo libro
-            Book prod = dal.GetBook(name);
-            return prod;
+            List<Magazine> magazines = dal.GetAllMagazines();
+            List<Book> books = dal.GetAllBooks();
+            //Book prod = dal.GetBook(name);
+            foreach(Book book in books)
+                if(book.GetTitle() == name)
+                    return book;
+            foreach (Magazine magazine in magazines)
+                if (magazine.GetTitle() == name)
+                    return magazine;
+
+            return null;
         }
 
         public bool InsertProduct(LibraryProduct product)
@@ -57,6 +68,11 @@ namespace EsRiassuntivoWF.BLL
         public void UpdateBooks(Book book)
         {
             dal.UpdateBooks(book);
+        }
+
+        public void UpdateMagazine(Magazine mag)
+        {
+            dal.UpdateMagazine(mag);
         }
 
         public void DeleteProduct(string name)

@@ -46,6 +46,7 @@
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.textBox9 = new System.Windows.Forms.TextBox();
+            this.textBox10 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -194,12 +195,21 @@
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(225, 22);
             this.textBox9.TabIndex = 19;
+            this.textBox9.Visible = false;
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(125, 453);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(100, 22);
+            this.textBox10.TabIndex = 20;
             // 
             // UpdateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 455);
+            this.ClientSize = new System.Drawing.Size(441, 537);
+            this.Controls.Add(this.textBox10);
             this.Controls.Add(this.textBox9);
             this.Controls.Add(this.simpleButton1);
             this.Controls.Add(this.textBox8);
@@ -247,6 +257,7 @@
         private System.Windows.Forms.TextBox textBox8;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox textBox10;
 
         public System.Windows.Forms.TextBox TextBox1
         {

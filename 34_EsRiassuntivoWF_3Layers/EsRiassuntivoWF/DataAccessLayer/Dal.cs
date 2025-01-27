@@ -128,6 +128,34 @@ namespace EsRiassuntivoWF.DAL
                         }
                     }
                 }
+                else if(product is Magazine magazine)
+                {
+                    string saveProd = "INSERT into purchasedMagazines (Id, Name, Category, Price, Quantity, Title, Description, Image) VALUES (@Id,@Name,@Category, @Price, @Quantity, @Title, @Description, @Image)";
+                    using (SqlCommand querySaveStaff = new SqlCommand(saveProd))
+                    {
+                        querySaveStaff.Connection = openCon;
+                        openCon.Open();
+
+                        querySaveStaff.Parameters.AddWithValue("@Id", magazine.Id);
+                        querySaveStaff.Parameters.AddWithValue("@Name", magazine.Name);
+                        querySaveStaff.Parameters.AddWithValue("@Category", magazine.Category);
+                        querySaveStaff.Parameters.AddWithValue("@Price", magazine.Price);
+                        querySaveStaff.Parameters.AddWithValue("@Quantity", magazine.Quantity);
+                        querySaveStaff.Parameters.AddWithValue("@Title", magazine.GetTitle());
+                        querySaveStaff.Parameters.AddWithValue("@Description", magazine.GetDescription());
+                        querySaveStaff.Parameters.AddWithValue("@Image", magazine.GetImg());
+
+                        try
+                        {
+                            querySaveStaff.ExecuteNonQuery();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Hai già acquistato questo libro");
+                            return false;
+                        }
+                    }
+                }
                 return true;
             }
         }
@@ -161,6 +189,65 @@ namespace EsRiassuntivoWF.DAL
 
             return books;
         }
+
+        public List<Book> GetAllBooks()
+        {
+            var books = new List<Book>();
+            string query = "SELECT * FROM BooksTb";
+
+            using (var adapter = new SqlDataAdapter(query, connectionString))
+            {
+                var booksTable = new DataTable();
+                adapter.Fill(booksTable);
+
+                foreach (DataRow row in booksTable.Rows)
+                {
+                    books.Add(new Book(
+                        Convert.ToInt32(row["Id"]),
+                        row["Name"].ToString(),
+                        row["Category"].ToString(),
+                        Convert.ToDouble(row["Price"]),
+                        Convert.ToInt32(row["Quantity"]),
+                        Convert.ToInt32(row["PagesNumber"]),
+                        row["Title"].ToString(),
+                        row["Author"].ToString(),
+                        Convert.ToDateTime(row["PublishingDate"])
+                    ));
+                }
+            }
+
+            return books;
+        }
+
+
+        public List<Magazine> GetAllMagazines()
+        {
+            var magazines = new List<Magazine>();
+            string query = "SELECT * FROM MagazinesTb";
+
+            using (var adapter = new SqlDataAdapter(query, connectionString))
+            {
+                var booksTable = new DataTable();
+                adapter.Fill(booksTable);
+
+                foreach (DataRow row in booksTable.Rows)
+                {
+                    magazines.Add(new Magazine(
+                        Convert.ToInt32(row["Id"]),
+                        row["Name"].ToString(),
+                        row["Category"].ToString(),
+                        Convert.ToDouble(row["Price"]),
+                        Convert.ToInt32(row["Quantity"]),
+                        row["Title"].ToString(),
+                        row["Description"].ToString(),
+                        row["Image"].ToString()
+                    ));
+                }
+            }
+
+            return magazines;
+        }
+
 
         public Book GetBook(string name)
         {
@@ -236,6 +323,41 @@ namespace EsRiassuntivoWF.DAL
                     }
                 }
                 catch(Exception ex)
+                {
+                    MessageBox.Show("qualcosa non ha funzionato");
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+        }
+
+
+        public void UpdateMagazine(Magazine prod)
+        {
+            string query = $"UPDATE MagazinesTb SET Name = @Name, Category = @Category,  Price = @Price,  Quantity = @Quantity, Title = @Title, Description = @Description, Image = @Image WHERE Id = @BookId";
+
+            using (SqlConnection openCon = new SqlConnection(connectionString))  // Connetto al DB
+            {
+                try
+                {
+                    openCon.Open();
+
+                    //UPDATE table1 SET table1.column = table2.expression1 FROM table1 [WHERE conditions];
+                    using (SqlCommand cmd = new SqlCommand(query, openCon))  // Prepara la query
+                    {
+                        cmd.Parameters.AddWithValue("@Name", prod.Name);
+                        cmd.Parameters.AddWithValue("@Category", prod.Category);
+                        cmd.Parameters.AddWithValue("@Price", prod.Price);
+                        cmd.Parameters.AddWithValue("@Quantity", prod.Quantity);
+                        cmd.Parameters.AddWithValue("@Title", prod.GetTitle());
+                        cmd.Parameters.AddWithValue("@Description", prod.GetDescription());
+                        cmd.Parameters.AddWithValue("@Image", prod.GetImg());
+                        cmd.Parameters.AddWithValue("@BookId", prod.Id);
+
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Prodotto Aggiornato!");
+                    }
+                }
+                catch (Exception ex)
                 {
                     MessageBox.Show("qualcosa non ha funzionato");
                     Console.WriteLine(ex.ToString());

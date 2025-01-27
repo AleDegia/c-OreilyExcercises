@@ -23,6 +23,7 @@ namespace EsRiassuntivoWF
             libraryService = new LibraryService(); // Inizializza dal nel costruttore
             dal = new Dal();
             updateForm = new UpdateForm(this);
+            updateMagazineForm = new UpdateMagazineForm(this);
         }
 
         Client currentClient = new Client(100);
@@ -33,6 +34,7 @@ namespace EsRiassuntivoWF
         private LibraryService libraryService;
         private Dal dal;
         private UpdateForm updateForm;
+        private UpdateMagazineForm updateMagazineForm;
 
 
 
@@ -188,10 +190,22 @@ namespace EsRiassuntivoWF
                     updateForm.TextBox3.Text = book.GetPagesNumber().ToString();
                     updateForm.TextBox4.Text = book.GetTitle().ToString();
                     updateForm.TextBox5.Text = book.GetAuthor();
-                    updateForm.TextBox6.Text = book.GetPublishingDate().ToString();  
+                    updateForm.TextBox6.Text = book.GetPublishingDate().ToString();
+                    updateForm.Show();
+                }
+                else if(existingProduct is Magazine magazine)
+                {
+                    updateMagazineForm.TextBox9.Text = existingProduct.Id.ToString();
+                    updateMagazineForm.TextBox7.Text = existingProduct.Name;
+                    updateMagazineForm.TextBox1.Text = existingProduct.Category;
+                    updateMagazineForm.TextBox2.Text = existingProduct.Price.ToString();
+                    updateMagazineForm.TextBox8.Text = existingProduct.Quantity.ToString();
+                    updateMagazineForm.TextBox3.Text = magazine.GetTitle();
+                    updateMagazineForm.TextBox5.Text = magazine.GetDescription();
+                    updateMagazineForm.TextBox6.Text = magazine.GetImg();
+                    updateMagazineForm.Show();
                 }
 
-                updateForm.Show();
             }
         }
 
