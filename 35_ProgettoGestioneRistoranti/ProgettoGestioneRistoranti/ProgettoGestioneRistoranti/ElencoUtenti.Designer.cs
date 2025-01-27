@@ -53,6 +53,7 @@
             this.simpleButton3.Size = new System.Drawing.Size(94, 36);
             this.simpleButton3.TabIndex = 9;
             this.simpleButton3.Text = "Modifica";
+            this.simpleButton3.Click += new System.EventHandler(this.simpleButton3_Click);
             // 
             // simpleButton2
             // 
@@ -61,6 +62,7 @@
             this.simpleButton2.Size = new System.Drawing.Size(94, 36);
             this.simpleButton2.TabIndex = 8;
             this.simpleButton2.Text = "Elimina";
+            this.simpleButton2.Click += new System.EventHandler(this.simpleButton2_Click);
             // 
             // simpleButton1
             // 
@@ -69,6 +71,7 @@
             this.simpleButton1.Size = new System.Drawing.Size(94, 36);
             this.simpleButton1.TabIndex = 7;
             this.simpleButton1.Text = "Aggiungi";
+            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
             // 
             // dataGridView1
             // 
@@ -106,5 +109,14 @@
         private DevExpress.XtraEditors.SimpleButton simpleButton2;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private System.Windows.Forms.DataGridView dataGridView1;
+
+        public System.Windows.Forms.DataGridView GetDataGridView()
+        {
+            return dataGridView1;
+        }
+        public void SetDataGridView(System.Windows.Forms.DataGridView dataGridView)
+        {
+            dataGridView1 = dataGridView;
+        }
     }
 }

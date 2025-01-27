@@ -17,6 +17,7 @@ namespace ProgettoGestioneRistoranti
         private BlRistoranti blRistoranti;
         //private ElencoRistoranti elencoRistoranti;
         private Ristorante ristorante;
+        private ElencoRistoranti elencoRistoranti;
         public UpdateRistorante()
         {
             InitializeComponent();
@@ -24,11 +25,12 @@ namespace ProgettoGestioneRistoranti
             //elencoRistoranti = new ElencoRistoranti();
         }
 
-        public UpdateRistorante(Ristorante ristorante)
+        public UpdateRistorante(Ristorante ristorante, ElencoRistoranti elencoRistoranti)
         {
             InitializeComponent();
             this.ristorante = ristorante;
             blRistoranti = new BlRistoranti();
+            this.elencoRistoranti = elencoRistoranti;
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -47,6 +49,42 @@ namespace ProgettoGestioneRistoranti
             Ristorante ristorante = new Ristorante(idRistorante, tipologia, indirizzo, ragioneSociale, partitaIva, numPosti, prezzoMedio, telefono, citta);
 
             blRistoranti.ModificaRistorante(ristorante);
+
+            var dataGridView1 = elencoRistoranti.GetDataGridView();
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+
+
+            dataGridView1.Columns.Add("IDRistorante", "ID Ristorante");
+            dataGridView1.Columns.Add("Tipologia", "Tipologia");
+            dataGridView1.Columns.Add("Indirizzo", "Indirizzo");
+            dataGridView1.Columns.Add("RagioneSociale", "Ragione Sociale");
+            dataGridView1.Columns.Add("PartitaIva", "Partita IVA");
+            dataGridView1.Columns.Add("NumPosti", "Numero Posti");
+            dataGridView1.Columns.Add("PrezzoMedio", "Prezzo Medio");
+            dataGridView1.Columns.Add("Telefono", "Telefono");
+            dataGridView1.Columns.Add("Citta", "Città");
+
+            var ristoranti = blRistoranti.GetRistorantiFiltrati("", "", 0);
+
+            // Aggiungi manualmente le righe
+            foreach (var rist in ristoranti)
+            {
+                dataGridView1.Rows.Add(
+                    rist.GetIDRistorante(),
+                    rist.GetTipologia(),
+                    rist.GetIndirizzo(),
+                    rist.GetRagioneSociale(),
+                    rist.GetPartitaIva(),
+                    rist.GetNumPosti(),
+                    rist.GetPrezzoMedio(),
+                    rist.GetTelefono(),
+                    rist.GetCitta()
+                );
+            }
+
+            elencoRistoranti.SetDataGridView(dataGridView1);
+
             this.Hide();
         }
 

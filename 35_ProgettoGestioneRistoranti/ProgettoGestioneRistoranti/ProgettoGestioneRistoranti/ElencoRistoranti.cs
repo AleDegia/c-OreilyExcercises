@@ -69,7 +69,7 @@ namespace ProgettoGestioneRistoranti
                     telefono,
                     citta
                 );
-                updateRistorante = new UpdateRistorante(ristorante);
+                updateRistorante = new UpdateRistorante(ristorante, this);
                 updateRistorante.Show();
 
             }

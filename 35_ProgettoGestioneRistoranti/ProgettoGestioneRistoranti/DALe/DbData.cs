@@ -191,12 +191,12 @@ namespace DALe
             {
 
                 string queryRistorante = "INSERT into AnagraficaRistoranti (Tipologia, Indirizzo, RagioneSociale, PartitaIva, NumPosti, PrezzoMedio, Telefono, Citta) VALUES (@Tipologia, @Indirizzo,@RagioneSociale, @PartitaIva, @NumPosti, @PrezzoMedio, @Telefono, @Citta)";
-                string queryUtente = "INSERT into purchasedBooks (Username, Password, IsAdministrator, Descrizione, Email, Telefono, Citta) VALUES (@UserName, @Password, @IsAdministrator, @Descrizione, @Email, @Telefono, @Citta)";
+                string queryUtente = "INSERT into Utenti (Username, Password, IsAdministrator, Descrizione, Email, Telefono, Citta) VALUES (@UserName, @Password, @IsAdministrator, @Descrizione, @Email, @Telefono, @Citta)";
 
                 if (typeof(T) == typeof(Ristorante) && entity is Ristorante ristorante)
                 {
 
-                    using (SqlCommand querySaveStaff = new SqlCommand(queryRistorante))
+                    using (SqlCommand querySaveStaff = new SqlCommand(queryUtente))
                     {
                         querySaveStaff.Connection = openCon;
                         openCon.Open();
@@ -221,6 +221,33 @@ namespace DALe
                         }
                     }
                 }
+                else if (typeof(T) == typeof(Utente) && entity is Utente utente)
+                {
+
+                    using (SqlCommand querySaveStaff = new SqlCommand(queryUtente))
+                    {
+                        querySaveStaff.Connection = openCon;
+                        openCon.Open();
+
+                        querySaveStaff.Parameters.AddWithValue("@UserName", utente.GetUserName());
+                        querySaveStaff.Parameters.AddWithValue("@Password", utente.GetPassword());
+                        querySaveStaff.Parameters.AddWithValue("@IsAdministrator", utente.GetIsAdministrator());
+                        querySaveStaff.Parameters.AddWithValue("@Descrizione", utente.GetDescrizione());
+                        querySaveStaff.Parameters.AddWithValue("@Email", utente.GetEmail());
+                        querySaveStaff.Parameters.AddWithValue("@Telefono", utente.GetTelefono());
+                        querySaveStaff.Parameters.AddWithValue("@Citta", utente.GetCitta());
+
+                        try
+                        {
+                            querySaveStaff.ExecuteNonQuery();
+                        }
+                        catch (Exception ex)
+                        {
+                            //MessageBox.Show("Hai già acquistato questo libro");
+                            MessageBox.Show(ex.Message);
+                        }
+                    }
+                }
 
             }
         }
@@ -228,6 +255,7 @@ namespace DALe
         public void ModificaEntity(T entity)
         {
             string queryRistorante = $"UPDATE AnagraficaRistoranti SET Tipologia = @Tipologia, Indirizzo = @Indirizzo,  RagioneSociale = @RagioneSociale,  PartitaIva = @PartitaIva,  NumPosti = @NumPosti, PrezzoMedio = @PrezzoMedio, Telefono = @Telefono, Citta = @Citta WHERE IDRistorante = @IDRistorante";
+            string queryUtente = $"UPDATE Utenti SET UserName = @Username, Password = @Password, IsAdministrator = @IsAdministrator,  Descrizione = @Descrizione,  Email = @Email,  Telefono = @Telefono, Citta = @Citta WHERE Username = @Username";
 
             using (SqlConnection openCon = new SqlConnection(connectionString))  // Connetto al DB
             {
@@ -257,7 +285,19 @@ namespace DALe
                     }
                     else if(entity is Utente utente)
                     {
+                        using (SqlCommand cmd = new SqlCommand(queryUtente, openCon))  // Prepara la query
+                        {
+                            cmd.Parameters.AddWithValue("@UserName", utente.GetUserName());
+                            cmd.Parameters.AddWithValue("@Password", utente.GetPassword());
+                            cmd.Parameters.AddWithValue("@IsAdministrator", utente.GetIsAdministrator());
+                            cmd.Parameters.AddWithValue("@Descrizione", utente.GetDescrizione());
+                            cmd.Parameters.AddWithValue("@Email", utente.GetEmail());
+                            cmd.Parameters.AddWithValue("@Telefono", utente.GetCitta());
+                            cmd.Parameters.AddWithValue("@Citta", utente.GetTelefono());
 
+                            cmd.ExecuteNonQuery();
+                            MessageBox.Show("Utente Aggiornato!");
+                        }
                     }
                     else if(entity is Prenotazione)
                     {
@@ -267,7 +307,7 @@ namespace DALe
                 catch (Exception ex)
                 {
                     MessageBox.Show("qualcosa non ha funzionato");
-                    Console.WriteLine(ex.ToString());
+                    MessageBox.Show(ex.ToString());
                 }
             }
         }
@@ -293,7 +333,7 @@ namespace DALe
                     {
                         using (SqlCommand cmd = new SqlCommand(queryUtente, openCon))
                         {
-                            cmd.Parameters.AddWithValue("@id", id);
+                            cmd.Parameters.AddWithValue("@username", id);
                             cmd.ExecuteNonQuery();
                         }
                     }

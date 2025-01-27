@@ -22,5 +22,22 @@ namespace Models
             Descrizione = descrizione;
             Email = email;
         }
+
+        public string GetUserName() => UserName;
+        public void SetUserName(string value) => UserName = value;
+
+        public string GetPassword() => Password;
+        public void SetPassword(string value) => Password = value;
+
+        public bool GetIsAdministrator() => IsAdministrator;
+        public void SetIsAdministrator(bool value) => IsAdministrator = value;
+
+        public string GetDescrizione() => Descrizione;
+        public void SetDescrizione(string value) => Descrizione = value;
+
+        public string GetEmail() => Email;
+        public void SetEmail(string value) => Email = value;
+
+        
     }
 }

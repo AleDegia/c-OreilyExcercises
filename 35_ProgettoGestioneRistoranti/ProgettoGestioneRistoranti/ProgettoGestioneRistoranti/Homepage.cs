@@ -13,11 +13,13 @@ namespace UI
 {
     public partial class Homepage : Form
     {
-        ElencoRistoranti elencoRistoranti;
+        private ElencoRistoranti elencoRistoranti;
+        private ElencoUtenti elencoUtenti;
         public Homepage()
         {
             InitializeComponent();
             elencoRistoranti = new ElencoRistoranti();
+            elencoUtenti = new ElencoUtenti();
         }
 
         private void toolStripTextBox1_Click(object sender, EventArgs e)
@@ -38,6 +40,11 @@ namespace UI
         private void button2_Click(object sender, EventArgs e)
         {
             elencoRistoranti.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            elencoUtenti.Show();
         }
     }
 }
