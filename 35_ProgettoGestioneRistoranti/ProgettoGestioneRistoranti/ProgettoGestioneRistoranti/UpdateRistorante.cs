@@ -33,7 +33,23 @@ namespace ProgettoGestioneRistoranti
             this.elencoRistoranti = elencoRistoranti;
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        
+
+        private void UpdateRistorante_Load(object sender, EventArgs e)
+        {
+            //Ristorante ristorante = elencoRistoranti.GetRistorante();
+            textBox9.Text = ristorante.GetIDRistorante().ToString();
+            textBox1.Text = ristorante.GetTipologia().ToString();
+            textBox2.Text = ristorante.GetIndirizzo().ToString();
+            textBox8.Text = ristorante.GetRagioneSociale().ToString();
+            textBox4.Text = ristorante.GetPartitaIva().ToString();
+            textBox3.Text = ristorante.GetNumPosti().ToString();
+            textBox5.Text = ristorante.GetPrezzoMedio().ToString();
+            textBox7.Text = ristorante.GetTelefono().ToString();    
+            textBox11.Text = ristorante.GetCitta().ToString();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
         {
             // Leggo i valori dalle TextBox
             int idRistorante = Convert.ToInt32(textBox9.Text);
@@ -86,20 +102,6 @@ namespace ProgettoGestioneRistoranti
             elencoRistoranti.SetDataGridView(dataGridView1);
 
             this.Hide();
-        }
-
-        private void UpdateRistorante_Load(object sender, EventArgs e)
-        {
-            //Ristorante ristorante = elencoRistoranti.GetRistorante();
-            textBox9.Text = ristorante.GetIDRistorante().ToString();
-            textBox1.Text = ristorante.GetTipologia().ToString();
-            textBox2.Text = ristorante.GetIndirizzo().ToString();
-            textBox8.Text = ristorante.GetRagioneSociale().ToString();
-            textBox4.Text = ristorante.GetPartitaIva().ToString();
-            textBox3.Text = ristorante.GetNumPosti().ToString();
-            textBox5.Text = ristorante.GetPrezzoMedio().ToString();
-            textBox7.Text = ristorante.GetTelefono().ToString();    
-            textBox11.Text = ristorante.GetCitta().ToString();
         }
     }
 }

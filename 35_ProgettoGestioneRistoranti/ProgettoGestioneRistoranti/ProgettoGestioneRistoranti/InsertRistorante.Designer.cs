@@ -43,9 +43,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
-            this.saveButton = new DevExpress.XtraEditors.SimpleButton();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox9
@@ -170,16 +170,6 @@
             this.textBox7.Size = new System.Drawing.Size(225, 22);
             this.textBox7.TabIndex = 40;
             // 
-            // saveButton
-            // 
-            this.saveButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.saveButton.Location = new System.Drawing.Point(336, 448);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(190, 29);
-            this.saveButton.TabIndex = 37;
-            this.saveButton.Text = "SAVE";
-            this.saveButton.Click += new System.EventHandler(this.simpleButton2_Click);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -197,17 +187,27 @@
             this.textBox1.TabIndex = 21;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(362, 444);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(142, 37);
+            this.button1.TabIndex = 44;
+            this.button1.Text = "INVIO";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // InsertRistorante
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 539);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.textBox11);
             this.Controls.Add(this.textBox7);
             this.Controls.Add(this.textBox9);
-            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.textBox8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -244,8 +244,9 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox7;
-        private DevExpress.XtraEditors.SimpleButton saveButton;
+        //private DevExpress.XtraEditors.SimpleButton saveButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button1;
     }
 }

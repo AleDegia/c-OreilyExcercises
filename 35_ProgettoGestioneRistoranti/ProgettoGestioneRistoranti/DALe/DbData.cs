@@ -196,7 +196,7 @@ namespace DALe
                 if (typeof(T) == typeof(Ristorante) && entity is Ristorante ristorante)
                 {
 
-                    using (SqlCommand querySaveStaff = new SqlCommand(queryUtente))
+                    using (SqlCommand querySaveStaff = new SqlCommand(queryRistorante))
                     {
                         querySaveStaff.Connection = openCon;
                         openCon.Open();

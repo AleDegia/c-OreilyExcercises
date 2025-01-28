@@ -140,5 +140,57 @@ namespace ProgettoGestioneRistoranti
 
             this.Hide();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Leggo i valori dalle TextBox
+            string username = textBox1.Text;
+            string password = textBox2.Text;
+            bool isAdministrator = Convert.ToBoolean(textBox8.Text);
+            string descrizione = textBox4.Text;
+            string email = textBox3.Text;
+            string telefono = textBox7.Text;
+            string citta = textBox11.Text;
+
+
+            Utente utente = new Utente(username, password, isAdministrator, descrizione, email, telefono, citta);
+
+            blUtenti.ModificaUtente(utente);
+
+            var dataGridView1 = elencoUtenti.GetDataGridView();
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+
+
+            dataGridView1.Columns.Add("IDRistorante", "ID Ristorante");
+            dataGridView1.Columns.Add("Tipologia", "Tipologia");
+            dataGridView1.Columns.Add("Indirizzo", "Indirizzo");
+            dataGridView1.Columns.Add("RagioneSociale", "Ragione Sociale");
+            dataGridView1.Columns.Add("PartitaIva", "Partita IVA");
+            dataGridView1.Columns.Add("NumPosti", "Numero Posti");
+            dataGridView1.Columns.Add("PrezzoMedio", "Prezzo Medio");
+            dataGridView1.Columns.Add("Telefono", "Telefono");
+            dataGridView1.Columns.Add("Citta", "Città");
+
+            var utenti = blUtenti.GetUtenti();
+
+            // Aggiungi manualmente le righe
+            foreach (var rist in utenti)
+            {
+                dataGridView1.Rows.Add(
+                    rist.GetUserName(),
+                    rist.GetPassword(),
+                    rist.GetIsAdministrator(),
+                    rist.GetDescrizione(),
+                    rist.GetEmail(),
+                    rist.GetTelefono(),
+                    rist.GetCitta()
+                );
+            }
+
+            elencoUtenti.SetDataGridView(dataGridView1);
+
+            this.Hide();
+        }
     }
 }

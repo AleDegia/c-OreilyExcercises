@@ -33,7 +33,6 @@
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
-            this.saveButton = new DevExpress.XtraEditors.SimpleButton();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -46,6 +45,7 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label9
@@ -87,16 +87,6 @@
             this.textBox9.Size = new System.Drawing.Size(225, 22);
             this.textBox9.TabIndex = 57;
             this.textBox9.Visible = false;
-            // 
-            // saveButton
-            // 
-            this.saveButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.saveButton.Location = new System.Drawing.Point(333, 481);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(190, 29);
-            this.saveButton.TabIndex = 56;
-            this.saveButton.Text = "SAVE";
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // textBox8
             // 
@@ -194,17 +184,27 @@
             this.textBox1.Size = new System.Drawing.Size(225, 22);
             this.textBox1.TabIndex = 44;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(365, 471);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(142, 37);
+            this.button1.TabIndex = 62;
+            this.button1.Text = "INVIO";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // UpdateRistorante
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 555);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.textBox11);
             this.Controls.Add(this.textBox7);
             this.Controls.Add(this.textBox9);
-            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.textBox8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -232,7 +232,7 @@
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.TextBox textBox9;
-        private DevExpress.XtraEditors.SimpleButton saveButton;
+        //private DevExpress.XtraEditors.SimpleButton saveButton;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
@@ -245,5 +245,6 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button1;
     }
 }

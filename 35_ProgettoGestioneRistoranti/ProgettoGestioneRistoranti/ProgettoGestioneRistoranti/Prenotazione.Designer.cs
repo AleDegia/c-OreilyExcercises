@@ -33,7 +33,7 @@
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            //this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -89,12 +89,12 @@
             // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(113, 408);
-            this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(91, 16);
-            this.labelControl1.TabIndex = 9;
-            this.labelControl1.Text = "Posti Prenotati: ";
-            this.labelControl1.Click += new System.EventHandler(this.labelControl1_Click);
+            //this.labelControl1.Location = new System.Drawing.Point(113, 408);
+            //this.labelControl1.Name = "labelControl1";
+            //this.labelControl1.Size = new System.Drawing.Size(91, 16);
+            //this.labelControl1.TabIndex = 9;
+            //this.labelControl1.Text = "Posti Prenotati: ";
+            //this.labelControl1.Click += new System.EventHandler(this.labelControl1_Click);
             // 
             // label5
             // 
@@ -158,7 +158,7 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.labelControl1);
+           // this.Controls.Add(this.labelControl1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.monthCalendar1);
@@ -179,7 +179,7 @@
         private System.Windows.Forms.MonthCalendar monthCalendar1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
+        //private DevExpress.XtraEditors.LabelControl labelControl1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
