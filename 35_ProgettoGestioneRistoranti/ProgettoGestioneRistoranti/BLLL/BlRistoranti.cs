@@ -44,6 +44,11 @@ namespace Engine
             dal.CancellaRistorante(id, nomeTabella);
         }
 
+        public List<Ristorante> GetRistorantiFiltrati2(string filtro, string input)
+        {
+            return dal.GetRistorantiFiltrati(filtro, input);
+        }
+
 
     }
 

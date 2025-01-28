@@ -49,7 +49,8 @@ namespace DALe
         }
 
 
-
+        public string GetConnectionString()
+            { return connectionString; }
 
 
 
