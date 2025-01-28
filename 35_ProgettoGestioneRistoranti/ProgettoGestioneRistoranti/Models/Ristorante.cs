@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,11 +10,24 @@ namespace Models
     public class Ristorante : AbstractClass
     {
         private int IDRistorante { get; set; }
+        [Required]
+        [Range(1, 5, ErrorMessage = "Tipologia deve essere compreso tra 1 e 5.")]
         private int Tipologia { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "L'indirizzo non può superare i 100 caratteri.")]
         private string Indirizzo { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "La Ragione Sociale non può superare i 100 caratteri.")]
         private string RagioneSociale { get; set; }
+        [Required]
+        [MaxLength(13)]
+        [MinLength(13)]
+        [RegularExpression(@"^IT", ErrorMessage = "La Partita IVA deve iniziare con 'IT'.")]
         private string PartitaIva { get; set; }
+        [Required]
         private int NumPosti { get; set; }
+        [Required]
+        [RegularExpression(@"^\d+(\.\d{1,2})?$")]   //max 2 numeri decimali
         private decimal PrezzoMedio {  get; set; }
 
         public Ristorante(int idRistorante, int tipologia, string indirizzo, string ragioneSociale, string partitaIva, int numPosti, decimal prezzoMedio, string telefono, string citta) : base(telefono, citta)
