@@ -35,6 +35,11 @@ namespace Models
             Email = email;
         }
 
+        public void Prenota()
+        {
+
+        }
+
         public string GetUserName() => UserName;
         public void SetUserName(string value) => UserName = value;
 

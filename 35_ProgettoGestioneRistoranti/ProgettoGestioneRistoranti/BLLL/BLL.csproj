@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlPrenotazioni.cs" />
     <Compile Include="BlRistoranti.cs" />
     <Compile Include="BlUtenti.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

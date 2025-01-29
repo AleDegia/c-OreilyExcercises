@@ -48,8 +48,6 @@ namespace Engine
         {
             return dal.GetRistorantiFiltrati(filtro, input);
         }
-
-
     }
 
 }

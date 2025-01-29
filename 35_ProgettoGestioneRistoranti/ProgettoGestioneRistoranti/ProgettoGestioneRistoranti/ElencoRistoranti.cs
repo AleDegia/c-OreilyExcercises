@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Engine;
 using Models;
+using UI;
 
 namespace ProgettoGestioneRistoranti
 {
@@ -18,12 +13,13 @@ namespace ProgettoGestioneRistoranti
         InsertRistorante insertRistorante;
         UpdateRistorante updateRistorante;
         private Ristorante ristorante;
+        private FormPrenotazione formPrenotazione;
         public ElencoRistoranti()
         {
             InitializeComponent();
             bl = new BlRistoranti();
             insertRistorante = new InsertRistorante(this);
-            //updateRistorante = new UpdateRistorante();
+            //formPrenotazione = new FormPrenotazione();
         }
 
         public Ristorante GetRistorante() { return ristorante; }
@@ -214,6 +210,41 @@ namespace ProgettoGestioneRistoranti
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+
+                //riga selezionata
+                DataGridViewRow row = dataGridView1.SelectedRows[0];
+
+                // recupero valori celle
+                int idRistorante = Convert.ToInt32(row.Cells["IDRistorante"].Value);
+                int tipologiaRistorante = Convert.ToInt32(row.Cells["Tipologia"].Value);
+                string indirizzoRistorante = row.Cells["Indirizzo"].Value.ToString();
+                string ragioneSocialeRistorante = row.Cells["RagioneSociale"].Value.ToString();
+                string partitaIvaRistorante = row.Cells["PartitaIva"].Value.ToString();
+                int numPostiRistorante = Convert.ToInt32(row.Cells["NumPosti"].Value);
+                decimal prezzoMedioRistorante = Convert.ToDecimal(row.Cells["NumPosti"].Value);
+                string telefono = row.Cells["Telefono"].Value.ToString();
+                string citta = row.Cells["Citta"].Value.ToString();
+
+                ristorante = new Ristorante(
+                    idRistorante,
+                    tipologiaRistorante,
+                    indirizzoRistorante,
+                    ragioneSocialeRistorante,
+                    partitaIvaRistorante,
+                    numPostiRistorante,
+                    prezzoMedioRistorante,
+                    telefono,
+                    citta
+                );
+                formPrenotazione = new FormPrenotazione(ristorante);
+                formPrenotazione.Show();
+            }
         }
 
         //private void textBox1_TextChanged(object sender, EventArgs e)

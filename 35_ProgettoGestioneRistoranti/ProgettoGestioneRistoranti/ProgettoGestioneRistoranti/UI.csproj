@@ -52,6 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatiPrenotazioneSubmit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DatiPrenotazioneSubmit.Designer.cs">
+      <DependentUpon>DatiPrenotazioneSubmit.cs</DependentUpon>
+    </Compile>
     <Compile Include="ElencoRistoranti.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,11 +88,11 @@
     <Compile Include="InsertUtente.Designer.cs">
       <DependentUpon>InsertUtente.cs</DependentUpon>
     </Compile>
-    <Compile Include="Prenotazione.cs">
+    <Compile Include="FormPrenotazione.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Prenotazione.Designer.cs">
-      <DependentUpon>Prenotazione.cs</DependentUpon>
+    <Compile Include="FormPrenotazione.Designer.cs">
+      <DependentUpon>FormPrenotazione.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,6 +108,9 @@
     <Compile Include="UpdateUtente.Designer.cs">
       <DependentUpon>UpdateUtente.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DatiPrenotazioneSubmit.resx">
+      <DependentUpon>DatiPrenotazioneSubmit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ElencoRistoranti.resx">
       <DependentUpon>ElencoRistoranti.cs</DependentUpon>
     </EmbeddedResource>
@@ -117,8 +126,8 @@
     <EmbeddedResource Include="InsertUtente.resx">
       <DependentUpon>InsertUtente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Prenotazione.resx">
-      <DependentUpon>Prenotazione.cs</DependentUpon>
+    <EmbeddedResource Include="FormPrenotazione.resx">
+      <DependentUpon>FormPrenotazione.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -45,6 +45,7 @@ namespace Models
         {
 
         }
+
         //private List<Prenotazione> Prenotazioni { get; set;}
 
         // Proprietà pubbliche per accedere ai campi privati
