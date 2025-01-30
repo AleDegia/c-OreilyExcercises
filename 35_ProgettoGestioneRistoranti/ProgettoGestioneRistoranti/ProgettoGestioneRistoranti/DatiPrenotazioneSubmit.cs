@@ -19,18 +19,22 @@ namespace ProgettoGestioneRistoranti
         private Ristorante ristorante;
         private BlPrenotazioni bl;
         private FormPrenotazione formPrenotazione;
-        public DatiPrenotazioneSubmit(Ristorante ristorante, FormPrenotazione formPrenotazione)
+        private DateTime dataSelezionata;
+        public DatiPrenotazioneSubmit(Ristorante ristorante, FormPrenotazione formPrenotazione, DateTime dataSelezionata)
         {
             this.ristorante = ristorante;
             bl = new BlPrenotazioni();
             this.formPrenotazione = formPrenotazione;
+            this.dataSelezionata = dataSelezionata;
             InitializeComponent();
         }
 
         private void DatiPrenotazioneSubmit_Load(object sender, EventArgs e)
         {
+            MessageBox.Show(dataSelezionata.ToString());
             textBox3.Text = ristorante.GetNumPosti().ToString();
             textBoxIdRist.Text = ristorante.GetIDRistorante().ToString();
+            dateTimePicker1.Value = dataSelezionata.Date;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -47,6 +51,11 @@ namespace ProgettoGestioneRistoranti
             //int posti = Convert.ToInt32(formPrenotazione.GetPostiTotali()) - numeroPersone;
             //formPrenotazione.GetPostiDisponibili().Text = posti.ToString();
             this.Hide();
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

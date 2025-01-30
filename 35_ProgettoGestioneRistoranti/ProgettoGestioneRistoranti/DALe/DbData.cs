@@ -7,7 +7,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace DALe
@@ -218,7 +217,7 @@ namespace DALe
                         catch (Exception ex)
                         {
                             //MessageBox.Show("Hai già acquistato questo libro");
-                            MessageBox.Show(ex.Message);
+                            //MessageBox.Show(ex.Message);
                         }
                     }
                 }
@@ -245,7 +244,7 @@ namespace DALe
                         catch (Exception ex)
                         {
                             //MessageBox.Show("Hai già acquistato questo libro");
-                            MessageBox.Show(ex.Message);
+                           // MessageBox.Show(ex.Message);
                         }
                     }
                 }
@@ -281,7 +280,7 @@ namespace DALe
                             cmd.Parameters.AddWithValue("@Citta", ristorante.GetTelefono());
 
                             cmd.ExecuteNonQuery();
-                            MessageBox.Show("Ristorante Aggiornato!");
+                            //MessageBox.Show("Ristorante Aggiornato!");
                         }
                     }
                     else if(entity is Utente utente)
@@ -297,7 +296,7 @@ namespace DALe
                             cmd.Parameters.AddWithValue("@Citta", utente.GetTelefono());
 
                             cmd.ExecuteNonQuery();
-                            MessageBox.Show("Utente Aggiornato!");
+                            //MessageBox.Show("Utente Aggiornato!");
                         }
                     }
                     else if(entity is Prenotazione)
@@ -307,8 +306,8 @@ namespace DALe
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("qualcosa non ha funzionato");
-                    MessageBox.Show(ex.ToString());
+                    //MessageBox.Show("qualcosa non ha funzionato");
+                    //MessageBox.Show(ex.ToString());
                 }
             }
         }
@@ -341,13 +340,74 @@ namespace DALe
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("qualcosa non ha funzionato");
+                    //MessageBox.Show("qualcosa non ha funzionato");
                     Console.WriteLine(ex.ToString());
                 }
             }
 
             //aggiorno lista
             GetAllEntities();
+        }
+
+        public List<Prenotazione> GetAllPrenotazioni(int idRistorante)
+        {
+           
+            string query = $"SELECT * FROM Prenotazioni WHERE IDRistorante = {idRistorante}";
+            List<Prenotazione> prenotazioni = new List<Prenotazione>();
+            //MessageBox.Show(idRistorante.ToString());
+
+            using (var adapter = new SqlDataAdapter(query, connectionString))
+            {
+                var tablePrenotazioni = new DataTable();
+                adapter.Fill(tablePrenotazioni);
+
+                foreach (DataRow row in tablePrenotazioni.Rows)
+                {
+                    var prenotazione = new Prenotazione
+                       (
+                           Convert.ToInt32(row["IDPrenotazione"]),
+                           Convert.ToInt32(row["IDRistorante"]),
+                           row["NomeUtente"].ToString(),
+                           Convert.ToDateTime(row["DataRichiesta"]),
+                           Convert.ToDateTime(row["DataPrenotazione"]),
+                           Convert.ToInt32(row["NumPersone"])
+
+                       );
+                    prenotazioni.Add(prenotazione);
+                }
+            }
+            return prenotazioni;
+        }
+
+
+        public void AggiungiPrenotazione(Prenotazione prenotazione)
+        {
+            using (SqlConnection openCon = new SqlConnection(connectionString))
+            {
+
+                string query = "INSERT into Prenotazioni (IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) VALUES (@IDRistorante,@NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
+
+                using (SqlCommand querySaveStaff = new SqlCommand(query))
+                {
+                    querySaveStaff.Connection = openCon;
+                    openCon.Open();
+
+                    querySaveStaff.Parameters.AddWithValue("@IDRistorante", prenotazione.IDRistorante);
+                    querySaveStaff.Parameters.AddWithValue("@NomeUtente", prenotazione.NomeUtente);
+                    querySaveStaff.Parameters.AddWithValue("@DataRichiesta", prenotazione.DataRichiesta);
+                    querySaveStaff.Parameters.AddWithValue("@DataPrenotazione", prenotazione.DataPrenotazione);
+                    querySaveStaff.Parameters.AddWithValue("@NumPersone", prenotazione.NumPersone);
+
+                    try
+                    {
+                        querySaveStaff.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        //MessageBox.Show(ex.Message);
+                    }
+                }
+            }
         }
     }
 }
