@@ -24,15 +24,14 @@ namespace DALe
             string connectionString = dbData.GetConnectionString();
             using (SqlConnection openCon = new SqlConnection(connectionString))
             {
-
-                string query = "INSERT into Prenotazioni (IDPrenotazione, IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) VALUES (@IDPrenotazione, @IDRistorante,@NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
+                
+                string query = "INSERT into Prenotazioni (IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) VALUES (@IDRistorante,@NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
                 
                     using (SqlCommand querySaveStaff = new SqlCommand(query))
                     {
                         querySaveStaff.Connection = openCon;
                         openCon.Open();
 
-                        querySaveStaff.Parameters.AddWithValue("@IDPrenotazione", prenotazione.IDPrenotazione);
                         querySaveStaff.Parameters.AddWithValue("@IDRistorante", prenotazione.IDRistorante);
                         querySaveStaff.Parameters.AddWithValue("@NomeUtente", prenotazione.NomeUtente);
                         querySaveStaff.Parameters.AddWithValue("@DataRichiesta", prenotazione.DataRichiesta);
@@ -57,7 +56,7 @@ namespace DALe
             string connectionString = dbData.GetConnectionString();
             string query = $"SELECT * FROM Prenotazioni WHERE IDRistorante = {idRistorante}";
             List<Prenotazione> prenotazioni = new List<Prenotazione>();
-            MessageBox.Show(idRistorante.ToString());
+            //MessageBox.Show(idRistorante.ToString());
 
             using (var adapter = new SqlDataAdapter(query, connectionString))
             {
@@ -66,8 +65,6 @@ namespace DALe
 
                 foreach (DataRow row in tablePrenotazioni.Rows)
                 {
-                    
-
                         var prenotazione = new Prenotazione
                            (
                                Convert.ToInt32(row["IDPrenotazione"]),

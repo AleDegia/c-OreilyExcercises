@@ -50,7 +50,7 @@ namespace UI
         private void Prenotazione_Load(object sender, EventArgs e)
         {
             label6.Text = ristorante.GetNumPosti().ToString();
-            prenotazioni = blPrenotazioni.GetAllPrenotazioni(ristorante.GetIDRistorante());
+            prenotazioni = blPrenotazioni.GetAllPrenotazioni(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
             //Aggiungo ogni coppia di dataPrenotazione e numPersonePrenotate al dizionario
             foreach (var p in prenotazioni)
             {
@@ -66,11 +66,7 @@ namespace UI
 
             //recupero data selezionata da utente
             DateTime dataSelezionata = monthCalendar1.SelectionStart;
-            foreach(var entry in dateEposti)
-            {
-                //MessageBox.Show("Data: " + entry.Key.ToString("dd/MM/yyyy") + ", Posti: " + entry.Value.ToString());
-            }
-            //MessageBox.Show("Data selezionata: " + monthCalendar1.SelectionStart.Date.ToString("dd/MM/yyyy"));
+            
             label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
             int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
             label5.Text = postiDisp.ToString();
@@ -103,7 +99,35 @@ namespace UI
 
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
+            prenotazioni.Clear();
+            prenotazioni = blPrenotazioni.GetAllPrenotazioni(ristorante.GetIDRistorante());
+            dateEposti.Clear();
+
+            foreach (var p in prenotazioni)
+            {
+                if (dateEposti.ContainsKey(p.DataPrenotazione.Date))
+                {
+                    dateEposti[p.DataPrenotazione.Date] += p.NumPersone;
+                }
+                else
+                    dateEposti.Add(p.DataPrenotazione.Date, p.NumPersone);
+            }
+            //recupero data selezionata da utente
+            DateTime dataSelezionata = monthCalendar1.SelectionStart;
            
+            try
+            { 
+                label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
+                int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
+                label5.Text = postiDisp.ToString();
+            }
+            catch(Exception ex)
+            {
+                //MessageBox.Show("non ci sono prenotazioni per la data selezionata");
+                label5.Text = "50";
+                label4.Text = "0";
+            }
+            
         }
     }
 }

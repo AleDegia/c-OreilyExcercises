@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Models
 {
@@ -18,6 +19,16 @@ namespace Models
         public Prenotazione(int iDPrenotazione, int iDRistorante, string nomeUtente, DateTime dataRichiesta, DateTime dataPrenotazione, int numPersone)
         {
             _idPrenotazione = iDPrenotazione;
+            _idRistorante = iDRistorante;
+            _nomeUtente = nomeUtente;
+            _dataRichiesta = dataRichiesta;
+            _dataPrenotazione = dataPrenotazione;
+            _numPersone = numPersone;
+        }
+
+        // Costruttore senza IdPrenotazione per fare l'insert dato che c'è IDPrenotazione IDENTITY
+        public Prenotazione(int iDRistorante, string nomeUtente, DateTime dataRichiesta, DateTime dataPrenotazione, int numPersone)
+        {
             _idRistorante = iDRistorante;
             _nomeUtente = nomeUtente;
             _dataRichiesta = dataRichiesta;

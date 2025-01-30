@@ -79,7 +79,7 @@ namespace DALe
                             {
                                 if(tableName.Contains("AnagraficaRistoranti"))
                                 {
-                                    entity = (T)(object) new Ristorante  //perchè devo far cosi????
+                                    entity = (T)(object) new Ristorante //cast prima a object e poi a T
                                     (
                                         reader.GetInt32(reader.GetOrdinal("IDRistorante")),
                                         reader.GetInt32(reader.GetOrdinal("Tipologia")),
@@ -135,7 +135,7 @@ namespace DALe
         {
             string tableName = GetTableName(typeof(T));
             string idName = GetIdColName(typeof(T));
-            //var entities = new List<T>();     Perchè?
+            //var entities = new List<T>();    
             var entities = new List<object>();  // Usa List<object> per contenere qualsiasi tipo
             string query = $"SELECT * FROM {tableName}";
 

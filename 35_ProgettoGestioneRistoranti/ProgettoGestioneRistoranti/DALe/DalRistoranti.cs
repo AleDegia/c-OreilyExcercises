@@ -53,6 +53,7 @@ namespace Dal
             dbData.CancellaEntity(id, nomeTabella);
         }
 
+        //da far fare adl dbData
         public List<Ristorante> GetRistorantiFiltrati(string filtro, string inputUtente)
         {
             string query;

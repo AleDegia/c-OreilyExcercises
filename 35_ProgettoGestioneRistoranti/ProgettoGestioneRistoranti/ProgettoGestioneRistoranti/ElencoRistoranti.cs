@@ -162,18 +162,14 @@ namespace ProgettoGestioneRistoranti
 
         private void textBoxEnterEvent(object sender, KeyEventArgs e)
         {
+            string scelta = null;
+
             if(e.KeyCode == Keys.Enter)
             {
-                string scelta = null;
-                try
-                {
-                    scelta = comboBox1.Text;
-                    //MessageBox.Show(textBox1.Text);
-                }
-                catch(Exception ex)
-                {
-                    MessageBox.Show("non hai selezionato nessun parametro");
-                }
+                scelta = comboBox1.Text;
+                if (scelta == null)
+                    MessageBox.Show("non hai scelto nessun filtro");
+
                 List<Ristorante> ristorantiFiltrati = bl.GetRistorantiFiltrati2(scelta, textBox1.Text);
 
                 dataGridView1.DataSource = null;
