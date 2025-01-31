@@ -53,7 +53,8 @@ namespace ProgettoGestioneRistoranti
         {
             // Leggo i valori dalle TextBox
             int idRistorante = Convert.ToInt32(textBox9.Text);
-            int tipologia = Convert.ToInt32(textBox1.Text);
+            char tipologiaSelezionata = comboBox1.Text[0];
+            int tipologia = Convert.ToInt32(tipologiaSelezionata.ToString());
             string indirizzo = textBox2.Text;
             string ragioneSociale = textBox8.Text;
             string partitaIva = textBox4.Text;
@@ -71,37 +72,61 @@ namespace ProgettoGestioneRistoranti
             dataGridView1.Rows.Clear();
 
 
-            dataGridView1.Columns.Add("IDRistorante", "ID Ristorante");
-            dataGridView1.Columns.Add("Tipologia", "Tipologia");
-            dataGridView1.Columns.Add("Indirizzo", "Indirizzo");
-            dataGridView1.Columns.Add("RagioneSociale", "Ragione Sociale");
-            dataGridView1.Columns.Add("PartitaIva", "Partita IVA");
-            dataGridView1.Columns.Add("NumPosti", "Numero Posti");
-            dataGridView1.Columns.Add("PrezzoMedio", "Prezzo Medio");
-            dataGridView1.Columns.Add("Telefono", "Telefono");
-            dataGridView1.Columns.Add("Citta", "Città");
+            elencoRistoranti.AggiungiColonne();
 
             var ristoranti = blRistoranti.GetRistorantiFiltrati("", "", 0);
 
             // Aggiungi manualmente le righe
-            foreach (var rist in ristoranti)
-            {
-                dataGridView1.Rows.Add(
-                    rist.GetIDRistorante(),
-                    rist.GetTipologia(),
-                    rist.GetIndirizzo(),
-                    rist.GetRagioneSociale(),
-                    rist.GetPartitaIva(),
-                    rist.GetNumPosti(),
-                    rist.GetPrezzoMedio(),
-                    rist.GetTelefono(),
-                    rist.GetCitta()
-                );
-            }
+            elencoRistoranti.AggiungiRighe(ristoranti);
 
             elencoRistoranti.SetDataGridView(dataGridView1);
 
             this.Hide();
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -33,6 +33,22 @@ namespace ProgettoGestioneRistoranti
             this.elencoRistoranti = elencoRistoranti;
         }
 
+        private Ristorante RecuperaCampiECreaOgg()
+        {
+            char tipologiaSelezionata = comboBox1.Text[0];
+            int tipologia = Convert.ToInt32(tipologiaSelezionata.ToString());
+            string indirizzo = textBox2.Text;
+            string ragioneSociale = textBox8.Text;
+            string partitaIva = textBox4.Text;
+            int numCorsi = Convert.ToInt32(textBox3.Text);
+            decimal prezzoMedio = Convert.ToDecimal(textBox5.Text);
+            string telefono = textBox7.Text;
+            string citta = textBox11.Text;
+
+            Ristorante ristorante = new Ristorante(0, tipologia, indirizzo, ragioneSociale, partitaIva, numCorsi, prezzoMedio, telefono, citta);
+            return ristorante;
+        }
+
 
 
         private void label1_Click(object sender, EventArgs e)
@@ -45,60 +61,7 @@ namespace ProgettoGestioneRistoranti
 
         }
 
-        private void simpleButton2_Click(object sender, EventArgs e)
-        {
-            // Leggo i valori dalle TextBox
-            int tipologia = Convert.ToInt32(textBox1.Text);
-            string indirizzo = textBox2.Text;
-            string ragioneSociale = textBox8.Text;
-            string partitaIva = textBox4.Text;
-            int numCorsi = Convert.ToInt32(textBox3.Text);
-            decimal prezzoMedio = Convert.ToDecimal(textBox5.Text);
-            string telefono = textBox7.Text;
-            string citta = textBox11.Text;
-
-            Ristorante ristorante = new Ristorante(0, tipologia, indirizzo, ragioneSociale, partitaIva, numCorsi, prezzoMedio, telefono, citta);
-
-            // Aggiorna il prodotto nel database
-            bl.AggiungiRistorante(ristorante);
-            //elencoRistoranti = new ElencoRistoranti();
-            var dataGridView1 = elencoRistoranti.GetDataGridView();
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            
-
-            dataGridView1.Columns.Add("IDRistorante", "ID Ristorante");
-            dataGridView1.Columns.Add("Tipologia", "Tipologia");
-            dataGridView1.Columns.Add("Indirizzo", "Indirizzo");
-            dataGridView1.Columns.Add("RagioneSociale", "Ragione Sociale");
-            dataGridView1.Columns.Add("PartitaIva", "Partita IVA");
-            dataGridView1.Columns.Add("NumPosti", "Numero Posti");
-            dataGridView1.Columns.Add("PrezzoMedio", "Prezzo Medio");
-            dataGridView1.Columns.Add("Telefono", "Telefono");
-            dataGridView1.Columns.Add("Citta", "Città");
-
-            var ristoranti = bl.GetRistorantiFiltrati("", "", 0);
-
-            // Aggiungi manualmente le righe
-            foreach (var rist in ristoranti)
-            {
-                dataGridView1.Rows.Add(
-                    rist.GetIDRistorante(),
-                    rist.GetTipologia(),
-                    rist.GetIndirizzo(),
-                    rist.GetRagioneSociale(),
-                    rist.GetPartitaIva(),
-                    rist.GetNumPosti(),
-                    rist.GetPrezzoMedio(),
-                    rist.GetTelefono(),
-                    rist.GetCitta()
-                );
-            }
-
-            elencoRistoranti.SetDataGridView(dataGridView1);
-            this.Hide();
-
-        }
+        
 
         private void textBox5_TextChanged(object sender, EventArgs e)
         {
@@ -117,56 +80,43 @@ namespace ProgettoGestioneRistoranti
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Leggo i valori dalle TextBox
-            int tipologia = Convert.ToInt32(textBox1.Text);
-            string indirizzo = textBox2.Text;
-            string ragioneSociale = textBox8.Text;
-            string partitaIva = textBox4.Text;
-            int numCorsi = Convert.ToInt32(textBox3.Text);
-            decimal prezzoMedio = Convert.ToDecimal(textBox5.Text);
-            string telefono = textBox7.Text;
-            string citta = textBox11.Text;
-
-            Ristorante ristorante = new Ristorante(0, tipologia, indirizzo, ragioneSociale, partitaIva, numCorsi, prezzoMedio, telefono, citta);
-
-            // Aggiorna il prodotto nel database
-            bl.AggiungiRistorante(ristorante);
-            //elencoRistoranti = new ElencoRistoranti();
-            var dataGridView1 = elencoRistoranti.GetDataGridView();
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns.Clear();
-
-            dataGridView1.Columns.Add("IDRistorante", "ID Ristorante");
-            dataGridView1.Columns.Add("Tipologia", "Tipologia");
-            dataGridView1.Columns.Add("Indirizzo", "Indirizzo");
-            dataGridView1.Columns.Add("RagioneSociale", "Ragione Sociale");
-            dataGridView1.Columns.Add("PartitaIva", "Partita IVA");
-            dataGridView1.Columns.Add("NumPosti", "Numero Posti");
-            dataGridView1.Columns.Add("PrezzoMedio", "Prezzo Medio");
-            dataGridView1.Columns.Add("Telefono", "Telefono");
-            dataGridView1.Columns.Add("Citta", "Città");
-
-            var ristoranti = bl.GetRistorantiFiltrati("", "", 0);
-
-            // Aggiungi manualmente le righe
-            foreach (var rist in ristoranti)
+            try
             {
-                dataGridView1.Rows.Add(
-                    rist.GetIDRistorante(),
-                    rist.GetTipologia(),
-                    rist.GetIndirizzo(),
-                    rist.GetRagioneSociale(),
-                    rist.GetPartitaIva(),
-                    rist.GetNumPosti(),
-                    rist.GetPrezzoMedio(),
-                    rist.GetTelefono(),
-                    rist.GetCitta()
-                );
-            }
+                // Leggo i valori dalle TextBox
+                Ristorante ristorante = RecuperaCampiECreaOgg();
 
-            elencoRistoranti.SetDataGridView(dataGridView1);
-            this.Hide();
+                // Aggiorna il prodotto nel database
+                bl.AggiungiRistorante(ristorante);
+                //elencoRistoranti = new ElencoRistoranti();
+                var dataGridView1 = elencoRistoranti.GetDataGridView();
+                elencoRistoranti.CleanDataGridView();
+                //dataGridView1.Columns.Clear();
+
+                dataGridView1.Columns.Clear();
+                elencoRistoranti.AggiungiColonne();
+
+
+                var ristoranti = bl.GetRistorantiFiltrati("", "", 0);
+
+                // Aggiungi manualmente le righe
+                elencoRistoranti.AggiungiRighe(ristoranti);
+
+
+                elencoRistoranti.SetDataGridView(dataGridView1);
+                this.Hide();
+            }
+            catch (FormatException ex)
+            {
+                // Gestione errori di conversione (ad esempio errore nella conversione del boolean)
+                MessageBox.Show("Formato dei dati errato. Assicurati che tutti i campi siano corretti.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine("Errore di formato: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Gestione generica di errori imprevisti
+                MessageBox.Show("Si è verificato un errore durante l'operazione. Riprova più tardi.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine("Errore generale: " + ex.Message);
+            }
 
         }
     }

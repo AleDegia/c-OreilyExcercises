@@ -41,7 +41,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(39, 24);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(112, 22);
+            this.textBox1.Size = new System.Drawing.Size(112, 19);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "Titolo";
             // 
@@ -54,7 +54,7 @@
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(-2, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(184, 452);
+            this.panel1.Size = new System.Drawing.Size(170, 452);
             this.panel1.TabIndex = 2;
             // 
             // button5
@@ -66,9 +66,9 @@
             this.button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button5.Location = new System.Drawing.Point(3, 171);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(178, 40);
+            this.button5.Size = new System.Drawing.Size(164, 40);
             this.button5.TabIndex = 5;
-            this.button5.Text = "     Utenti";
+            this.button5.Text = "Utenti";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -81,7 +81,7 @@
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button2.Location = new System.Drawing.Point(3, 125);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(178, 40);
+            this.button2.Size = new System.Drawing.Size(164, 40);
             this.button2.TabIndex = 2;
             this.button2.Text = "     Ristoranti";
             this.button2.UseVisualStyleBackColor = true;
@@ -96,23 +96,23 @@
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button1.Location = new System.Drawing.Point(3, 79);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(178, 40);
+            this.button1.Size = new System.Drawing.Size(164, 40);
             this.button1.TabIndex = 1;
-            this.button1.Text = "      Prenotazioni";
+            this.button1.Text = "        Prenotazioni";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
             this.panel2.Location = new System.Drawing.Point(3, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(181, 82);
+            this.panel2.Size = new System.Drawing.Size(167, 73);
             this.panel2.TabIndex = 0;
             // 
             // Homepage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkSlateGray;
             this.ClientSize = new System.Drawing.Size(900, 450);
@@ -133,9 +133,9 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }
 

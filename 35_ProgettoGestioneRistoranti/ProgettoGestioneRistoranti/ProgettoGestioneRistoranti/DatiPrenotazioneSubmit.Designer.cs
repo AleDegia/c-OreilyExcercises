@@ -38,22 +38,24 @@
             this.textBoxIdRist = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(324, 101);
+            this.label6.Location = new System.Drawing.Point(324, 42);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(52, 13);
             this.label6.TabIndex = 45;
             this.label6.Text = "NumPosti";
+            this.label6.Visible = false;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(281, 223);
+            this.label5.Location = new System.Drawing.Point(280, 247);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(86, 13);
@@ -63,7 +65,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(281, 197);
+            this.label3.Location = new System.Drawing.Point(280, 221);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(95, 13);
@@ -73,7 +75,7 @@
             // Nome
             // 
             this.Nome.AutoSize = true;
-            this.Nome.Location = new System.Drawing.Point(281, 169);
+            this.Nome.Location = new System.Drawing.Point(280, 193);
             this.Nome.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Nome.Name = "Nome";
             this.Nome.Size = new System.Drawing.Size(70, 13);
@@ -82,15 +84,16 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(380, 98);
+            this.textBox3.Location = new System.Drawing.Point(380, 35);
             this.textBox3.Margin = new System.Windows.Forms.Padding(2);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(170, 20);
             this.textBox3.TabIndex = 40;
+            this.textBox3.Visible = false;
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(380, 223);
+            this.textBox4.Location = new System.Drawing.Point(379, 247);
             this.textBox4.Margin = new System.Windows.Forms.Padding(2);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(194, 20);
@@ -98,7 +101,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(381, 162);
+            this.textBox1.Location = new System.Drawing.Point(380, 186);
             this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(194, 20);
@@ -106,7 +109,7 @@
             // 
             // textBoxIdRist
             // 
-            this.textBoxIdRist.Location = new System.Drawing.Point(380, 67);
+            this.textBoxIdRist.Location = new System.Drawing.Point(380, 11);
             this.textBoxIdRist.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxIdRist.Name = "textBoxIdRist";
             this.textBoxIdRist.Size = new System.Drawing.Size(170, 20);
@@ -115,28 +118,40 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(380, 295);
+            this.button1.Location = new System.Drawing.Point(380, 310);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(106, 30);
             this.button1.TabIndex = 60;
-            this.button1.Text = "INVIO";
+            this.button1.Text = "PRENOTA";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(381, 195);
+            this.dateTimePicker1.Location = new System.Drawing.Point(380, 219);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(193, 20);
             this.dateTimePicker1.TabIndex = 61;
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(376, 85);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(115, 20);
+            this.label1.TabIndex = 62;
+            this.label1.Text = "Prenotazione";
             // 
             // DatiPrenotazioneSubmit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBoxIdRist);
@@ -165,5 +180,6 @@
         private System.Windows.Forms.TextBox textBoxIdRist;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Label label1;
     }
 }

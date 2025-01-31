@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -121,9 +122,17 @@ namespace DALe
                     }
 
                 }
+                catch (SqlException sqlEx)
+                {
+                    // Gestione specifica degli errori SQL
+                    Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                    throw;  // Rilancia l'eccezione per propagarla ai livelli superiori
+                }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    // Gestione di eccezioni generiche
+                    Console.WriteLine("Errore generico: " + ex.Message);
+                    throw;  // Rilancia l'eccezione per propagarla
                 }
 
             }
@@ -138,48 +147,64 @@ namespace DALe
             var entities = new List<object>();  // Usa List<object> per contenere qualsiasi tipo
             string query = $"SELECT * FROM {tableName}";
 
-            using (var adapter = new SqlDataAdapter(query, connectionString))
+            try
             {
-                var booksTable = new DataTable();
-                adapter.Fill(booksTable);
 
-                foreach (DataRow row in booksTable.Rows)
+                using (var adapter = new SqlDataAdapter(query, connectionString))
                 {
-                    if(tableName == "AnagraficaRistoranti")
-                    {
+                    var booksTable = new DataTable();
+                    adapter.Fill(booksTable);
 
-                     var ristorante = new Ristorante
-                        (
-                            Convert.ToInt32(row["IDRistorante"]),
-                            Convert.ToInt32(row["Tipologia"]),
-                            row["Indirizzo"].ToString(),
-                            row["RagioneSociale"].ToString(),
-                            row["PartitaIva"].ToString(),
-                            Convert.ToInt32(row["NumPosti"]),
-                            Convert.ToDecimal(row["PrezzoMedio"]),
-                            row["Telefono"].ToString(),
-                            row["Citta"].ToString()
-                        //)
-                        );
-                        entities.Add(ristorante);
-                    } 
-                    if(tableName == "Utenti")
+                    foreach (DataRow row in booksTable.Rows)
                     {
-                        var utente = new Utente
-                        (
-                            row["UserName"].ToString(),
-                            row["Password"].ToString(),
-                            Convert.ToBoolean(row["IsAdministrator"]),
-                            row["Descrizione"].ToString(),
-                            row["Email"].ToString(),
-                            row["Telefono"].ToString(),
-                            row["Citta"].ToString()
-                     //   )
-                         );
-                        entities.Add(utente);
+                        if (tableName == "AnagraficaRistoranti")
+                        {
+
+                            var ristorante = new Ristorante
+                               (
+                                   Convert.ToInt32(row["IDRistorante"]),
+                                   Convert.ToInt32(row["Tipologia"]),
+                                   row["Indirizzo"].ToString(),
+                                   row["RagioneSociale"].ToString(),
+                                   row["PartitaIva"].ToString(),
+                                   Convert.ToInt32(row["NumPosti"]),
+                                   Convert.ToDecimal(row["PrezzoMedio"]),
+                                   row["Telefono"].ToString(),
+                                   row["Citta"].ToString()
+                               //)
+                               );
+                            entities.Add(ristorante);
+                        }
+                        if (tableName == "Utenti")
+                        {
+                            var utente = new Utente
+                            (
+                                row["UserName"].ToString(),
+                                row["Password"].ToString(),
+                                Convert.ToBoolean(row["IsAdministrator"]),
+                                row["Descrizione"].ToString(),
+                                row["Email"].ToString(),
+                                row["Telefono"].ToString(),
+                                row["Citta"].ToString()
+                             //   )
+                             );
+                            entities.Add(utente);
+                        }
+
                     }
-                    
                 }
+            }
+            catch (SqlException sqlEx)
+            {
+                // Gestione specifica degli errori SQL
+                Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
+            }
+            catch (Exception ex)
+            {
+                // Gestione di altre eccezioni
+                Console.WriteLine("Errore generico: " + ex.Message);
+                throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
             }
 
             return entities;
@@ -187,68 +212,66 @@ namespace DALe
 
         public void AggiungiEntity(T entity)
         {
-            using (SqlConnection openCon = new SqlConnection(connectionString))
+            try
             {
-
-                string queryRistorante = "INSERT into AnagraficaRistoranti (Tipologia, Indirizzo, RagioneSociale, PartitaIva, NumPosti, PrezzoMedio, Telefono, Citta) VALUES (@Tipologia, @Indirizzo,@RagioneSociale, @PartitaIva, @NumPosti, @PrezzoMedio, @Telefono, @Citta)";
-                string queryUtente = "INSERT into Utenti (Username, Password, IsAdministrator, Descrizione, Email, Telefono, Citta) VALUES (@UserName, @Password, @IsAdministrator, @Descrizione, @Email, @Telefono, @Citta)";
-
-                if (typeof(T) == typeof(Ristorante) && entity is Ristorante ristorante)
+                using (SqlConnection openCon = new SqlConnection(connectionString))
                 {
+                    openCon.Open(); //apro conn una sola volta
+                    string queryRistorante = "INSERT into AnagraficaRistoranti (Tipologia, Indirizzo, RagioneSociale, PartitaIva, NumPosti, PrezzoMedio, Telefono, Citta) VALUES (@Tipologia, @Indirizzo,@RagioneSociale, @PartitaIva, @NumPosti, @PrezzoMedio, @Telefono, @Citta)";
+                    string queryUtente = "INSERT into Utenti (Username, Password, IsAdministrator, Descrizione, Email, Telefono, Citta) VALUES (@UserName, @Password, @IsAdministrator, @Descrizione, @Email, @Telefono, @Citta)";
 
-                    using (SqlCommand querySaveStaff = new SqlCommand(queryRistorante))
+                    if (typeof(T) == typeof(Ristorante) && entity is Ristorante ristorante)
                     {
-                        querySaveStaff.Connection = openCon;
-                        openCon.Open();
 
-                        querySaveStaff.Parameters.AddWithValue("@Tipologia", ristorante.GetTipologia());
-                        querySaveStaff.Parameters.AddWithValue("@Indirizzo", ristorante.GetIndirizzo());
-                        querySaveStaff.Parameters.AddWithValue("@RagioneSociale", ristorante.GetRagioneSociale());
-                        querySaveStaff.Parameters.AddWithValue("@PartitaIva", ristorante.GetPartitaIva());
-                        querySaveStaff.Parameters.AddWithValue("@NumPosti", ristorante.GetNumPosti());
-                        querySaveStaff.Parameters.AddWithValue("@PrezzoMedio", ristorante.GetPrezzoMedio());
-                        querySaveStaff.Parameters.AddWithValue("@Telefono", ristorante.GetTelefono());
-                        querySaveStaff.Parameters.AddWithValue("@Citta", ristorante.GetCitta());
-
-                        try
+                        using (SqlCommand querySaveStaff = new SqlCommand(queryRistorante))
                         {
+                            querySaveStaff.Connection = openCon;
+
+                            querySaveStaff.Parameters.AddWithValue("@Tipologia", ristorante.GetTipologia());
+                            querySaveStaff.Parameters.AddWithValue("@Indirizzo", ristorante.GetIndirizzo());
+                            querySaveStaff.Parameters.AddWithValue("@RagioneSociale", ristorante.GetRagioneSociale());
+                            querySaveStaff.Parameters.AddWithValue("@PartitaIva", ristorante.GetPartitaIva());
+                            querySaveStaff.Parameters.AddWithValue("@NumPosti", ristorante.GetNumPosti());
+                            querySaveStaff.Parameters.AddWithValue("@PrezzoMedio", ristorante.GetPrezzoMedio());
+                            querySaveStaff.Parameters.AddWithValue("@Telefono", ristorante.GetTelefono());
+                            querySaveStaff.Parameters.AddWithValue("@Citta", ristorante.GetCitta());
+
                             querySaveStaff.ExecuteNonQuery();
-                        }
-                        catch (Exception ex)
-                        {
-                            //MessageBox.Show("Hai già acquistato questo libro");
-                            //MessageBox.Show(ex.Message);
+
                         }
                     }
-                }
-                else if (typeof(T) == typeof(Utente) && entity is Utente utente)
-                {
-
-                    using (SqlCommand querySaveStaff = new SqlCommand(queryUtente))
+                    else if (typeof(T) == typeof(Utente) && entity is Utente utente)
                     {
-                        querySaveStaff.Connection = openCon;
-                        openCon.Open();
 
-                        querySaveStaff.Parameters.AddWithValue("@UserName", utente.GetUserName());
-                        querySaveStaff.Parameters.AddWithValue("@Password", utente.GetPassword());
-                        querySaveStaff.Parameters.AddWithValue("@IsAdministrator", utente.GetIsAdministrator());
-                        querySaveStaff.Parameters.AddWithValue("@Descrizione", utente.GetDescrizione());
-                        querySaveStaff.Parameters.AddWithValue("@Email", utente.GetEmail());
-                        querySaveStaff.Parameters.AddWithValue("@Telefono", utente.GetTelefono());
-                        querySaveStaff.Parameters.AddWithValue("@Citta", utente.GetCitta());
-
-                        try
+                        using (SqlCommand querySaveStaff = new SqlCommand(queryUtente))
                         {
+                            querySaveStaff.Connection = openCon;
+
+                            querySaveStaff.Parameters.AddWithValue("@UserName", utente.GetUserName());
+                            querySaveStaff.Parameters.AddWithValue("@Password", utente.GetPassword());
+                            querySaveStaff.Parameters.AddWithValue("@IsAdministrator", utente.GetIsAdministrator());
+                            querySaveStaff.Parameters.AddWithValue("@Descrizione", utente.GetDescrizione());
+                            querySaveStaff.Parameters.AddWithValue("@Email", utente.GetEmail());
+                            querySaveStaff.Parameters.AddWithValue("@Telefono", utente.GetTelefono());
+                            querySaveStaff.Parameters.AddWithValue("@Citta", utente.GetCitta());
+
                             querySaveStaff.ExecuteNonQuery();
                         }
-                        catch (Exception ex)
-                        {
-                            //MessageBox.Show("Hai già acquistato questo libro");
-                           // MessageBox.Show(ex.Message);
-                        }
                     }
-                }
 
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                // Gestione specifica degli errori SQL
+                Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
+            }
+            catch (Exception ex)
+            {
+                // Gestione di altre eccezioni
+                Console.WriteLine("Errore generico: " + ex.Message);
+                throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
             }
         }
 
@@ -257,7 +280,7 @@ namespace DALe
             string queryRistorante = $"UPDATE AnagraficaRistoranti SET Tipologia = @Tipologia, Indirizzo = @Indirizzo,  RagioneSociale = @RagioneSociale,  PartitaIva = @PartitaIva,  NumPosti = @NumPosti, PrezzoMedio = @PrezzoMedio, Telefono = @Telefono, Citta = @Citta WHERE IDRistorante = @IDRistorante";
             string queryUtente = $"UPDATE Utenti SET UserName = @Username, Password = @Password, IsAdministrator = @IsAdministrator,  Descrizione = @Descrizione,  Email = @Email,  Telefono = @Telefono, Citta = @Citta WHERE Username = @Username";
 
-            using (SqlConnection openCon = new SqlConnection(connectionString))  // Connetto al DB
+            using (SqlConnection openCon = new SqlConnection(connectionString))  // creo ogg per connettermi al db
             {
                 try
                 {
@@ -304,10 +327,17 @@ namespace DALe
 
                     }
                 }
+                catch (SqlException sqlEx)
+                {
+                    // Gestione specifica degli errori SQL
+                    Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                    throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
+                }
                 catch (Exception ex)
                 {
-                    //MessageBox.Show("qualcosa non ha funzionato");
-                    //MessageBox.Show(ex.ToString());
+                    // Gestione di altre eccezioni
+                    Console.WriteLine("Errore generico: " + ex.Message);
+                    throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
                 }
             }
         }
@@ -338,10 +368,17 @@ namespace DALe
                         }
                     }
                 }
+                catch (SqlException sqlEx)
+                {
+                    // Gestione specifica degli errori SQL
+                    Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                    throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
+                }
                 catch (Exception ex)
                 {
-                    //MessageBox.Show("qualcosa non ha funzionato");
-                    Console.WriteLine(ex.ToString());
+                    // Gestione di altre eccezioni
+                    Console.WriteLine("Errore generico: " + ex.Message);
+                    throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
                 }
             }
 
@@ -356,25 +393,41 @@ namespace DALe
             List<Prenotazione> prenotazioni = new List<Prenotazione>();
             //MessageBox.Show(idRistorante.ToString());
 
-            using (var adapter = new SqlDataAdapter(query, connectionString))
+            try
             {
-                var tablePrenotazioni = new DataTable();
-                adapter.Fill(tablePrenotazioni);
 
-                foreach (DataRow row in tablePrenotazioni.Rows)
+                using (var adapter = new SqlDataAdapter(query, connectionString))
                 {
-                    var prenotazione = new Prenotazione
-                       (
-                           Convert.ToInt32(row["IDPrenotazione"]),
-                           Convert.ToInt32(row["IDRistorante"]),
-                           row["NomeUtente"].ToString(),
-                           Convert.ToDateTime(row["DataRichiesta"]),
-                           Convert.ToDateTime(row["DataPrenotazione"]),
-                           Convert.ToInt32(row["NumPersone"])
+                    var tablePrenotazioni = new DataTable();
+                    adapter.Fill(tablePrenotazioni);
 
-                       );
-                    prenotazioni.Add(prenotazione);
+                    foreach (DataRow row in tablePrenotazioni.Rows)
+                    {
+                        var prenotazione = new Prenotazione
+                           (
+                               Convert.ToInt32(row["IDPrenotazione"]),
+                               Convert.ToInt32(row["IDRistorante"]),
+                               row["NomeUtente"].ToString(),
+                               Convert.ToDateTime(row["DataRichiesta"]),
+                               Convert.ToDateTime(row["DataPrenotazione"]),
+                               Convert.ToInt32(row["NumPersone"])
+
+                           );
+                        prenotazioni.Add(prenotazione);
+                    }
                 }
+            }
+            catch (SqlException sqlEx)
+            {
+                // Gestione specifica degli errori SQL
+                Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
+            }
+            catch (Exception ex)
+            {
+                // Gestione di altre eccezioni
+                Console.WriteLine("Errore generico: " + ex.Message);
+                throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
             }
             return prenotazioni;
         }
@@ -384,28 +437,36 @@ namespace DALe
         {
             using (SqlConnection openCon = new SqlConnection(connectionString))
             {
-
-                string query = "INSERT into Prenotazioni (IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) VALUES (@IDRistorante,@NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
-
-                using (SqlCommand querySaveStaff = new SqlCommand(query))
+                try
                 {
-                    querySaveStaff.Connection = openCon;
-                    openCon.Open();
 
-                    querySaveStaff.Parameters.AddWithValue("@IDRistorante", prenotazione.IDRistorante);
-                    querySaveStaff.Parameters.AddWithValue("@NomeUtente", prenotazione.NomeUtente);
-                    querySaveStaff.Parameters.AddWithValue("@DataRichiesta", prenotazione.DataRichiesta);
-                    querySaveStaff.Parameters.AddWithValue("@DataPrenotazione", prenotazione.DataPrenotazione);
-                    querySaveStaff.Parameters.AddWithValue("@NumPersone", prenotazione.NumPersone);
+                    string query = "INSERT into Prenotazioni (IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) VALUES (@IDRistorante,@NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
 
-                    try
+                    using (SqlCommand querySaveStaff = new SqlCommand(query))
                     {
+                        querySaveStaff.Connection = openCon;
+                        openCon.Open();
+
+                        querySaveStaff.Parameters.AddWithValue("@IDRistorante", prenotazione.IDRistorante);
+                        querySaveStaff.Parameters.AddWithValue("@NomeUtente", prenotazione.NomeUtente);
+                        querySaveStaff.Parameters.AddWithValue("@DataRichiesta", prenotazione.DataRichiesta);
+                        querySaveStaff.Parameters.AddWithValue("@DataPrenotazione", prenotazione.DataPrenotazione);
+                        querySaveStaff.Parameters.AddWithValue("@NumPersone", prenotazione.NumPersone);
+
                         querySaveStaff.ExecuteNonQuery();
                     }
-                    catch (Exception ex)
-                    {
-                        //MessageBox.Show(ex.Message);
-                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    // Gestione specifica degli errori SQL
+                    Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                    throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
+                }
+                catch (Exception ex)
+                {
+                    // Gestione di altre eccezioni
+                    Console.WriteLine("Errore generico: " + ex.Message);
+                    throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
                 }
             }
         }

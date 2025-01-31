@@ -27,7 +27,7 @@ namespace UI
             insertUtente = new InsertUtente(this);
         }
 
-        private void ElencoUtenti_Load(object sender, EventArgs e)
+        public void AggiungiColonne()
         {
             dataGridView1.Columns.Add("UserName", "Username");
             dataGridView1.Columns.Add("Password", "Password");
@@ -36,10 +36,10 @@ namespace UI
             dataGridView1.Columns.Add("Email", "Email");
             dataGridView1.Columns.Add("Telefono", "Telefono");
             dataGridView1.Columns.Add("Citta", "Città");
+        }
 
-            List<Utente> utenti = blUtenti.GetUtenti();
-
-            // Aggiungi manualmente le righe
+        public void AggiungiRighe(List<Utente> utenti)
+        {
             foreach (var utente in utenti)
             {
                 dataGridView1.Rows.Add(
@@ -54,89 +54,44 @@ namespace UI
             }
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e)
+        private Utente GetUtenteFromDataGridView(DataGridViewRow row)
         {
-            insertUtente.Show();
+            string userName = row.Cells["UserName"].Value.ToString();
+            string password = row.Cells["Password"].Value.ToString();
+            bool isAdministrator = Convert.ToBoolean(row.Cells["IsAdministrator"].Value);
+            string descrizione = row.Cells["Descrizione"].Value.ToString();
+            string email = row.Cells["Email"].Value.ToString();
+            string telefono = row.Cells["Telefono"].Value.ToString();
+            string citta = row.Cells["Citta"].Value.ToString();
+
+            return utente = new Utente(
+                userName,
+                password,
+                isAdministrator,
+                descrizione,
+                email,
+                telefono,
+                citta
+            );
         }
 
-        private void simpleButton3_Click(object sender, EventArgs e)
+        public void CleanDataGridView()
         {
-            //prendo le info (id) del ristorante selezionato
-            if (dataGridView1.SelectedRows.Count > 0)
-            {
-
-                //riga selezionata
-                DataGridViewRow row = dataGridView1.SelectedRows[0];
-
-                // recupero valori celle
-                string userName = row.Cells["UserName"].Value.ToString();
-                string password = row.Cells["Password"].Value.ToString();
-                bool isAdministrator = Convert.ToBoolean(row.Cells["IsAdministrator"].Value);
-                string descrizione = row.Cells["Descrizione"].Value.ToString();
-                string email = row.Cells["Email"].Value.ToString();
-                string telefono = row.Cells["Telefono"].Value.ToString();
-                string citta = row.Cells["Citta"].Value.ToString();
-
-                utente = new Utente(
-                    userName,
-                    password,
-                    isAdministrator,
-                    descrizione,
-                    email,
-                    telefono,
-                    citta
-                );
-                updateUtente = new UpdateUtente(utente, this);
-                updateUtente.Show();
-            }
-            else
-            {
-                MessageBox.Show("Seleziona un ristorante dalla lista.");
-            }
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
         }
 
-        private void simpleButton2_Click(object sender, EventArgs e)
+        private void ElencoUtenti_Load(object sender, EventArgs e)
         {
-            //prendo le info (id) del ristorante selezionato
-            if (dataGridView1.SelectedRows.Count > 0)
-            {
+            AggiungiColonne();
 
-                //riga selezionata
-                DataGridViewRow row = dataGridView1.SelectedRows[0];
-                // recupero valore chiave primaria
-                string valore = row.Cells[0].Value.ToString();
-                MessageBox.Show("valore è " + valore);
+            List<Utente> utenti = blUtenti.GetUtenti();
 
-                blUtenti.CancellaUtente(valore);
-                dataGridView1.DataSource = null;
-                dataGridView1.Rows.Clear();
-
-                dataGridView1.Columns.Add("UserName", "Username");
-                dataGridView1.Columns.Add("Password", "Password");
-                dataGridView1.Columns.Add("IsAdministrator", "IsAdministrator");
-                dataGridView1.Columns.Add("Descrizione", "Descrizione");
-                dataGridView1.Columns.Add("Email", "Email");
-                dataGridView1.Columns.Add("Telefono", "Telefono");
-                dataGridView1.Columns.Add("Citta", "Città");
-
-                var utenti = blUtenti.GetUtenti();
-
-                // Aggiungi manualmente le righe
-                foreach (var utente in utenti)
-                {
-                    dataGridView1.Rows.Add(
-                        utente.GetUserName(),
-                        utente.GetPassword(),
-                        utente.GetIsAdministrator(),
-                        utente.GetDescrizione(),
-                        utente.GetEmail(),
-                        utente.GetTelefono(),
-                        utente.GetCitta()
-                    );
-                }
-
-            }
+            // Aggiungi manualmente le righe
+            AggiungiRighe(utenti);
         }
+
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -153,23 +108,7 @@ namespace UI
                 DataGridViewRow row = dataGridView1.SelectedRows[0];
 
                 // recupero valori celle
-                string userName = row.Cells["UserName"].Value.ToString();
-                string password = row.Cells["Password"].Value.ToString();
-                bool isAdministrator = Convert.ToBoolean(row.Cells["IsAdministrator"].Value);
-                string descrizione = row.Cells["Descrizione"].Value.ToString();
-                string email = row.Cells["Email"].Value.ToString();
-                string telefono = row.Cells["Telefono"].Value.ToString();
-                string citta = row.Cells["Citta"].Value.ToString();
-
-                utente = new Utente(
-                    userName,
-                    password,
-                    isAdministrator,
-                    descrizione,
-                    email,
-                    telefono,
-                    citta
-                );
+                utente = GetUtenteFromDataGridView(row);
                 updateUtente = new UpdateUtente(utente, this);
                 updateUtente.Show();
             }
@@ -192,32 +131,14 @@ namespace UI
                 MessageBox.Show("valore è " + valore);
 
                 blUtenti.CancellaUtente(valore);
-                dataGridView1.DataSource = null;
-                dataGridView1.Rows.Clear();
+                CleanDataGridView();
 
-                dataGridView1.Columns.Add("UserName", "Username");
-                dataGridView1.Columns.Add("Password", "Password");
-                dataGridView1.Columns.Add("IsAdministrator", "IsAdministrator");
-                dataGridView1.Columns.Add("Descrizione", "Descrizione");
-                dataGridView1.Columns.Add("Email", "Email");
-                dataGridView1.Columns.Add("Telefono", "Telefono");
-                dataGridView1.Columns.Add("Citta", "Città");
+                AggiungiColonne();
 
                 var utenti = blUtenti.GetUtenti();
 
                 // Aggiungi manualmente le righe
-                foreach (var utente in utenti)
-                {
-                    dataGridView1.Rows.Add(
-                        utente.GetUserName(),
-                        utente.GetPassword(),
-                        utente.GetIsAdministrator(),
-                        utente.GetDescrizione(),
-                        utente.GetEmail(),
-                        utente.GetTelefono(),
-                        utente.GetCitta()
-                    );
-                }
+                AggiungiRighe(utenti);
 
             }
         }

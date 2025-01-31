@@ -71,10 +71,19 @@ namespace UI
 
             //recupero data selezionata da utente
             dataSelezionata = monthCalendar1.SelectionStart;
-            
-            label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
-            int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
-            label5.Text = postiDisp.ToString();
+            try
+            {
+                label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
+                int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
+                label5.Text = postiDisp.ToString();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Non ci sono prenotazioni per questo ristorante");
+                label6.Text = ristorante.GetNumPosti().ToString();
+                label4.Text= "0";
+                label5.Text = ristorante.GetNumPosti().ToString();
+            }
         }
 
         private void label5_Click(object sender, EventArgs e)
@@ -144,7 +153,7 @@ namespace UI
                 catch (Exception ex)
                 {
                     //MessageBox.Show("non ci sono prenotazioni per la data selezionata");
-                    label5.Text = "50";
+                    label5.Text = label6.Text;
                     label4.Text = "0";
                 }
             }
@@ -172,7 +181,7 @@ namespace UI
             catch(Exception ex)
             {
                 //MessageBox.Show("non ci sono prenotazioni per la data selezionata");
-                label5.Text = "50";
+                label5.Text = label6.Text;
                 label4.Text = "0";
             }
         }

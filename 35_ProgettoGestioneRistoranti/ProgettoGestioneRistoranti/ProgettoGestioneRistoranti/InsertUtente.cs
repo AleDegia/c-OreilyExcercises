@@ -108,50 +108,47 @@ namespace ProgettoGestioneRistoranti
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Leggo i valori dalle TextBox
-            string username = textBox1.Text;
-            string password = textBox2.Text;
-            bool isAdministrator = Convert.ToBoolean(textBox8.Text);
-            string descrizione = textBox4.Text;
-            string email = textBox3.Text;
-            string telefono = textBox7.Text;
-            string citta = textBox11.Text;
-
-            Utente utente = new Utente(username, password, isAdministrator, descrizione, email, telefono, citta);
-
-            // Aggiorna il prodotto nel database
-            bl.AggiungiUtente(utente);
-            var dataGridView1 = elencoUtenti.GetDataGridView();
-            dataGridView1.DataSource = null;
-            dataGridView1.Columns.Clear();
-            dataGridView1.Rows.Clear();
-
-            dataGridView1.Columns.Add("UserName", "Username");
-            dataGridView1.Columns.Add("Password", "Password");
-            dataGridView1.Columns.Add("IsAdministrator", "IsAdministrator");
-            dataGridView1.Columns.Add("Descrizione", "Descrizione");
-            dataGridView1.Columns.Add("Email", "Email");
-            dataGridView1.Columns.Add("Telefono", "Telefono");
-            dataGridView1.Columns.Add("Citta", "Città");
-
-            var utenti = bl.GetUtenti();
-
-            // Aggiungi manualmente le righe
-            foreach (var rist in utenti)
+            try
             {
-                dataGridView1.Rows.Add(
-                    rist.GetUserName(),
-                    rist.GetPassword(),
-                    rist.GetIsAdministrator(),
-                    rist.GetDescrizione(),
-                    rist.GetEmail(),
-                    rist.GetTelefono(),
-                    rist.GetCitta()
-                );
-            }
+                // Leggo i valori dalle TextBox
+                string username = textBox1.Text;
+                string password = textBox2.Text;
+                bool isAdministrator = Convert.ToBoolean(textBox8.Text);
+                string descrizione = textBox4.Text;
+                string email = textBox3.Text;
+                string telefono = textBox7.Text;
+                string citta = textBox11.Text;
 
-            elencoUtenti.SetDataGridView(dataGridView1);
-            this.Hide();
+                Utente utente = new Utente(username, password, isAdministrator, descrizione, email, telefono, citta);
+
+                // Aggiorna il prodotto nel database
+                bl.AggiungiUtente(utente);
+                var dataGridView1 = elencoUtenti.GetDataGridView();
+                elencoUtenti.CleanDataGridView();
+                dataGridView1.Columns.Clear();
+
+                elencoUtenti.AggiungiColonne();
+
+                var utenti = bl.GetUtenti();
+
+                // Aggiungi manualmente le righe
+                elencoUtenti.AggiungiRighe(utenti);
+
+                elencoUtenti.SetDataGridView(dataGridView1);
+                this.Hide();
+            }
+            catch (FormatException ex)
+            {
+                // Gestione errori di conversione (ad esempio errore nella conversione del boolean)
+                MessageBox.Show("Formato dei dati errato. Assicurati che tutti i campi siano corretti.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine("Errore di formato: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Gestione generica di errori imprevisti
+                MessageBox.Show("Si è verificato un errore durante l'operazione. Riprova più tardi.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine("Errore generale: " + ex.Message);
+            }
         }
     }
 }

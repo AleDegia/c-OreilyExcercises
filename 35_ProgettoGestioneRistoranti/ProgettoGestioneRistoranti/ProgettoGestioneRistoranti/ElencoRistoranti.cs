@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Engine;
 using Models;
@@ -20,20 +21,13 @@ namespace ProgettoGestioneRistoranti
             bl = new BlRistoranti();
             insertRistorante = new InsertRistorante(this);
             //formPrenotazione = new FormPrenotazione();
+
+
         }
 
         public Ristorante GetRistorante() { return ristorante; }
 
-        
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        
-
-        private void ElencoRistoranti_Load(object sender, EventArgs e)
+        public void AggiungiColonne()
         {
             dataGridView1.Columns.Add("IDRistorante", "ID Ristorante");
             dataGridView1.Columns.Add("Tipologia", "Tipologia");
@@ -44,10 +38,10 @@ namespace ProgettoGestioneRistoranti
             dataGridView1.Columns.Add("PrezzoMedio", "Prezzo Medio");
             dataGridView1.Columns.Add("Telefono", "Telefono");
             dataGridView1.Columns.Add("Citta", "Città");
+        }
 
-            var ristoranti = bl.GetRistorantiFiltrati("", "", 0);
-
-            // Aggiungi manualmente le righe
+        public void AggiungiRighe(List<Ristorante> ristoranti)
+        {
             foreach (var ristorante in ristoranti)
             {
                 dataGridView1.Rows.Add(
@@ -62,15 +56,58 @@ namespace ProgettoGestioneRistoranti
                     ristorante.GetCitta()
                 );
             }
-
-            
-            //dataGridView1.DataSource = ristoranti;
         }
 
-        //private void simpleButton1_Click(object sender, EventArgs e)
-        //{
-        //    insertRistorante.Show();
-        //}
+        private Ristorante GetRistoranteFromSelectedRow(DataGridViewRow row)
+        {
+            int idRistorante = Convert.ToInt32(row.Cells["IDRistorante"].Value);
+            int tipologiaRistorante = Convert.ToInt32(row.Cells["Tipologia"].Value);
+            string indirizzoRistorante = row.Cells["Indirizzo"].Value.ToString();
+            string ragioneSocialeRistorante = row.Cells["RagioneSociale"].Value.ToString();
+            string partitaIvaRistorante = row.Cells["PartitaIva"].Value.ToString();
+            int numPostiRistorante = Convert.ToInt32(row.Cells["NumPosti"].Value);
+            decimal prezzoMedioRistorante = Convert.ToDecimal(row.Cells["NumPosti"].Value);
+            string telefono = row.Cells["Telefono"].Value.ToString();
+            string citta = row.Cells["Citta"].Value.ToString();
+
+            return ristorante = new Ristorante(
+                idRistorante,
+                tipologiaRistorante,
+                indirizzoRistorante,
+                ragioneSocialeRistorante,
+                partitaIvaRistorante,
+                numPostiRistorante,
+                prezzoMedioRistorante,
+                telefono,
+                citta
+            );
+        }
+
+        public void CleanDataGridView()
+        {
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+        }
+
+
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        
+
+        private void ElencoRistoranti_Load(object sender, EventArgs e)
+        {
+            AggiungiColonne();
+
+            var ristoranti = bl.GetRistorantiFiltrati("", "", 0);
+
+            // Aggiungi manualmente le righe
+            AggiungiRighe(ristoranti);
+        }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -86,28 +123,8 @@ namespace ProgettoGestioneRistoranti
                 //riga selezionata
                 DataGridViewRow row = dataGridView1.SelectedRows[0];
 
-                // recupero valori celle
-                int idRistorante = Convert.ToInt32(row.Cells["IDRistorante"].Value);
-                int tipologiaRistorante = Convert.ToInt32(row.Cells["Tipologia"].Value);
-                string indirizzoRistorante = row.Cells["Indirizzo"].Value.ToString();
-                string ragioneSocialeRistorante = row.Cells["RagioneSociale"].Value.ToString();
-                string partitaIvaRistorante = row.Cells["PartitaIva"].Value.ToString();
-                int numPostiRistorante = Convert.ToInt32(row.Cells["NumPosti"].Value);
-                decimal prezzoMedioRistorante = Convert.ToDecimal(row.Cells["NumPosti"].Value);
-                string telefono = row.Cells["Telefono"].Value.ToString();
-                string citta = row.Cells["Citta"].Value.ToString();
-
-                ristorante = new Ristorante(
-                    idRistorante,
-                    tipologiaRistorante,
-                    indirizzoRistorante,
-                    ragioneSocialeRistorante,
-                    partitaIvaRistorante,
-                    numPostiRistorante,
-                    prezzoMedioRistorante,
-                    telefono,
-                    citta
-                );
+                // recupero valori celle e ritorno ristrante
+                ristorante = GetRistoranteFromSelectedRow(row);
                 updateRistorante = new UpdateRistorante(ristorante, this);
                 updateRistorante.Show();
             }
@@ -126,36 +143,14 @@ namespace ProgettoGestioneRistoranti
                 MessageBox.Show("valore è " + valore);
 
                 bl.CancellaRistorante(valore, "AnagraficaRistoranti");
-                dataGridView1.DataSource = null;
-                dataGridView1.Rows.Clear();
+                CleanDataGridView();
 
-                dataGridView1.Columns.Add("IDRistorante", "ID Ristorante");
-                dataGridView1.Columns.Add("Tipologia", "Tipologia");
-                dataGridView1.Columns.Add("Indirizzo", "Indirizzo");
-                dataGridView1.Columns.Add("RagioneSociale", "Ragione Sociale");
-                dataGridView1.Columns.Add("PartitaIva", "Partita IVA");
-                dataGridView1.Columns.Add("NumPosti", "Numero Posti");
-                dataGridView1.Columns.Add("PrezzoMedio", "Prezzo Medio");
-                dataGridView1.Columns.Add("Telefono", "Telefono");
-                dataGridView1.Columns.Add("Citta", "Città");
+                AggiungiColonne();
 
                 var ristoranti = bl.GetRistorantiFiltrati("", "", 0);
 
                 // Aggiungi manualmente le righe
-                foreach (var ristorante in ristoranti)
-                {
-                    dataGridView1.Rows.Add(
-                        ristorante.GetIDRistorante(),
-                        ristorante.GetTipologia(),
-                        ristorante.GetIndirizzo(),
-                        ristorante.GetRagioneSociale(),
-                        ristorante.GetPartitaIva(),
-                        ristorante.GetNumPosti(),
-                        ristorante.GetPrezzoMedio(),
-                        ristorante.GetTelefono(),
-                        ristorante.GetCitta()
-                    );
-                }
+                AggiungiRighe(ristoranti);
 
             }
         }
@@ -172,34 +167,12 @@ namespace ProgettoGestioneRistoranti
 
                 List<Ristorante> ristorantiFiltrati = bl.GetRistorantiFiltrati2(scelta, textBox1.Text);
 
-                dataGridView1.DataSource = null;
-                dataGridView1.Rows.Clear();
+                CleanDataGridView();
                 dataGridView1.Columns.Clear();
 
-                dataGridView1.Columns.Add("IDRistorante", "ID Ristorante");
-                dataGridView1.Columns.Add("Tipologia", "Tipologia");
-                dataGridView1.Columns.Add("Indirizzo", "Indirizzo");
-                dataGridView1.Columns.Add("RagioneSociale", "Ragione Sociale");
-                dataGridView1.Columns.Add("PartitaIva", "Partita IVA");
-                dataGridView1.Columns.Add("NumPosti", "Numero Posti");
-                dataGridView1.Columns.Add("PrezzoMedio", "Prezzo Medio");
-                dataGridView1.Columns.Add("Telefono", "Telefono");
-                dataGridView1.Columns.Add("Citta", "Città");
+                AggiungiColonne();
 
-                foreach (var ristorante in ristorantiFiltrati)
-                {
-                    dataGridView1.Rows.Add(
-                        ristorante.GetIDRistorante(),
-                        ristorante.GetTipologia(),
-                        ristorante.GetIndirizzo(),
-                        ristorante.GetRagioneSociale(),
-                        ristorante.GetPartitaIva(),
-                        ristorante.GetNumPosti(),
-                        ristorante.GetPrezzoMedio(),
-                        ristorante.GetTelefono(),
-                        ristorante.GetCitta()
-                    );
-                }
+                AggiungiRighe(ristorantiFiltrati);
             }
         }
 
@@ -217,35 +190,34 @@ namespace ProgettoGestioneRistoranti
                 DataGridViewRow row = dataGridView1.SelectedRows[0];
 
                 // recupero valori celle
-                int idRistorante = Convert.ToInt32(row.Cells["IDRistorante"].Value);
-                int tipologiaRistorante = Convert.ToInt32(row.Cells["Tipologia"].Value);
-                string indirizzoRistorante = row.Cells["Indirizzo"].Value.ToString();
-                string ragioneSocialeRistorante = row.Cells["RagioneSociale"].Value.ToString();
-                string partitaIvaRistorante = row.Cells["PartitaIva"].Value.ToString();
-                int numPostiRistorante = Convert.ToInt32(row.Cells["NumPosti"].Value);
-                decimal prezzoMedioRistorante = Convert.ToDecimal(row.Cells["NumPosti"].Value);
-                string telefono = row.Cells["Telefono"].Value.ToString();
-                string citta = row.Cells["Citta"].Value.ToString();
-
-                ristorante = new Ristorante(
-                    idRistorante,
-                    tipologiaRistorante,
-                    indirizzoRistorante,
-                    ragioneSocialeRistorante,
-                    partitaIvaRistorante,
-                    numPostiRistorante,
-                    prezzoMedioRistorante,
-                    telefono,
-                    citta
-                );
+                ristorante = GetRistoranteFromSelectedRow(row);
                 formPrenotazione = new FormPrenotazione(ristorante);
                 formPrenotazione.Show();
             }
+            else
+            {
+                MessageBox.Show("Seleziona un ristorante!");
+            }
         }
 
-        //private void textBox1_TextChanged(object sender, EventArgs e)
-        //{
+        private void button5_Click(object sender, EventArgs e)
+        {
 
-        //}
+        }
+
+
+
+        //COMANDI PER PARTE GRAFICA DI CAMBIO COLORE ALL'OVERLAY DEL MOUSE
+        private void backArrow_MouseEnter(object sender, EventArgs e)
+        {
+            // Sposta il bottone leggermente in alto (simula un "sollevamento")
+            button5.Location = new Point(button5.Location.X, button5.Location.Y - 5);  // Muove di 5 pixel verso l'alto
+        }
+
+        private void backArrow_MouseLeave(object sender, EventArgs e)
+        {
+            // Riporta il bottone nella posizione originale
+            button5.Location = new Point(button5.Location.X, button5.Location.Y + 5);  // Riporta di 5 pixel giù
+        }
     }
 }
