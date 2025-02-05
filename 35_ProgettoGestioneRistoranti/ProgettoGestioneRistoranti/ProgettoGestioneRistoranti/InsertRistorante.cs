@@ -96,7 +96,7 @@ namespace ProgettoGestioneRistoranti
                 elencoRistoranti.AggiungiColonne();
 
 
-                var ristoranti = bl.GetRistorantiFiltrati("", "", 0);
+                var ristoranti = bl.GetRistorantiFiltrati();
 
                 // Aggiungi manualmente le righe
                 elencoRistoranti.AggiungiRighe(ristoranti);

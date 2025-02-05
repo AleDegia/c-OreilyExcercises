@@ -7,6 +7,7 @@ using Dal;
 using System.Windows.Forms;
 using Models;
 using DALe;
+using System.Xml.Linq;
 
 namespace BLLL
 {
@@ -27,6 +28,30 @@ namespace BLLL
         {
             List<Prenotazione> prenotazioni = dal.GetAllPrenotazioni(idRistorante);
             return prenotazioni;
+        }
+
+        public List<Prenotazione> GetPrenotazioniPerData(DateTime data)
+        {
+            List<Prenotazione> prenotazioni = dal.GetPrenotazioniPerData(data);
+            return prenotazioni;
+        }
+
+        public List<Prenotazione> GetPrenotazioni()
+        {
+            List<Prenotazione> prenotazioni = dal.GetPrenotazioni();
+            return prenotazioni;
+        }
+
+        public void AggiornaPrenotazioneELog(Prenotazione prenotazione)
+        {
+            try
+            {
+                dal.AggiornaPrenotazioneELog(prenotazione);
+            }
+            catch (Exception ex)
+            {
+                throw;  // Rilancio l'eccezione mantenendo la stack trace
+            }
         }
     }
 }

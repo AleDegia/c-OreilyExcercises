@@ -32,12 +32,12 @@ namespace ProgettoGestioneRistoranti
             dataGridView1.Columns.Add("IDRistorante", "ID Ristorante");
             dataGridView1.Columns.Add("Tipologia", "Tipologia");
             dataGridView1.Columns.Add("Indirizzo", "Indirizzo");
-            dataGridView1.Columns.Add("RagioneSociale", "Ragione Sociale");
-            dataGridView1.Columns.Add("PartitaIva", "Partita IVA");
+            dataGridView1.Columns.Add("Citta", "Città");
             dataGridView1.Columns.Add("NumPosti", "Numero Posti");
             dataGridView1.Columns.Add("PrezzoMedio", "Prezzo Medio");
             dataGridView1.Columns.Add("Telefono", "Telefono");
-            dataGridView1.Columns.Add("Citta", "Città");
+            dataGridView1.Columns.Add("RagioneSociale", "Ragione Sociale");
+            dataGridView1.Columns.Add("PartitaIva", "Partita IVA");
         }
 
         public void AggiungiRighe(List<Ristorante> ristoranti)
@@ -48,12 +48,12 @@ namespace ProgettoGestioneRistoranti
                     ristorante.GetIDRistorante(),
                     ristorante.GetTipologia(),
                     ristorante.GetIndirizzo(),
-                    ristorante.GetRagioneSociale(),
-                    ristorante.GetPartitaIva(),
+                    ristorante.GetCitta(),
                     ristorante.GetNumPosti(),
                     ristorante.GetPrezzoMedio(),
                     ristorante.GetTelefono(),
-                    ristorante.GetCitta()
+                    ristorante.GetRagioneSociale(),
+                    ristorante.GetPartitaIva()
                 );
             }
         }
@@ -63,12 +63,12 @@ namespace ProgettoGestioneRistoranti
             int idRistorante = Convert.ToInt32(row.Cells["IDRistorante"].Value);
             int tipologiaRistorante = Convert.ToInt32(row.Cells["Tipologia"].Value);
             string indirizzoRistorante = row.Cells["Indirizzo"].Value.ToString();
-            string ragioneSocialeRistorante = row.Cells["RagioneSociale"].Value.ToString();
-            string partitaIvaRistorante = row.Cells["PartitaIva"].Value.ToString();
+            string citta = row.Cells["Citta"].Value.ToString();
             int numPostiRistorante = Convert.ToInt32(row.Cells["NumPosti"].Value);
             decimal prezzoMedioRistorante = Convert.ToDecimal(row.Cells["NumPosti"].Value);
             string telefono = row.Cells["Telefono"].Value.ToString();
-            string citta = row.Cells["Citta"].Value.ToString();
+            string ragioneSocialeRistorante = row.Cells["RagioneSociale"].Value.ToString();
+            string partitaIvaRistorante = row.Cells["PartitaIva"].Value.ToString();
 
             return ristorante = new Ristorante(
                 idRistorante,
@@ -102,10 +102,11 @@ namespace ProgettoGestioneRistoranti
         {
             AggiungiColonne();
 
-            var ristoranti = bl.GetRistorantiFiltrati("", "", 0);
+            var ristoranti = bl.GetRistorantiFiltrati();
 
             // Aggiungi manualmente le righe
             AggiungiRighe(ristoranti);
+            dataGridView1.Columns["IDRistorante"].Visible = false;
         }
 
 
@@ -147,7 +148,7 @@ namespace ProgettoGestioneRistoranti
 
                 AggiungiColonne();
 
-                var ristoranti = bl.GetRistorantiFiltrati("", "", 0);
+                var ristoranti = bl.GetRistorantiFiltrati();
 
                 // Aggiungi manualmente le righe
                 AggiungiRighe(ristoranti);

@@ -28,5 +28,30 @@ namespace DALe
             List<Prenotazione> prenotazioni = dbData.GetAllPrenotazioni(idRistorante);
             return prenotazioni;
         }
+
+        public List<Prenotazione> GetPrenotazioniPerData(DateTime data)
+        {
+            List<Prenotazione> prenotazioni = dbData.GetPrenotazioniPerData(data);
+            return prenotazioni;
+        }
+
+        public List<Prenotazione> GetPrenotazioni()
+        {
+            List<object> entities = dbData.GetAllEntities();
+            List<Prenotazione> prenotazioni = entities.OfType<Prenotazione>().ToList();
+            return prenotazioni;
+        }
+
+        public void AggiornaPrenotazioneELog(Prenotazione prenotazione)
+        {
+            try
+            {
+                dbData.AggiornaPrenotazioneELog(prenotazione);
+            }
+            catch (Exception ex)
+            {
+                throw; //rilancio eccezione
+            }
+        }
     }
 }

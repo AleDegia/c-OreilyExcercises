@@ -12,6 +12,11 @@ namespace BLLL
             dal = new DalUtenti();
         }
 
+        public Utente GetUtente(string username)
+        {
+           return dal.GetUtente(username);
+        }
+
         public List<Utente> GetUtenti()
         {
             List<Utente> utenti = dal.GetUtenti();

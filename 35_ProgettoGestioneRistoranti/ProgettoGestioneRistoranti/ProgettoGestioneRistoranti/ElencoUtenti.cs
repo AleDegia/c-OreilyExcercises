@@ -84,14 +84,12 @@ namespace UI
         private void ElencoUtenti_Load(object sender, EventArgs e)
         {
             AggiungiColonne();
-
             List<Utente> utenti = blUtenti.GetUtenti();
-
-            // Aggiungi manualmente le righe
             AggiungiRighe(utenti);
+            dataGridView1.Columns["Password"].Visible = false;
         }
 
-        
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -141,6 +139,11 @@ namespace UI
                 AggiungiRighe(utenti);
 
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

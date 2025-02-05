@@ -2,6 +2,7 @@
 using Dal;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System;
 
 namespace Engine
 {
@@ -16,22 +17,46 @@ namespace Engine
         }
 
 
-	    public List<Ristorante> GetRistorantiFiltrati(string citta, string tipologia, double? prezzo)
+	    public List<Ristorante> GetRistorantiFiltrati()
         {
-            List<Ristorante> ristoranti = dal.GetRistoranti();  //passare filtri al dal
-            return ristoranti;
+            try
+            {
+                List<Ristorante> ristoranti = dal.GetRistoranti();  //passare filtri al dal
+                return ristoranti;
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Errore durante il recupero dei ristoranti: " + ex.Message);
+                throw;  // Rilancia l'eccezione per propagarla ulteriormente
+            }
         }
 
 
         public Ristorante GetRistorante(int id)
         {
-            Ristorante ristorante = dal.GetRistorante(id);
-            return ristorante;
+            try
+            {
+                Ristorante ristorante = dal.GetRistorante(id);
+                return ristorante;
+            }
+            catch (Exception ex)
+            {
+               // Console.WriteLine("Errore durante il recupero del ristorante: " + ex.Message);
+                throw;  
+            }
         }
 
         public void AggiungiRistorante(Ristorante ristorante)
         {
-            dal.AggiungiRistorante(ristorante);
+            try
+            {
+                dal.AggiungiRistorante(ristorante);
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Errore durante l'aggiunta del ristorante: " + ex.Message);
+                throw;  
+            }
         }
 
         public void ModificaRistorante(Ristorante ristorante)

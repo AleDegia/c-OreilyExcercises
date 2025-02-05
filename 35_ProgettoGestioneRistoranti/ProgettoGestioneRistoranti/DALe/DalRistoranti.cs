@@ -23,23 +23,46 @@ namespace Dal
        
         public Ristorante GetRistorante(int id)
         {
-            return dbData.GetEntity(id);
+            //per prendere la propagazione dell'errore da dbData
+            try
+            {
+                return dbData.GetEntity(id);
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Errore durante il recupero del ristorante: " + ex.Message);
+                throw;  // Rilancia l'eccezione per propagarla ulteriormente
+            }
         }
        
         public List<Ristorante> GetRistoranti()
         {
-            // Ottengo la lista generica
-            List<object> entities = dbData.GetAllEntities();
-
-            // Filtro e casto ogni elemento della lista a Ristorante
-            List<Ristorante> ristoranti = entities.OfType<Ristorante>().ToList();
-
-            return ristoranti;
+            try
+            {
+                // Ottengo la lista generica
+                List<object> entities = dbData.GetAllEntities();
+                // Filtro e casto ogni elemento della lista a Ristorante
+                List<Ristorante> ristoranti = entities.OfType<Ristorante>().ToList();
+                return ristoranti;
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Errore durante il recupero dei ristoranti: " + ex.Message);
+                throw;  // Rilancia l'eccezione per propagarla ulteriormente
+            }
         }
 
         public void AggiungiRistorante(Ristorante ristorante)
-        { 
-            dbData.AggiungiEntity(ristorante);
+        {
+            try
+            {
+                dbData.AggiungiEntity(ristorante);
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Errore durante l'inserimento del ristorante: " + ex.Message);
+                throw;  // Rilancia l'eccezione per propagarla ulteriormente
+            }
         }
 
         public void ModificaRistorante(Ristorante ristorante)

@@ -15,11 +15,13 @@ namespace UI
     {
         private ElencoRistoranti elencoRistoranti;
         private ElencoUtenti elencoUtenti;
+        private ElencoPrenotazioni elencoPrenotazioni;
         public Homepage()
         {
             InitializeComponent();
             elencoRistoranti = new ElencoRistoranti();
             elencoUtenti = new ElencoUtenti();
+            elencoPrenotazioni = new ElencoPrenotazioni();
         }
 
         private void toolStripTextBox1_Click(object sender, EventArgs e)
@@ -34,7 +36,7 @@ namespace UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            elencoPrenotazioni.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)

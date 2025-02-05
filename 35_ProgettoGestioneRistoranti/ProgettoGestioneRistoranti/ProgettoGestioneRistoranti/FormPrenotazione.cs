@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -20,12 +21,17 @@ namespace UI
         private Ristorante ristorante;
         private DatiPrenotazioneSubmit datiPrenotazioneSubmit;
         private BlPrenotazioni blPrenotazioni;
+        private BlUtenti blUtenti;
         private List<Prenotazione> prenotazioni;
+        private List<Prenotazione> prenotazioniXdata;
+        private List<int> ids;
+        private List<Utente> utenti;
         private int postiPerGiorno;
         private int giornoSelezionato;
         private DateTime dataSelezionata;
         private DateTime inizioRangeSelezione = new DateTime(2001, 2, 13);
         DateTime fineRangeSelezione = new DateTime(2001, 2, 28);
+
 
         System.Windows.Forms.Label postiOgniGiorno;
 
@@ -39,7 +45,10 @@ namespace UI
             this.ristorante = ristorante;
             //datiPrenotazioneSubmit = new DatiPrenotazioneSubmit(ristorante, this, dataSelezionata);
             prenotazioni = new List<Prenotazione>();
+            utenti = new List<Utente>();
             blPrenotazioni = new BlPrenotazioni();
+            blUtenti = new BlUtenti();
+            ids = new List<int>();
         }
 
         private void label4_Click(object sender, EventArgs e)
@@ -56,6 +65,9 @@ namespace UI
         {
             label6.Text = ristorante.GetNumPosti().ToString();
             prenotazioni = blPrenotazioni.GetAllPrenotazioni(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
+            dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
+            textBoxIdRist.Text = ristorante.GetIDRistorante().ToString();
+
             //Aggiungo ogni coppia di dataPrenotazione e numPersonePrenotate al dizionario
             foreach (var p in prenotazioni)
             {
@@ -68,9 +80,22 @@ namespace UI
                     dateEposti.Add(p.DataPrenotazione.Date, p.NumPersone);
             }
 
-
+            //popolo griglia utenti prenotati nel giorno/giorni selezionati (devo prendere dalle prenotazioni del giorno selezionato
+            //gli id degli utenti dagli oggetti prenotazione recuperati)
             //recupero data selezionata da utente
             dataSelezionata = monthCalendar1.SelectionStart;
+            MessageBox.Show(dataSelezionata.ToString());
+            prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
+            foreach (Prenotazione prenotazione in prenotazioniXdata)
+            {
+                string nomeUtente = prenotazione.NomeUtente;   //fare lista di id
+                utenti.Add(blUtenti.GetUtente(nomeUtente));
+            }
+            //utenti = blUtenti.GetUtenti();
+            //UtentiPrenotati.DataSource = utenti;
+            //UtentiPrenotati.DisplayMember = "UserName";
+
+            
             try
             {
                 label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
@@ -120,6 +145,7 @@ namespace UI
 
             inizioRangeSelezione = monthCalendar1.SelectionStart.Date;
             fineRangeSelezione = monthCalendar1.SelectionEnd.Date;
+            dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
 
             //vedo se è stato selezionato un range di date
             if (inizioRangeSelezione<fineRangeSelezione)
@@ -158,6 +184,23 @@ namespace UI
                 }
             }
 
+            //caricamento utenti
+            dataSelezionata = monthCalendar1.SelectionStart;
+            MessageBox.Show(dataSelezionata.ToString());
+            prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
+            MessageBox.Show(prenotazioniXdata.Count.ToString());
+            UtentiPrenotati.Items.Clear();
+            foreach (Prenotazione prenotazione in prenotazioniXdata)
+            {
+                string username = prenotazione.NomeUtente;   //fare lista di id
+                utenti.Add(blUtenti.GetUtente(username));
+                UtentiPrenotati.Items.Add(username);
+            }
+
+            //UtentiPrenotati.DataSource = utenti;
+            //UtentiPrenotati.Items.Add(utenti);
+            //UtentiPrenotati.DisplayMember= "UserName";
+
 
             foreach (var p in prenotazioni)
             {
@@ -184,6 +227,90 @@ namespace UI
                 label5.Text = label6.Text;
                 label4.Text = "0";
             }
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+            // Imposta il raggio per l'arrotondamento degli angoli
+            int borderRadius = 20;
+
+            // Usa SmoothingMode per ottenere bordi lisci
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            panel2.BorderStyle = BorderStyle.None;
+
+            // Crea un pennello per il colore di sfondo
+            using (Brush brush = new SolidBrush(panel2.BackColor))
+            {
+                // Disegna il riempimento del pannello (con il colore di sfondo)
+                e.Graphics.FillRectangle(brush, new Rectangle(0, 0, panel2.Width, panel2.Height));
+            }
+
+            // Crea un pennello per il bordo
+            using (Pen pen = new Pen(Color.Gray))  // Puoi cambiare il colore del bordo
+            {
+                // Disegna gli angoli arrotondati in alto a sinistra e a destra
+                e.Graphics.DrawArc(pen, 0, 0, borderRadius * 2, borderRadius * 2, 180, 90);  // Angolo in alto a sinistra
+                e.Graphics.DrawArc(pen, panel2.Width - borderRadius * 2, 0, borderRadius * 2, borderRadius * 2, 270, 90);  // Angolo in alto a destra
+
+                // Disegna le linee rette del bordo
+                // Lato superiore (da sinistra a destra, tra gli angoli arrotondati)
+                e.Graphics.DrawLine(pen, borderRadius, 0, panel2.Width - borderRadius, 0);
+
+                // Lato sinistro (da alto a basso)
+                e.Graphics.DrawLine(pen, 0, borderRadius, 0, panel2.Height);
+
+                // Lato destro (da alto a basso)
+                e.Graphics.DrawLine(pen, panel2.Width, borderRadius, panel2.Width, panel2.Height);
+
+                // Lato inferiore (da sinistra a destra, tra gli angoli arrotondati)
+                e.Graphics.DrawLine(pen, borderRadius, panel2.Height, panel2.Width - borderRadius, panel2.Height);
+            }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            DateTime dataSelezionata = monthCalendar1.SelectionStart;
+            int idRistorante = Convert.ToInt32(textBoxIdRist.Text);
+            string username = textBox1.Text;
+            DateTime dataEOraCorrente = DateTime.Now;
+            int numeroPersone = Convert.ToInt32(textBox4.Text);
+
+            Prenotazione prenotazione = new Prenotazione(idRistorante, username, dataEOraCorrente, dataSelezionata, numeroPersone);
+            blPrenotazioni.AggiungiPrenotazione(prenotazione);
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+           
+            // Cambia il colore di sfondo del bottone quando viene cliccato
+            button1.BackColor = Color.Coral;  // Scegli il colore che vuoi
+        
+
+    }
+
+        private void UtentiPrenotati_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

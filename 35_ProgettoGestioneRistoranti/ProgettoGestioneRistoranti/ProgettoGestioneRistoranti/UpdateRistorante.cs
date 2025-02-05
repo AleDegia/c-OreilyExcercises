@@ -39,7 +39,7 @@ namespace ProgettoGestioneRistoranti
         {
             //Ristorante ristorante = elencoRistoranti.GetRistorante();
             textBox9.Text = ristorante.GetIDRistorante().ToString();
-            textBox1.Text = ristorante.GetTipologia().ToString();
+            comboBox1.Text = ristorante.GetTipologia().ToString();
             textBox2.Text = ristorante.GetIndirizzo().ToString();
             textBox8.Text = ristorante.GetRagioneSociale().ToString();
             textBox4.Text = ristorante.GetPartitaIva().ToString();
@@ -70,11 +70,11 @@ namespace ProgettoGestioneRistoranti
             var dataGridView1 = elencoRistoranti.GetDataGridView();
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
-
+            dataGridView1.Columns.Clear();
 
             elencoRistoranti.AggiungiColonne();
 
-            var ristoranti = blRistoranti.GetRistorantiFiltrati("", "", 0);
+            var ristoranti = blRistoranti.GetRistorantiFiltrati();
 
             // Aggiungi manualmente le righe
             elencoRistoranti.AggiungiRighe(ristoranti);
