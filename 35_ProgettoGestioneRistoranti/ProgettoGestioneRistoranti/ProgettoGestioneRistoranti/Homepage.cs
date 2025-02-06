@@ -20,7 +20,7 @@ namespace UI
         {
             InitializeComponent();
             elencoRistoranti = new ElencoRistoranti();
-            elencoUtenti = new ElencoUtenti();
+           
             elencoPrenotazioni = new ElencoPrenotazioni();
         }
 
@@ -46,7 +46,12 @@ namespace UI
 
         private void button5_Click(object sender, EventArgs e)
         {
+            if (elencoUtenti == null)
+            {
+                elencoUtenti = new ElencoUtenti();
+            }
             elencoUtenti.Show();
+            elencoUtenti.Activate();
         }
     }
 }

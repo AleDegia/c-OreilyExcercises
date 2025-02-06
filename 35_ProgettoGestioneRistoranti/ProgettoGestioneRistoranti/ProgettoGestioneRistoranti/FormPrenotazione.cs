@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using BLLL;
 using Models;
 using ProgettoGestioneRistoranti;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace UI
 {
@@ -51,6 +52,54 @@ namespace UI
             ids = new List<int>();
         }
 
+        private void CaricaPrenotazioni()
+        {
+            label6.Text = ristorante.GetNumPosti().ToString();
+            prenotazioni = blPrenotazioni.GetAllPrenotazioni(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
+            dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
+            textBoxIdRist.Text = ristorante.GetIDRistorante().ToString();
+
+            //Aggiungo ogni coppia di dataPrenotazione e numPersonePrenotate al dizionario
+            foreach (var p in prenotazioni)
+            {
+                if (dateEposti.ContainsKey(p.DataPrenotazione.Date))
+                {
+                    // Se la data esiste, somma il numero di persone
+                    dateEposti[p.DataPrenotazione.Date] += p.NumPersone;
+                }
+                else
+                    dateEposti.Add(p.DataPrenotazione.Date, p.NumPersone);
+            }
+
+            //popolo griglia utenti prenotati nel giorno/giorni selezionati (devo prendere dalle prenotazioni del giorno selezionato
+            //gli id degli utenti dagli oggetti prenotazione recuperati)
+            //recupero data selezionata da utente
+            dataSelezionata = monthCalendar1.SelectionStart;
+            prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
+            UtentiPrenotati.Items.Clear();
+            foreach (Prenotazione prenotazione in prenotazioniXdata)
+            {
+                string nomeUtente = prenotazione.NomeUtente;   //fare lista di id
+                utenti.Add(blUtenti.GetUtente(nomeUtente));
+                UtentiPrenotati.Items.Add(nomeUtente);
+            }
+
+
+            try
+            {
+                label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
+                int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
+                label5.Text = postiDisp.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Non ci sono prenotazioni per questo ristorante");
+                label6.Text = ristorante.GetNumPosti().ToString();
+                label4.Text = "0";
+                label5.Text = ristorante.GetNumPosti().ToString();
+            }
+        }
+
         private void label4_Click(object sender, EventArgs e)
         {
             postiOgniGiorno = this.GetPostiDisponibili(); 
@@ -84,18 +133,18 @@ namespace UI
             //gli id degli utenti dagli oggetti prenotazione recuperati)
             //recupero data selezionata da utente
             dataSelezionata = monthCalendar1.SelectionStart;
-            MessageBox.Show(dataSelezionata.ToString());
             prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
             foreach (Prenotazione prenotazione in prenotazioniXdata)
             {
-                string nomeUtente = prenotazione.NomeUtente;   //fare lista di id
-                utenti.Add(blUtenti.GetUtente(nomeUtente));
+                if (ristorante.GetIDRistorante() == prenotazione.IDRistorante)
+                {
+                    string nomeUtente = prenotazione.NomeUtente;   //fare lista di id
+                    utenti.Add(blUtenti.GetUtente(nomeUtente));
+                    UtentiPrenotati.Items.Add(nomeUtente);
+                }
             }
-            //utenti = blUtenti.GetUtenti();
-            //UtentiPrenotati.DataSource = utenti;
-            //UtentiPrenotati.DisplayMember = "UserName";
 
-            
+
             try
             {
                 label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
@@ -170,11 +219,34 @@ namespace UI
                     }
                 }
 
-                try{
+                HashSet<Prenotazione> prenotazioniUniche = new HashSet<Prenotazione>(); //per avere prenotazioni uniche
+
+                foreach (DateTime data in rangeDiDate)
+                {
+                    List<Prenotazione> prenotazioniTemp = blPrenotazioni.GetPrenotazioniPerData(data);
+
+                    // Aggiungo ogni prenotazione solo se non è già presente
+                    foreach (var prenotazione in prenotazioniTemp)
+                    {
+                        prenotazioniUniche.Add(prenotazione);
+                    }
+                }
+
+                // Aggiungo tutte le prenotazioni uniche alla lista
+                prenotazioniXdata = prenotazioniUniche.ToList();
+
+                UtentiPrenotati.Items.Clear();
+                foreach (Prenotazione prenotazione in prenotazioniXdata)
+                {
+                    string username = prenotazione.NomeUtente;
+                    utenti.Add(blUtenti.GetUtente(username));
+                    UtentiPrenotati.Items.Add(username);
+                }
+
+                try
+                {
                     label4.Text = sommaPrenotazioni.ToString();
                     return;
-                    //int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
-                   // label5.Text = postiDisp.ToString();
                 }
                 catch (Exception ex)
                 {
@@ -186,20 +258,19 @@ namespace UI
 
             //caricamento utenti
             dataSelezionata = monthCalendar1.SelectionStart;
-            MessageBox.Show(dataSelezionata.ToString());
             prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
-            MessageBox.Show(prenotazioniXdata.Count.ToString());
+            
             UtentiPrenotati.Items.Clear();
             foreach (Prenotazione prenotazione in prenotazioniXdata)
             {
-                string username = prenotazione.NomeUtente;   //fare lista di id
-                utenti.Add(blUtenti.GetUtente(username));
-                UtentiPrenotati.Items.Add(username);
+                if (ristorante.GetIDRistorante() == prenotazione.IDRistorante)
+                {
+                    string username = prenotazione.NomeUtente;   //fare lista di id
+                    utenti.Add(blUtenti.GetUtente(username));
+                    UtentiPrenotati.Items.Add(username);
+                }
             }
 
-            //UtentiPrenotati.DataSource = utenti;
-            //UtentiPrenotati.Items.Add(utenti);
-            //UtentiPrenotati.DisplayMember= "UserName";
 
 
             foreach (var p in prenotazioni)
@@ -213,7 +284,6 @@ namespace UI
             }
             //recupero data selezionata da utente
             dataSelezionata = monthCalendar1.SelectionStart;
-            MessageBox.Show(dataSelezionata.ToString());
            
             try
             { 
@@ -274,14 +344,24 @@ namespace UI
 
         private void button4_Click(object sender, EventArgs e)
         {
+            try
+            {
             DateTime dataSelezionata = monthCalendar1.SelectionStart;
             int idRistorante = Convert.ToInt32(textBoxIdRist.Text);
             string username = textBox1.Text;
-            DateTime dataEOraCorrente = DateTime.Now;
+            DateTime dataEOraCorrente = DateTime.Now.Date;
             int numeroPersone = Convert.ToInt32(textBox4.Text);
 
             Prenotazione prenotazione = new Prenotazione(idRistorante, username, dataEOraCorrente, dataSelezionata, numeroPersone);
-            blPrenotazioni.AggiungiPrenotazione(prenotazione);
+            
+                blPrenotazioni.AggiungiPrenotazione(prenotazione);
+               MessageBox.Show("Prenotazione avvenuta con successo per il giorno " + dataSelezionata.Day);
+                CaricaPrenotazioni();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("la prenotazione non è andata a buon fine");
+            }
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -303,12 +383,16 @@ namespace UI
         {
            
             // Cambia il colore di sfondo del bottone quando viene cliccato
-            button1.BackColor = Color.Coral;  // Scegli il colore che vuoi
         
 
     }
 
         private void UtentiPrenotati_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }

@@ -608,10 +608,10 @@ namespace DALe
             {
                 connection.Open();
 
-                // Inizializza la transazione
+                // Inizializzo la transazione
                 SqlTransaction sqlTran = connection.BeginTransaction();
 
-                // Crea il comando SQL associato alla transazione
+                // Creo il comando SQL associato alla transazione
                 SqlCommand command = connection.CreateCommand();
                 command.Transaction = sqlTran;
 
@@ -619,7 +619,7 @@ namespace DALe
                 {
                     //aggiornamento per la prenotazione
                     command.CommandText = queryPrenotazione;
-                    command.Parameters.Clear();  // Puliamo i parametri tra le query
+                    command.Parameters.Clear();  
                     command.Parameters.AddWithValue("@IDPrenotazione", prenotazione.IDPrenotazione);
                     command.Parameters.AddWithValue("@IDRistorante", prenotazione.IDRistorante);
                     command.Parameters.AddWithValue("@NomeUtente", prenotazione.NomeUtente);
@@ -643,12 +643,10 @@ namespace DALe
                 }
                 catch (Exception ex)
                 {
-                    // Gestione dell'errore in caso di fallimento
                     Console.WriteLine($"Errore: {ex.Message}");
                     try
                     {
                         sqlTran.Rollback();
-                        //throw new Exception("Errore durante una delle query: "+ ex);  // Rilancia l'eccezione
                     }
                     catch (Exception exRollback)
                     {

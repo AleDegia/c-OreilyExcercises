@@ -26,6 +26,12 @@ namespace ProgettoGestioneRistoranti
             this.elencoUtenti = elencoUtenti;
         }
 
+        public InsertUtente()
+        {
+            InitializeComponent();
+            bl = new BlUtenti();
+        }
+
         private void label2_Click(object sender, EventArgs e)
         {
 
@@ -123,19 +129,28 @@ namespace ProgettoGestioneRistoranti
 
                 // Aggiorna il prodotto nel database
                 bl.AggiungiUtente(utente);
-                var dataGridView1 = elencoUtenti.GetDataGridView();
-                elencoUtenti.CleanDataGridView();
-                dataGridView1.Columns.Clear();
 
-                elencoUtenti.AggiungiColonne();
+                if (elencoUtenti != null)
+                {
+                    var dataGridView1 = elencoUtenti.GetDataGridView();
+                    elencoUtenti.CleanDataGridView();
+                    dataGridView1.Columns.Clear();
 
-                var utenti = bl.GetUtenti();
+                    elencoUtenti.AggiungiColonne();
 
-                // Aggiungi manualmente le righe
-                elencoUtenti.AggiungiRighe(utenti);
+                    var utenti = bl.GetUtenti();
 
-                elencoUtenti.SetDataGridView(dataGridView1);
-                this.Hide();
+                    // Aggiungi manualmente le righe
+                    elencoUtenti.AggiungiRighe(utenti);
+
+                    elencoUtenti.SetDataGridView(dataGridView1);
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("registrazione avvenuta con successo");
+                    this.Hide();
+                }
             }
             catch (FormatException ex)
             {
@@ -149,6 +164,10 @@ namespace ProgettoGestioneRistoranti
                 MessageBox.Show("Si è verificato un errore durante l'operazione. Riprova più tardi.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.WriteLine("Errore generale: " + ex.Message);
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
         }
     }
 }

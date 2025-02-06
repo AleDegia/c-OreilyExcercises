@@ -40,8 +40,10 @@ namespace ProgettoGestioneRistoranti
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Leggo i valori dalle TextBox
-            int idPrenotazione = Convert.ToInt32(textBox9.Text);
+            try
+            {
+                // Leggo i valori dalle TextBox
+                int idPrenotazione = Convert.ToInt32(textBox9.Text);
             int idRistorante = Convert.ToInt32(textBox2.Text);
             string nomeUtente = textBox8.Text;
             DateTime dataRichiesta = Convert.ToDateTime(textBox4.Text);
@@ -49,8 +51,7 @@ namespace ProgettoGestioneRistoranti
             int numPosti = Convert.ToInt32(textBox5.Text);
 
             Prenotazione prenotazione2 = new Prenotazione(idRistorante, nomeUtente, dataRichiesta, dataPrenotazione, numPosti);
-            try
-            {
+            
                 blPrenotazioni.AggiornaPrenotazioneELog(prenotazione2);
             }
             catch (Exception ex)
