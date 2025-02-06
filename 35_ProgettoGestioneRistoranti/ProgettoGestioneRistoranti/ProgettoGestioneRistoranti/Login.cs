@@ -48,6 +48,10 @@ namespace ProgettoGestioneRistoranti
         {
             //utenti = blUtenti.GetUtenti();
             insertUtente = new InsertUtente();
+            // The password character is an asterisk.
+            textBox2.PasswordChar = '*';
+            // The control will allow no more than 14 characters.
+            textBox2.MaxLength = 18;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -63,7 +67,7 @@ namespace ProgettoGestioneRistoranti
                     {
                         if(homepage == null)
                         {
-                            homepage = new Homepage();
+                            homepage = new Homepage(utente.UserName);
                             homepage.Show();
                         }
                         else
@@ -74,8 +78,11 @@ namespace ProgettoGestioneRistoranti
                     }
                 }
             }
+        }
 
-            
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

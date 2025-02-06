@@ -15,14 +15,14 @@ namespace ProgettoGestioneRistoranti
         UpdateRistorante updateRistorante;
         private Ristorante ristorante;
         private FormPrenotazione formPrenotazione;
-        public ElencoRistoranti()
+        private string username;
+        public ElencoRistoranti(string username)
         {
             InitializeComponent();
             bl = new BlRistoranti();
             insertRistorante = new InsertRistorante(this);
             //formPrenotazione = new FormPrenotazione();
-
-
+            this.username = username;
         }
 
         public Ristorante GetRistorante() { return ristorante; }
@@ -192,7 +192,7 @@ namespace ProgettoGestioneRistoranti
 
                 // recupero valori celle
                 ristorante = GetRistoranteFromSelectedRow(row);
-                formPrenotazione = new FormPrenotazione(ristorante);
+                formPrenotazione = new FormPrenotazione(ristorante, username);
                 formPrenotazione.Show();
             }
             else

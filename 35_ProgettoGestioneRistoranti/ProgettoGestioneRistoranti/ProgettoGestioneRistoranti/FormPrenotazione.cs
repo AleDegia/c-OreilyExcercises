@@ -32,6 +32,7 @@ namespace UI
         private DateTime dataSelezionata;
         private DateTime inizioRangeSelezione = new DateTime(2001, 2, 13);
         DateTime fineRangeSelezione = new DateTime(2001, 2, 28);
+        private string username;
 
 
         System.Windows.Forms.Label postiOgniGiorno;
@@ -40,7 +41,7 @@ namespace UI
         Dictionary<DateTime, int > dateEposti = new Dictionary< DateTime, int>();
         List<DateTime> rangeDiDate = new List<DateTime>();
 
-        public FormPrenotazione(Ristorante ristorante)
+        public FormPrenotazione(Ristorante ristorante, string username)
         {
             InitializeComponent();
             this.ristorante = ristorante;
@@ -50,6 +51,7 @@ namespace UI
             blPrenotazioni = new BlPrenotazioni();
             blUtenti = new BlUtenti();
             ids = new List<int>();
+            this.username = username;
         }
 
         private void CaricaPrenotazioni()
@@ -114,6 +116,7 @@ namespace UI
         {
             label6.Text = ristorante.GetNumPosti().ToString();
             prenotazioni = blPrenotazioni.GetAllPrenotazioni(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
+            textBox1.Text = username;
             dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
             textBoxIdRist.Text = ristorante.GetIDRistorante().ToString();
 
@@ -344,6 +347,7 @@ namespace UI
 
         private void button4_Click(object sender, EventArgs e)
         {
+            
             try
             {
             DateTime dataSelezionata = monthCalendar1.SelectionStart;
@@ -393,6 +397,11 @@ namespace UI
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
