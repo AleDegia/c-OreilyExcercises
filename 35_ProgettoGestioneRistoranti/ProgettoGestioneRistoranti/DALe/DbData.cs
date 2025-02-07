@@ -357,6 +357,7 @@ namespace DALe
         {
             string query = $"DELETE FROM AnagraficaRistoranti WHERE IDRistorante = @id";
             string queryUtente = $"DELETE FROM Utenti WHERE UserName = @username";
+            string queryPrenotazione = $"DELETE FROM Prenotazioni WHERE NomeUtente = @username";
             using (SqlConnection openCon = new SqlConnection(connectionString))
             {
                 try
@@ -373,6 +374,14 @@ namespace DALe
                     else if (nomeTabella == "Utenti")
                     {
                         using (SqlCommand cmd = new SqlCommand(queryUtente, openCon))
+                        {
+                            cmd.Parameters.AddWithValue("@username", id);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    else if (nomeTabella == "Prenotazioni")
+                    {
+                        using (SqlCommand cmd = new SqlCommand(queryPrenotazione, openCon))
                         {
                             cmd.Parameters.AddWithValue("@username", id);
                             cmd.ExecuteNonQuery();

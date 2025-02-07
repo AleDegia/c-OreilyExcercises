@@ -405,5 +405,41 @@ namespace UI
         {
 
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if(UtentiPrenotati.SelectedItem !=null)
+            {
+                Prenotazione prenotazione = blPrenotazioni.GetPrenotazionePerNome(username);
+                UpdatePrenotazione updatePrenotazione = new UpdatePrenotazione(prenotazione, this);
+                updatePrenotazione.Show();
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (UtentiPrenotati.SelectedItem != null)
+            {
+                DialogResult result = MessageBox.Show("Sei sicuro di voler continuare?", "Conferma", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    //Prenotazione prenotazione = blPrenotazioni.GetPrenotazionePerNome(username);
+                    blPrenotazioni.CancellaPrenotazione(username);
+                    UtentiPrenotati.Items.Clear();
+                    prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
+                    foreach (Prenotazione prenotazione in prenotazioniXdata)
+                    {
+                        string username = prenotazione.NomeUtente;
+                        utenti.Add(blUtenti.GetUtente(username));
+                        UtentiPrenotati.Items.Add(username);
+                    }
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("selezina un utente/prenotazione");
+            }
+        }
     }
 }

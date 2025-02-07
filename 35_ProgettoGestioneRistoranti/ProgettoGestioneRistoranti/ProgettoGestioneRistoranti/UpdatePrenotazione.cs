@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using BLLL;
 using Engine;
 using Models;
+using UI;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ProgettoGestioneRistoranti
@@ -20,12 +21,21 @@ namespace ProgettoGestioneRistoranti
         private Prenotazione prenotazione;
         private BlPrenotazioni blPrenotazioni;
         private ElencoPrenotazioni elencoPrenotazioni;
+        private FormPrenotazione formPrenotazione;
         public UpdatePrenotazione(Prenotazione prenotazione, ElencoPrenotazioni elencoPrenotazioni)
         {
             InitializeComponent();
             this.prenotazione = prenotazione;
             blPrenotazioni = new BlPrenotazioni();
             this.elencoPrenotazioni = elencoPrenotazioni;
+        }
+
+        public UpdatePrenotazione(Prenotazione prenotazione, FormPrenotazione formPrenotazione)
+        {
+            InitializeComponent();
+            this.prenotazione = prenotazione;
+            blPrenotazioni = new BlPrenotazioni();
+            this.formPrenotazione = formPrenotazione;
         }
 
         private void UpdatePrenotazione_Load(object sender, EventArgs e)
@@ -60,16 +70,24 @@ namespace ProgettoGestioneRistoranti
                 MessageBox.Show($"Si è verificato un errore: {ex.Message}", "Errore");
             }
 
-            var dataGridView1 = elencoPrenotazioni.GetDataGridView1();
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns.Clear();
-            elencoPrenotazioni.AggiungiColonne();
-            
+            if(elencoPrenotazioni!=null)
+            {
+                var dataGridView1 = elencoPrenotazioni.GetDataGridView1();
+                dataGridView1.DataSource = null;
+                dataGridView1.Rows.Clear();
+                dataGridView1.Columns.Clear();
+                elencoPrenotazioni.AggiungiColonne();
+
                 var prenotazioni = blPrenotazioni.GetPrenotazioni();
                 elencoPrenotazioni.AggiungiRighe(prenotazioni);
                 elencoPrenotazioni.SetDataGridView(dataGridView1);
                 this.Hide();
+            }
+
+            else
+            {
+
+            }
             
         }
     }

@@ -19,6 +19,11 @@ namespace BLLL
             dal = new DalPrenotazioni();
         }
 
+        public List<Prenotazione> GetAllPrenotazioni()
+        {
+            return dal.GetAllPrenotazioni();
+        }
+
         public void AggiungiPrenotazione(Prenotazione prenotazione)
         {
             dal.AggiungiPrenotazione(prenotazione);
@@ -34,6 +39,12 @@ namespace BLLL
         {
             List<Prenotazione> prenotazioni = dal.GetPrenotazioniPerData(data);
             return prenotazioni;
+        }
+
+        public Prenotazione GetPrenotazionePerNome(string username)
+        {
+            Prenotazione pren = dal.GetPrenotazione(username);
+            return pren;
         }
 
         public List<Prenotazione> GetPrenotazioni()
@@ -52,6 +63,11 @@ namespace BLLL
             {
                 throw;  // Rilancio l'eccezione mantenendo la stack trace
             }
+        }
+
+        public void CancellaPrenotazione(string username)
+        {
+            dal.CancellaPrenotazione(username);
         }
     }
 }

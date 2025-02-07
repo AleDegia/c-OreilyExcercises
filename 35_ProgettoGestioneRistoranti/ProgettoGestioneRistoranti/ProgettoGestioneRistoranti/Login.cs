@@ -74,7 +74,6 @@ namespace ProgettoGestioneRistoranti
                         {
                             homepage.Show();
                         }
-                        
                     }
                 }
             }
