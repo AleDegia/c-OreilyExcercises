@@ -186,16 +186,24 @@ namespace Dal
 
         public DataTable GetDatiElencoRistoranti()
         {
-            string query = $"Select IdRistorante, AnagraficaRistoranti.Tipologia, Descrizione as TipoRistorante, RagioneSociale, Indirizzo, Citta, Telefono FROM AnagraficaRistoranti left join Tipologia on AnagraficaRistoranti.Tipologia = Tipologia.Tipologia";
-            string connectionString = dbData.GetConnectionString();
+            //messe le prime 3 e poi nascoste dal datagridview nel form elencoRistoranti
+            string query = @"
+            SELECT IdRistorante, 
+                   AnagraficaRistoranti.Tipologia, 
+                   AnagraficaRistoranti.NumPosti,
+                   AnagraficaRistoranti.PartitaIva, 
+                   Descrizione AS TipoRistorante, 
+                   RagioneSociale, 
+                   Indirizzo, 
+                   Citta, 
+                   Telefono
+            FROM AnagraficaRistoranti
+            LEFT JOIN Tipologia ON AnagraficaRistoranti.Tipologia = Tipologia.Tipologia";
 
-            DataTable tableRistoranti = new DataTable();
+            List<SqlParameter> parameters = new List<SqlParameter>();
 
-            using (var adapter = new SqlDataAdapter(query, connectionString))
-            {
-                adapter.Fill(tableRistoranti);
-            }
-            return tableRistoranti;
+            // Chiamo il metodo ExecuteSelectCommand per ottenere i dati
+            return dbData.ExecuteCommand(query, parameters);
         }
     }
 }

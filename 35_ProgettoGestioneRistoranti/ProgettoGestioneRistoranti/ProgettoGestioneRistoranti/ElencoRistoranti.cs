@@ -117,6 +117,9 @@ namespace ProgettoGestioneRistoranti
             DataTable ristoranti = bl.GetDatiElencoRistoranti();
             dataGridView1.DataSource = ristoranti;
             dataGridView1.Columns["IDRistorante"].Visible = false;
+            dataGridView1.Columns["Tipologia"].Visible = false;
+            dataGridView1.Columns["NumPosti"].Visible = false;
+            dataGridView1.Columns["PartitaIva"].Visible = false;
         }
 
 

@@ -423,13 +423,34 @@ namespace DALe
             GetAllEntities();
         }
 
-        public void ExecuteCommand(string query)
+        public DataTable ExecuteCommand(string query, List<SqlParameter> parameters)
         {
-            SqlCommand querySaveStaff = new SqlCommand(query);  //da aggiungere lista dei parametri
+            DataTable result = new DataTable();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
 
-            querySaveStaff.Connection = connectionObj;
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = query;
 
-            querySaveStaff.ExecuteNonQuery();
+                    if (parameters != null)
+                    {
+                        foreach (SqlParameter parameter in parameters)
+                        {
+                            cmd.Parameters.Add(parameter);
+                        }
+                    }
+
+                    // Esegui il comando SELECT
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        // Carica i dati nel DataTable
+                        result.Load(reader);
+                    }
+                }
+            }
+            return result;
         }
 
 

@@ -46,14 +46,14 @@ namespace DALe
             try
             {
                 string query = "INSERT into Prenotazioni (IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) VALUES (@IDRistorante,@NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
-                dbData.ExecuteCommand(query);
+                //List<SqlParameter> parameters = new List<SqlParameter>();
+
+                //dbData.ExecuteCommand(query, parameters);
 
                 using (var connection = dbData.GetConn())
                 {
 
-                    //string query = "INSERT into Prenotazioni (IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) VALUES (@IDRistorante,@NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
-
-                    using (SqlCommand querySaveStaff = new SqlCommand(query))   
+                    using (SqlCommand querySaveStaff = new SqlCommand(query))
                     {
                         querySaveStaff.Connection = connection;
                         //openCon.Open();
