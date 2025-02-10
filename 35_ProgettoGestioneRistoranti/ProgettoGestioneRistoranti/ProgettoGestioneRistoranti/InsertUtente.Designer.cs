@@ -54,9 +54,9 @@
             this.label9.Location = new System.Drawing.Point(166, 372);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(49, 13);
+            this.label9.Size = new System.Drawing.Size(28, 13);
             this.label9.TabIndex = 61;
-            this.label9.Text = "Telefono";
+            this.label9.Text = "Citta";
             this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // label10
@@ -65,9 +65,9 @@
             this.label10.Location = new System.Drawing.Point(166, 336);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(28, 13);
+            this.label10.Size = new System.Drawing.Size(49, 13);
             this.label10.TabIndex = 60;
-            this.label10.Text = "Citta";
+            this.label10.Text = "Telefono";
             this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // textBox11
@@ -256,6 +256,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "InsertUtente";
             this.Text = "InsertUtente";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.InsertUtente_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

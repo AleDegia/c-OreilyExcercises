@@ -29,9 +29,9 @@ namespace BLLL
             dal.AggiungiPrenotazione(prenotazione);
         }
 
-        public List<Prenotazione> GetAllPrenotazioni(int idRistorante)
+        public List<Prenotazione> GetAllPrenotazioniRistorante(int idRistorante)
         {
-            List<Prenotazione> prenotazioni = dal.GetAllPrenotazioni(idRistorante);
+            List<Prenotazione> prenotazioni = dal.GetAllPrenotazioniRistorante(idRistorante);
             return prenotazioni;
         }
 

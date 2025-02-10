@@ -12,7 +12,7 @@ namespace Models
         private int IDRistorante { get; set; }
         [Required]
         [Range(1, 5, ErrorMessage = "Tipologia deve essere compreso tra 1 e 5.")]
-        private int Tipologia { get; set; }
+        private int Tipologia { get; set; }     //riferimento a tabella tipologia
         [Required]
         [StringLength(100, ErrorMessage = "L'indirizzo non può superare i 100 caratteri.")]
         private string Indirizzo { get; set; }

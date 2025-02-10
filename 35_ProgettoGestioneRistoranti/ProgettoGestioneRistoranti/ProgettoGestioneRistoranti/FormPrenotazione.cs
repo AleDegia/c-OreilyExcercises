@@ -57,7 +57,7 @@ namespace UI
         private void CaricaPrenotazioni()
         {
             label6.Text = ristorante.GetNumPosti().ToString();
-            prenotazioni = blPrenotazioni.GetAllPrenotazioni(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
+            prenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
             dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
             textBoxIdRist.Text = ristorante.GetIDRistorante().ToString();
 
@@ -115,7 +115,7 @@ namespace UI
         private void Prenotazione_Load(object sender, EventArgs e)
         {
             label6.Text = ristorante.GetNumPosti().ToString();
-            prenotazioni = blPrenotazioni.GetAllPrenotazioni(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
+            prenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
             textBox1.Text = username;
             dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
             textBoxIdRist.Text = ristorante.GetIDRistorante().ToString();
@@ -192,7 +192,7 @@ namespace UI
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
             prenotazioni.Clear();
-            prenotazioni = blPrenotazioni.GetAllPrenotazioni(ristorante.GetIDRistorante());
+            prenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante());
             dateEposti.Clear();
 
             inizioRangeSelezione = monthCalendar1.SelectionStart.Date;
