@@ -69,6 +69,7 @@ namespace ProgettoGestioneRistoranti
                         {
                             homepage = new Homepage(utente.UserName);
                             homepage.Show();
+                            this.Hide();
                         }
                         else
                         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using Engine;
@@ -58,6 +59,12 @@ namespace ProgettoGestioneRistoranti
             }
         }
 
+        public void AggiungiRigheConDatatable(DataTable ristoranti)
+        {
+            
+        }
+
+
         private Ristorante GetRistoranteFromSelectedRow(DataGridViewRow row)
         {
             int idRistorante = Convert.ToInt32(row.Cells["IDRistorante"].Value);
@@ -100,12 +107,15 @@ namespace ProgettoGestioneRistoranti
 
         private void ElencoRistoranti_Load(object sender, EventArgs e)
         {
-            AggiungiColonne();
+            // AggiungiColonne();
 
-            var ristoranti = bl.GetRistorantiFiltrati();
+            //var ristoranti = bl.GetRistorantiFiltrati();
 
             // Aggiungi manualmente le righe
-            AggiungiRighe(ristoranti);
+            //  AggiungiRighe(ristoranti);
+
+            DataTable ristoranti = bl.GetDatiElencoRistoranti();
+            dataGridView1.DataSource = ristoranti;
             dataGridView1.Columns["IDRistorante"].Visible = false;
         }
 

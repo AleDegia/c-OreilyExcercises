@@ -3,6 +3,7 @@ using Dal;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System;
+using System.Data;
 
 namespace Engine
 {
@@ -72,6 +73,11 @@ namespace Engine
         public List<Ristorante> GetRistorantiFiltrati2(string filtro, string input)
         {
             return dal.GetRistorantiFiltrati(filtro, input);
+        }
+
+        public DataTable GetDatiElencoRistoranti()
+        {
+            return dal.GetDatiElencoRistoranti();
         }
     }
 

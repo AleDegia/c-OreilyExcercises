@@ -184,5 +184,18 @@ namespace Dal
             return null;
         }
 
+        public DataTable GetDatiElencoRistoranti()
+        {
+            string query = $"Select IdRistorante, AnagraficaRistoranti.Tipologia, Descrizione as TipoRistorante, RagioneSociale, Indirizzo, Citta, Telefono FROM AnagraficaRistoranti left join Tipologia on AnagraficaRistoranti.Tipologia = Tipologia.Tipologia";
+            string connectionString = dbData.GetConnectionString();
+
+            DataTable tableRistoranti = new DataTable();
+
+            using (var adapter = new SqlDataAdapter(query, connectionString))
+            {
+                adapter.Fill(tableRistoranti);
+            }
+            return tableRistoranti;
+        }
     }
 }
