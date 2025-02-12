@@ -54,7 +54,7 @@ namespace UI
             this.username = username;
         }
 
-        private void CaricaPrenotazioni()
+        public void CaricaPrenotazioni()
         {
             label6.Text = ristorante.GetNumPosti().ToString();
             prenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
@@ -347,20 +347,32 @@ namespace UI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            
+
             try
             {
-            DateTime dataSelezionata = monthCalendar1.SelectionStart;
-            int idRistorante = Convert.ToInt32(textBoxIdRist.Text);
-            string username = textBox1.Text;
-            DateTime dataEOraCorrente = DateTime.Now.Date;
-            int numeroPersone = Convert.ToInt32(textBox4.Text);
+                DateTime dataSelezionata = monthCalendar1.SelectionStart;
+                int idRistorante = Convert.ToInt32(textBoxIdRist.Text);
+                string username = textBox1.Text;
+                Utente utente = blUtenti.GetUtente(username);
+                if (utente != null) //se l'utente è gia registrato 
+                {
 
-            Prenotazione prenotazione = new Prenotazione(idRistorante, username, dataEOraCorrente, dataSelezionata, numeroPersone);
-            
-                blPrenotazioni.AggiungiPrenotazione(prenotazione);
-               MessageBox.Show("Prenotazione avvenuta con successo per il giorno " + dataSelezionata.Day);
-                CaricaPrenotazioni();
+                    DateTime dataEOraCorrente = DateTime.Now.Date;
+                    int numeroPersone = Convert.ToInt32(textBox4.Text);
+
+                    Prenotazione prenotazione = new Prenotazione(idRistorante, username, dataEOraCorrente, dataSelezionata, numeroPersone);
+
+                    blPrenotazioni.AggiungiPrenotazione(prenotazione);
+                    MessageBox.Show("Prenotazione avvenuta con successo per il giorno " + dataSelezionata.Day);
+                    CaricaPrenotazioni();
+                }
+                else
+                {
+                    MessageBox.Show("Devi prima registrarti");
+                    InsertUtente insertUtente = new InsertUtente(this);
+                    insertUtente.SetTextBox1(username);
+                    insertUtente.Show();
+                }
             }
             catch (Exception ex)
             {

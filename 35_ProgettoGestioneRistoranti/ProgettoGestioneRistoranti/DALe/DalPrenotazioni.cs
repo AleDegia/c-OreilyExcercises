@@ -39,80 +39,71 @@ namespace DALe
                 throw new InvalidCastException("Impossibile fare il cast della lista");
             }
         }
-        
+
         public void AggiungiPrenotazione(Prenotazione prenotazione)
         {
-            //string connectionString = ConfigurationManager.ConnectionStrings["GestioneRistorantiConnectionString"].ConnectionString;
             try
             {
-                string query = "INSERT into Prenotazioni (IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) VALUES (@IDRistorante,@NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
-                //List<SqlParameter> parameters = new List<SqlParameter>();
+                string query = "INSERT INTO Prenotazioni (IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) " +
+                               "VALUES (@IDRistorante, @NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
 
-                //dbData.ExecuteCommand(query, parameters);
-
-                using (var connection = dbData.GetConn())
+                List<SqlParameter> parameters = new List<SqlParameter>
                 {
+                    new SqlParameter("@IDRistorante", SqlDbType.Int) { Value = prenotazione.IDRistorante },
+                    new SqlParameter("@NomeUtente", SqlDbType.VarChar) { Value = prenotazione.NomeUtente },
+                    new SqlParameter("@DataRichiesta", SqlDbType.DateTime) { Value = prenotazione.DataRichiesta },
+                    new SqlParameter("@DataPrenotazione", SqlDbType.DateTime) { Value = prenotazione.DataPrenotazione },
+                    new SqlParameter("@NumPersone", SqlDbType.Int) { Value = prenotazione.NumPersone }
+                };
 
-                    using (SqlCommand querySaveStaff = new SqlCommand(query))
-                    {
-                        querySaveStaff.Connection = connection;
-                        //openCon.Open();
+                // Usa ExecuteCommand per eseguire l'inserimento
+                dbData.ExecuteCommand(query, parameters);
 
-                        querySaveStaff.Parameters.AddWithValue("@IDRistorante", prenotazione.IDRistorante);
-                        querySaveStaff.Parameters.AddWithValue("@NomeUtente", prenotazione.NomeUtente);
-                        querySaveStaff.Parameters.AddWithValue("@DataRichiesta", prenotazione.DataRichiesta);
-                        querySaveStaff.Parameters.AddWithValue("@DataPrenotazione", prenotazione.DataPrenotazione);
-                        querySaveStaff.Parameters.AddWithValue("@NumPersone", prenotazione.NumPersone);
-
-                        querySaveStaff.ExecuteNonQuery();
-                    }
-                }
             }
             catch (SqlException sqlEx)
             {
-                 // Gestione specifica degli errori SQL
-                 Console.WriteLine("Errore SQL: " + sqlEx.Message);
-                 throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
+                // Gestione specifica degli errori SQL
+                Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
             }
             catch (Exception ex)
             {
-                 // Gestione di altre eccezioni
-                 Console.WriteLine("Errore generico: " + ex.Message);
-                 throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
+                // Gestione di altre eccezioni
+                Console.WriteLine("Errore generico: " + ex.Message);
+                throw new Exception("Si è verificato un errore durante l'esecuzione della prenotazione", ex);  // Rilancio dell'eccezione
             }
-            
         }
-        
+
+
 
         public List<Prenotazione> GetAllPrenotazioniRistorante(int idRistorante)
         {
-            //string connectionString = ConfigurationManager.ConnectionStrings["GestioneRistorantiConnectionString"].ConnectionString;
-            string query = $"SELECT * FROM Prenotazioni WHERE IDRistorante = {idRistorante}";
+            string query = "SELECT * FROM Prenotazioni WHERE IDRistorante = @IDRistorante";
             List<Prenotazione> prenotazioni = new List<Prenotazione>();
-            //MessageBox.Show(idRistorante.ToString());
+
+            // Parametri per la query
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@IDRistorante", SqlDbType.Int) { Value = idRistorante }
+            };
 
             try
             {
-                var connection = dbData.GetConn();
-                using (var adapter = new SqlDataAdapter(query, connection))
+                DataTable tablePrenotazioni = dbData.ExecuteCommand(query, parameters);
+
+                // Creazione della lista delle prenotazioni
+                foreach (DataRow row in tablePrenotazioni.Rows)
                 {
-                    var tablePrenotazioni = new DataTable();
-                    adapter.Fill(tablePrenotazioni);
-
-                    foreach (DataRow row in tablePrenotazioni.Rows)
-                    {
-                        var prenotazione = new Prenotazione
-                           (
-                               Convert.ToInt32(row["IDPrenotazione"]),
-                               Convert.ToInt32(row["IDRistorante"]),
-                               row["NomeUtente"].ToString(),
-                               Convert.ToDateTime(row["DataRichiesta"]),
-                               Convert.ToDateTime(row["DataPrenotazione"]),
-                               Convert.ToInt32(row["NumPersone"])
-
-                           );
-                        prenotazioni.Add(prenotazione);
-                    }
+                    var prenotazione = new Prenotazione
+                    (
+                        Convert.ToInt32(row["IDPrenotazione"]),
+                        Convert.ToInt32(row["IDRistorante"]),
+                        row["NomeUtente"].ToString(),
+                        Convert.ToDateTime(row["DataRichiesta"]),
+                        Convert.ToDateTime(row["DataPrenotazione"]),
+                        Convert.ToInt32(row["NumPersone"])
+                    );
+                    prenotazioni.Add(prenotazione);
                 }
             }
             catch (SqlException sqlEx)
@@ -125,46 +116,42 @@ namespace DALe
             {
                 // Gestione di altre eccezioni
                 Console.WriteLine("Errore generico: " + ex.Message);
-                throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
+                throw new Exception("Si è verificato un errore durante il recupero delle prenotazioni", ex);  // Rilancio dell'eccezione
             }
+
             return prenotazioni;
         }
+
 
         public List<Prenotazione> GetPrenotazioniPerData(DateTime data)
         {
             string query = "SELECT * FROM Prenotazioni WHERE DataPrenotazione = @DataPrenotazione";
             List<Prenotazione> prenotazioni = new List<Prenotazione>();
 
+            // Parametri per la query
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@DataPrenotazione", SqlDbType.DateTime) { Value = data.Date }  // Rimuove l'orario dalla data
+            };
+
             try
             {
-                //string connectionString = ConfigurationManager.ConnectionStrings["GestioneRistorantiConnectionString"].ConnectionString;
-                using (var connection = dbData.GetConn())   //prendo connessione aperta dal dbdata
+                // Usa ExecuteCommand per ottenere i dati
+                DataTable tablePrenotazioni = dbData.ExecuteCommand(query, parameters);
+
+                // Elaborazione dei dati e creazione della lista delle prenotazioni
+                foreach (DataRow row in tablePrenotazioni.Rows)
                 {
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        // Imposta il parametro con il valore della data
-                        command.Parameters.AddWithValue("@DataPrenotazione", data.Date); // Usa data.Date per rimuovere l'orario
-
-                        using (var adapter = new SqlDataAdapter(command))
-                        {
-                            var tablePrenotazioni = new DataTable();
-                            adapter.Fill(tablePrenotazioni);
-
-                            foreach (DataRow row in tablePrenotazioni.Rows)
-                            {
-                                var prenotazione = new Prenotazione
-                                (
-                                    Convert.ToInt32(row["IDPrenotazione"]),
-                                    Convert.ToInt32(row["IDRistorante"]),
-                                    row["NomeUtente"].ToString(),
-                                    Convert.ToDateTime(row["DataRichiesta"]),
-                                    Convert.ToDateTime(row["DataPrenotazione"]),
-                                    Convert.ToInt32(row["NumPersone"])
-                                );
-                                prenotazioni.Add(prenotazione);
-                            }
-                        }
-                    }
+                    var prenotazione = new Prenotazione
+                    (
+                        Convert.ToInt32(row["IDPrenotazione"]),
+                        Convert.ToInt32(row["IDRistorante"]),
+                        row["NomeUtente"].ToString(),
+                        Convert.ToDateTime(row["DataRichiesta"]),
+                        Convert.ToDateTime(row["DataPrenotazione"]),
+                        Convert.ToInt32(row["NumPersone"])
+                    );
+                    prenotazioni.Add(prenotazione);
                 }
             }
             catch (SqlException sqlEx)
@@ -180,6 +167,7 @@ namespace DALe
 
             return prenotazioni;
         }
+
 
         public List<Prenotazione> GetPrenotazioni()
         {
@@ -261,53 +249,50 @@ namespace DALe
 
         public Prenotazione GetPrenotazione(string username)
         {
-           
             string query = "SELECT TOP 1 * FROM Prenotazioni WHERE NomeUtente = @userName";
-            string connectionString = ConfigurationManager.ConnectionStrings["GestioneRistorantiConnectionString"].ConnectionString;
             Prenotazione prenotazione = null;
-            using (SqlConnection openCon = new SqlConnection(connectionString))  // Connessione al DB
+
+            // Parametro per la query
+            List<SqlParameter> parameters = new List<SqlParameter>
             {
-                try
-                {
-                    openCon.Open();  // Apre la connessione
+                new SqlParameter("@userName", SqlDbType.NVarChar) { Value = username }
+            };
 
-                    using (SqlCommand command = new SqlCommand(query, openCon))  // Crea il comando
-                    {
-                        // Aggiungi il parametro per evitare attacchi di SQL injection
-                        command.Parameters.AddWithValue("@userName", username);
+            try
+            {
+                DataTable tablePrenotazioni = dbData.ExecuteCommand(query, parameters);
 
-                        using (SqlDataReader reader = command.ExecuteReader())  // Esegui la query
-                        {
-                            if (reader.Read())  // Se un record è stato trovato
-                            {
-                                prenotazione = new Prenotazione
-                                (
-                                    reader.GetInt32(reader.GetOrdinal("IDPrenotazione")),
-                                    reader.GetInt32(reader.GetOrdinal("IDRistorante")),
-                                    reader.GetString(reader.GetOrdinal("NomeUtente")),
-                                    reader.GetDateTime(reader.GetOrdinal("DataRichiesta")),
-                                    reader.GetDateTime(reader.GetOrdinal("DataPrenotazione")),
-                                    reader.GetInt32(reader.GetOrdinal("NumPersone"))
-                                );
-                            }
-                        }
-                    }
-                }
-                catch (SqlException ex)
+                // Se è stato trovato un record, crea la prenotazione
+                if (tablePrenotazioni.Rows.Count > 0)
                 {
-                    // Gestione degli errori SQL
-                    Console.WriteLine("Errore SQL: " + ex.Message);
-                    throw new Exception("Errore durante il recupero dell'utente", ex);  // Rilancia l'eccezione
-                }
-                catch (Exception ex)
-                {
-                    // Gestione degli errori generici
-                    Console.WriteLine("Errore generico: " + ex.Message);
-                    throw new Exception("Errore durante il recupero dell'utente", ex);  // Rilancia l'eccezione
+                    var row = tablePrenotazioni.Rows[0];
+                    prenotazione = new Prenotazione
+                    (
+                        Convert.ToInt32(row["IDPrenotazione"]),
+                        Convert.ToInt32(row["IDRistorante"]),
+                        row["NomeUtente"].ToString(),
+                        Convert.ToDateTime(row["DataRichiesta"]),
+                        Convert.ToDateTime(row["DataPrenotazione"]),
+                        Convert.ToInt32(row["NumPersone"])
+                    );
                 }
             }
+            catch (SqlException sqlEx)
+            {
+                // Gestione degli errori SQL
+                Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                throw new Exception("Errore durante il recupero della prenotazione", sqlEx);  // Rilancia l'eccezione
+            }
+            catch (Exception ex)
+            {
+                // Gestione degli errori generici
+                Console.WriteLine("Errore generico: " + ex.Message);
+                throw new Exception("Errore durante il recupero della prenotazione", ex);  // Rilancia l'eccezione
+            }
+
             return prenotazione;
         }
+
 
         public void CancellaPrenotazione(string username)
         {

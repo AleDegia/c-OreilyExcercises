@@ -454,6 +454,46 @@ namespace DALe
         }
 
 
+        public DataTable ExecuteCommand(string query, List<SqlParameter> parameters = null, CommandType commandType = CommandType.Text)
+        {
+            DataTable result = new DataTable();
+
+            // Utilizza la connessione solo all'interno di questo metodo
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Crea il comando con il tipo di comando desiderato
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = query;
+                    cmd.CommandType = commandType;
+
+                    // Aggiungi i parametri, se esistono
+                    if (parameters != null)
+                    {
+                        foreach (SqlParameter parameter in parameters)
+                        {
+                            cmd.Parameters.Add(parameter);
+                        }
+                    }
+
+                    // Esegui il comando e carica i dati nel DataTable
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        result.Load(reader);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+
+
+
+
 
         public Utente GetUtente(string username)
         {

@@ -284,5 +284,16 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
+
+        public System.Windows.Forms.TextBox GetTextBox1()
+        {
+            return textBox1;
+        }
+
+        public void SetTextBox1(string text)
+        {
+            textBox1.Text = text;
+        }
+
     }
 }

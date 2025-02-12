@@ -19,6 +19,7 @@ namespace ProgettoGestioneRistoranti
     {
         private BlUtenti bl;
         private ElencoUtenti elencoUtenti;
+        private FormPrenotazione formPrenotazione;
         public InsertUtente(ElencoUtenti elencoUtenti)
         {
             InitializeComponent();
@@ -31,6 +32,14 @@ namespace ProgettoGestioneRistoranti
             InitializeComponent();
             bl = new BlUtenti();
         }
+
+        public InsertUtente(FormPrenotazione formPrenotazione)
+        {
+            InitializeComponent();
+            bl = new BlUtenti();
+            this.formPrenotazione = formPrenotazione;
+        }
+
 
         private void label2_Click(object sender, EventArgs e)
         {
@@ -144,6 +153,7 @@ namespace ProgettoGestioneRistoranti
                     elencoUtenti.AggiungiRighe(utenti);
 
                     elencoUtenti.SetDataGridView(dataGridView1);
+                    formPrenotazione.CaricaPrenotazioni();
                     this.Hide();
                 }
                 else

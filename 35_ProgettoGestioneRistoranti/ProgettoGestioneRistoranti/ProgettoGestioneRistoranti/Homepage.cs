@@ -70,7 +70,6 @@ namespace UI
                     {
                         guadagniPerMese[meseAnno] = guadagno; // Inizia il guadagno per il mese
                     }
-                    
                 }
             }
 

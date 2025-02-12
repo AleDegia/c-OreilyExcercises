@@ -18,7 +18,7 @@ namespace Engine
         }
 
 
-	    public List<Ristorante> GetRistorantiFiltrati()
+        public List<Ristorante> GetRistorantiFiltrati()
         {
             try
             {
@@ -42,8 +42,8 @@ namespace Engine
             }
             catch (Exception ex)
             {
-               // Console.WriteLine("Errore durante il recupero del ristorante: " + ex.Message);
-                throw;  
+                // Console.WriteLine("Errore durante il recupero del ristorante: " + ex.Message);
+                throw;
             }
         }
 
@@ -56,7 +56,7 @@ namespace Engine
             catch (Exception ex)
             {
                 //Console.WriteLine("Errore durante l'aggiunta del ristorante: " + ex.Message);
-                throw;  
+                throw;
             }
         }
 
@@ -79,6 +79,10 @@ namespace Engine
         {
             return dal.GetDatiElencoRistoranti();
         }
-    }
 
+        public Dictionary<string, decimal> GetGuadagniPerMese2024()
+        {
+            return dal.GetGuadagniPerMese2024();
+        }
+    }
 }
