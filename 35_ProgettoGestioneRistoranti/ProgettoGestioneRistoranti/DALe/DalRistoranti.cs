@@ -20,7 +20,7 @@ namespace Dal
             dbData = new DbData<Ristorante>();
         }
 
-       
+
         public Ristorante GetRistorante(int id)
         {
             //per prendere la propagazione dell'errore da dbData
@@ -34,7 +34,7 @@ namespace Dal
                 throw;  // Rilancia l'eccezione per propagarla ulteriormente
             }
         }
-       
+
         public List<Ristorante> GetRistoranti()
         {
             try
@@ -71,7 +71,7 @@ namespace Dal
         }
 
         public void CancellaRistorante(string id, string nomeTabella)
-        { 
+        {
             dbData.CancellaEntity(id, nomeTabella);
         }
 
@@ -144,31 +144,32 @@ namespace Dal
             FROM AnagraficaRistoranti
             LEFT JOIN Tipologia ON AnagraficaRistoranti.Tipologia = Tipologia.Tipologia";
 
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            //List<SqlParameter> parameters = new List<SqlParameter>();
 
             // Chiamo il metodo ExecuteSelectCommand per ottenere i dati
-            return dbData.ExecuteCommand(query, parameters);
+            return dbData.ExecuteCommand(query);
         }
 
 
         public Dictionary<string, decimal> GetGuadagniPerMese2024()
         {
-            //converte in mese e anno, Calcola il guadagno totale per ogni prenotazione, filtra
+            //converte in mese e anno, Calcola il guadagno totale per ogni prenotazione se la data è nel 2024
             string query = @"
-        SELECT 
-            FORMAT(P.DataPrenotazione, 'MMMM yyyy') AS MeseAnno, 
-            SUM(R.PrezzoMedio * P.NumPersone) AS GuadagnoMensile
-        FROM 
-            Prenotazioni P
-        JOIN 
-            AnagraficaRistoranti R ON P.IDRistorante = R.IDRistorante
-        WHERE 
-            P.DataPrenotazione >= '2024-01-01' AND P.DataPrenotazione < '2025-01-01'
-        GROUP BY 
-            FORMAT(P.DataPrenotazione, 'MMMM yyyy')
-        ORDER BY 
-            MeseAnno;
-        ";
+                SELECT 
+                    FORMAT(P.DataPrenotazione, 'MMMM yyyy') AS MeseAnno, 
+                    SUM(R.PrezzoMedio * P.NumPersone) AS GuadagnoMensile
+                FROM 
+                    Prenotazioni P
+                JOIN 
+                    AnagraficaRistoranti R ON P.IDRistorante = R.IDRistorante
+                WHERE 
+                    YEAR(P.DataPrenotazione) = 2024
+                GROUP BY 
+                    FORMAT(P.DataPrenotazione, 'yyyyMM'), 
+                    FORMAT(P.DataPrenotazione, 'MMMM yyyy')
+                ORDER BY 
+                     FORMAT(P.DataPrenotazione, 'yyyyMM');
+            ";
 
             List<SqlParameter> parameters = new List<SqlParameter>(); // Nessun parametro aggiuntivo necessario in questo caso
             DataTable resultTable = dbData.ExecuteCommand(query, parameters);
@@ -187,5 +188,47 @@ namespace Dal
             return guadagniPerMese;
         }
 
+
+
+        public Dictionary<string, decimal> GetGuadagniPerMeseRistorante(int id)
+        {
+            //converte in mese e anno, Calcola il guadagno totale per ogni prenotazione se la data è nel 2024
+            string query = @"
+                SELECT 
+                    FORMAT(P.DataPrenotazione, 'MMMM yyyy') AS MeseAnno, 
+                    SUM(R.PrezzoMedio * P.NumPersone) AS GuadagnoMensile
+                FROM 
+                    Prenotazioni P
+                JOIN 
+                    AnagraficaRistoranti R ON P.IDRistorante = R.IDRistorante
+                WHERE 
+                    YEAR(P.DataPrenotazione) = 2024 AND R.IDRistorante = @id
+                GROUP BY 
+                    FORMAT(P.DataPrenotazione, 'MMMM yyyy')
+                ORDER BY 
+                    MeseAnno;
+            ";
+
+            List<SqlParameter> parameters = new List<SqlParameter>(); // Nessun parametro aggiuntivo necessario in questo caso
+            parameters.Add(new SqlParameter("@id", SqlDbType.Int)
+             { 
+                Value = Convert.ToInt32(id) 
+            }
+            );
+            DataTable resultTable = dbData.ExecuteCommand(query, parameters);
+
+            // Crea il dizionario per i guadagni per mese
+            Dictionary<string, decimal> guadagniPerMese = new Dictionary<string, decimal>();
+
+            foreach (DataRow row in resultTable.Rows)
+            {
+                string meseAnno = row["MeseAnno"].ToString();
+                decimal guadagno = Convert.ToDecimal(row["GuadagnoMensile"]);
+
+                guadagniPerMese[meseAnno] = guadagno;
+            }
+
+            return guadagniPerMese;
+        }
     }
 }

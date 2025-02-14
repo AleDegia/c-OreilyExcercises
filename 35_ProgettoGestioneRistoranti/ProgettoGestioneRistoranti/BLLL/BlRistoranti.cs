@@ -84,5 +84,10 @@ namespace Engine
         {
             return dal.GetGuadagniPerMese2024();
         }
+
+        public Dictionary<string, decimal> GetGuadagniPerMeseRistorante(int id)
+        {
+            return dal.GetGuadagniPerMeseRistorante(id);
+        }
     }
 }

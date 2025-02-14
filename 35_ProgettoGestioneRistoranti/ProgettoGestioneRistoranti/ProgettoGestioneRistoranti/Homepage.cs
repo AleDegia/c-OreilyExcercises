@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace UI
 {
@@ -22,6 +23,8 @@ namespace UI
         private BlPrenotazioni blPrenotazioni;
         private BlRistoranti blRistoranti;
         private string username;
+        private List<Ristorante> ristoranti;
+        private Ristorante ristorante;
         public Homepage(string username)
         {
             InitializeComponent();
@@ -30,6 +33,7 @@ namespace UI
             this.username = username;
             blPrenotazioni = new BlPrenotazioni();
             blRistoranti = new BlRistoranti();
+            ristoranti = new List<Ristorante>();
         }
 
         private void toolStripTextBox1_Click(object sender, EventArgs e)
@@ -37,47 +41,30 @@ namespace UI
 
         }
 
+        //devo per ogni ristorante prendere ogni prenotazione e calcolarne il guadagno (num posti della prenotazione * prezzo medio ristorante)
         private void Form1_Load(object sender, EventArgs e)
         {
+            //riempio comboBox coi ristoranti
+            ristoranti = blRistoranti.GetRistorantiFiltrati();
+            foreach (Ristorante rist in ristoranti)
+            {
+               comboBox1.Items.Add(rist.GetRagioneSociale());
+            }
+            //chart3.Series.Add("Ricavi");
+            chart3.ChartAreas[0].AxisX.LabelStyle.Angle = 45;  // Ruota le etichette per evitare sovrapposizioni
+            chart3.ChartAreas[0].AxisX.Interval = 1;
+
             //recupero tutte le prenotazioni per ogni ristorante e ne calcolo i guadagni per mese col prezzo medio del ristorante
             List<Prenotazione> prenotazioni = blPrenotazioni.GetAllPrenotazioni();
-            List<Ristorante> ristoranti = blRistoranti.GetRistorantiFiltrati();
             // Dizionario per tenere traccia dei guadagni per ogni mese
             Dictionary<string, decimal> guadagniPerMese = new Dictionary<string, decimal>();
 
-
-            foreach (Prenotazione pren in prenotazioni)
-            {
-                // Trova il ristorante corrispondente alla prenotazione
-                Ristorante ristorante = ristoranti.FirstOrDefault(r => r.GetIDRistorante() == pren.IDRistorante);
-
-                // Verifica che il ristorante esista e che la prenotazione sia per il 2024
-                if (ristorante != null && pren.DataPrenotazione.Year == 2024)
-                {
-                    // Calcola il guadagno per la prenotazione
-                    int numPersone = pren.NumPersone;
-                    decimal guadagno = ristorante.GetPrezzoMedio() * numPersone;
-
-                    // Crea la chiave del dizionario usando il mese (es. "Gennaio", "Febbraio", ecc.)
-                    string meseAnno = pren.DataPrenotazione.ToString("MMMM yyyy"); // Esempio: "Gennaio 2024"
-
-                    // Aggiungi il guadagno al mese corrispondente
-                    if (guadagniPerMese.ContainsKey(meseAnno))
-                    {
-                        guadagniPerMese[meseAnno] += guadagno; // Somma al guadagno esistente
-                    }
-                    else         //se non trova una chiave meseAnno uguale alla var fornita allora crea una nuova coppia con meseAnno e il valore guadagno
-                    {
-                        guadagniPerMese[meseAnno] = guadagno; // Inizia il guadagno per il mese
-                    }
-                }
-            }
-
+            guadagniPerMese = blRistoranti.GetGuadagniPerMese2024();
 
             // Aggiungi i punti dati al grafico
             foreach (var mese in guadagniPerMese)
             {
-                chart1.Series["Entrate"].Points.AddXY(mese.Key, mese.Value);
+                chart1.Series["Ricavi"].Points.AddXY(mese.Key, mese.Value);
             }
 
             // Configura l'asse X per visualizzare tutte le etichette
@@ -162,6 +149,28 @@ namespace UI
         }
 
         private void chart2_Click(object sender, EventArgs e)
+        {
+        }
+
+        //quando seleziono un ristorante devo cambiare i dati del grafico con i guadagni del 2024 di quel ristorante
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+            ristorante = ristoranti.FirstOrDefault(r => r.GetRagioneSociale() == comboBox1.SelectedItem.ToString());
+            
+            Dictionary<string, decimal> guadagniPerMeseRistorante = new Dictionary<string, decimal>();
+            guadagniPerMeseRistorante = blRistoranti.GetGuadagniPerMeseRistorante(ristorante.GetIDRistorante());
+
+            // Aggiungi i punti dati al grafico
+            chart3.Series["Ricavi"].Points.Clear();
+            foreach (var mese in guadagniPerMeseRistorante)
+            {
+                chart3.Series["Ricavi"].Points.AddXY(mese.Key, mese.Value);
+            }
+
+        }
+
+        private void chart3_Click(object sender, EventArgs e)
         {
         }
     }
