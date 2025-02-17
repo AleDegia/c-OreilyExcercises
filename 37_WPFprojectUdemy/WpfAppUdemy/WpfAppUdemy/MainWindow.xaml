@@ -1,0 +1,24 @@
+﻿<Window x:Class="WpfAppUdemy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppUdemy"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Prima riga per il TextBlock -->
+            <RowDefinition Height="Auto"/>
+            <!-- Seconda riga per il Button -->
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0">  Text="Hello <Bold>world</Bold> and hello to <Italic>you</Italic>" 
+    <LineBreak></LineBreak>
+    Go to <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://www.google.com"> sito </Hyperlink>
+        </TextBlock>
+        <Button Grid.Row="1" x:Name="MyButton" Content="Hello world" />
+    </Grid>
+
+</Window>
