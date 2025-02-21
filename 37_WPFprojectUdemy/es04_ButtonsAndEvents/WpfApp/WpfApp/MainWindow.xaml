@@ -7,15 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel>
-        <Label Margin="16,16,16,0" BorderThickness="1" BorderBrush="Black">
-            <StackPanel Orientation="Horizontal">
-                <Image Width="115" Source="https://png.pngtree.com/png-vector/20190927/ourmid/pngtree-email-icon-png-image_1757854.jpg" />
-                <AccessText FontSize="32" Text="Message"/>
-            </StackPanel>
-        </Label>
-        <TextBox 
-            Margin="16"
-            FontSize="32"
-        ></TextBox>
+        <Button x:Name="myButton" Width="100" Height="30" Click="Button_Click" 
+                MouseEnter="myButton_MouseEnter" MouseLeave="myButton_MouseLeave">Click Here!</Button>
+        <Label Name="myLabel" FontSize="16">Hello</Label>
     </StackPanel>
 </Window>

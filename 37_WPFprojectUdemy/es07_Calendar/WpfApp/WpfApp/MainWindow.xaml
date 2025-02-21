@@ -7,15 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel>
-        <Label Margin="16,16,16,0" BorderThickness="1" BorderBrush="Black">
-            <StackPanel Orientation="Horizontal">
-                <Image Width="115" Source="https://png.pngtree.com/png-vector/20190927/ourmid/pngtree-email-icon-png-image_1757854.jpg" />
-                <AccessText FontSize="32" Text="Message"/>
-            </StackPanel>
-        </Label>
-        <TextBox 
-            Margin="16"
-            FontSize="32"
-        ></TextBox>
+        <Viewbox Stretch="Uniform">
+            <Calendar x:Name="myCalendar" SelectedDate="01.01.2022" SelectedDatesChanged="myCalendar_SelectedDatesChanged"></Calendar>
+        </Viewbox>
+        <TextBlock x:Name="myTextBlock"></TextBlock>
     </StackPanel>
 </Window>
