@@ -7,7 +7,7 @@ using Models;
 using ProgettoGestioneRistoranti;
 using UI;
 
-namespace ProgettoGestioneRistorantiWeb
+namespace ProgettoGestioneRistoranti
 {
     internal static class Program2
     {
