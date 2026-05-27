@@ -126,6 +126,12 @@
     <Compile Include="Homepage.Designer.cs">
       <DependentUpon>Homepage.cs</DependentUpon>
     </Compile>
+    <Compile Include="InsertPrenotazione.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InsertPrenotazione.Designer.cs">
+      <DependentUpon>InsertPrenotazione.cs</DependentUpon>
+    </Compile>
     <Compile Include="InsertRistorante.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,6 +193,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Homepage.resx">
       <DependentUpon>Homepage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InsertPrenotazione.resx">
+      <DependentUpon>InsertPrenotazione.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InsertRistorante.resx">
       <DependentUpon>InsertRistorante.cs</DependentUpon>

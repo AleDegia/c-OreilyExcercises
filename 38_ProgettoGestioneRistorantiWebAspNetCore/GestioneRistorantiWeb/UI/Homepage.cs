@@ -130,7 +130,13 @@ namespace UI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            elencoRistoranti.Show();
+            if (elencoRistoranti == null || elencoRistoranti.IsDisposed)
+            {
+                elencoRistoranti = new ElencoRistoranti(username);
+                elencoRistoranti.Show();
+            }
+            else 
+                elencoRistoranti.Show();
         }
 
         private void button5_Click(object sender, EventArgs e)

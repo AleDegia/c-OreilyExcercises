@@ -8,7 +8,12 @@ namespace Dal
 {
     public class DalUtenti
     {
-        private DbData<Utente> dbData;  //ciò che dice a DbData che T = Utente
+        private readonly DbData<Utente> dbData; //ciò che dice a DbData che T = Utente
+
+        public DalUtenti(DbData<Utente> dbData)             
+        {
+            this.dbData = dbData;
+        }
 
         public DalUtenti()
         {

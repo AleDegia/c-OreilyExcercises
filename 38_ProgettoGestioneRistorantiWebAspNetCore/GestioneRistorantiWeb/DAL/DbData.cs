@@ -4,24 +4,41 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Microsoft.Extensions.Configuration;
 
 
 namespace DALe
 {
     public class DbData<T> where T : class
     {
-        private string connectionString;
+        private readonly string connectionString;
         private SqlConnection connectionObj;
+
         public DbData()
         {
-            connectionString = ConfigurationManager.ConnectionStrings["GestioneRistorantiConnectionString"].ConnectionString;
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+
+            connectionString = configuration.GetConnectionString(
+                "GestioneRistorantiConnectionString"
+            );
         }
+
+        public DbData(IConfiguration configuration)
+        {
+            connectionString = configuration.GetConnectionString(
+                "GestioneRistorantiConnectionString"
+            );
+        }
+
         public SqlConnection GetConn()
         {
             if (connectionObj == null)
@@ -29,6 +46,7 @@ namespace DALe
                 connectionObj = new SqlConnection(connectionString);
                 connectionObj.Open();
             }
+
             return connectionObj;
         }
 
