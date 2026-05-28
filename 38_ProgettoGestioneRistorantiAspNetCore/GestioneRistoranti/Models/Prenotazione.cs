@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
+    [Table("Prenotazioni")]
     public class Prenotazione
     {
         private int _idPrenotazione { get; set; }
@@ -37,6 +40,7 @@ namespace Models
         }
 
         // Getter e Setter per IDPrenotazione
+        [Key]
         public int IDPrenotazione
         {
             get { return _idPrenotazione; }
@@ -44,6 +48,7 @@ namespace Models
         }
 
         // Getter e Setter per IDRistorante
+        [ForeignKey("IDRistorante")]
         public int IDRistorante
         {
             get { return _idRistorante; }

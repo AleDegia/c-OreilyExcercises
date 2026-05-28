@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 namespace DALe
@@ -19,7 +21,14 @@ namespace DALe
     {
         private readonly string connectionString;
         private SqlConnection connectionObj;
+        private GestioneRistorantiContext context;
+        public DbData(GestioneRistorantiContext context)
+        {
+            this.context = context;
+        }
 
+        //public DbData(){ }
+        
         public DbData()
         {
             var configuration = new ConfigurationBuilder()
@@ -30,14 +39,21 @@ namespace DALe
             connectionString = configuration.GetConnectionString(
                 "GestioneRistorantiConnectionString"
             );
+
+            var options = new DbContextOptionsBuilder<GestioneRistorantiContext>()
+       .UseSqlServer(connectionString)
+       .Options;
+
+            context = new GestioneRistorantiContext(options);
         }
 
-        public DbData(IConfiguration configuration)
-        {
-            connectionString = configuration.GetConnectionString(
-                "GestioneRistorantiConnectionString"
-            );
-        }
+        //Per DI
+        //public DbData(IConfiguration configuration)
+        //{
+        //    connectionString = configuration.GetConnectionString(
+        //        "GestioneRistorantiConnectionString"
+        //    );
+        //}
 
         public SqlConnection GetConn()
         {
@@ -91,170 +107,15 @@ namespace DALe
 
         public T GetEntity(int id)
         {
-            string tableName = GetTableName(typeof(T));
-            string idName = GetIdColName(typeof(T));
-
-            string query = $"SELECT TOP 1 * FROM {tableName} WHERE {idName} = @id";
-            T entity = default(T);  // Inizializza l'entità come valore predefinito (perchè??)
-
-            using (SqlConnection openCon = new SqlConnection(connectionString))  // Connessione al DB
-            {
-                try
-                {
-                    openCon.Open();  
-
-                    using (SqlCommand command = new SqlCommand(query, openCon))  
-                    {
-                        command.Parameters.AddWithValue("@id", id);
-
-                        // Eseguo la query
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())  // Se trova un record
-                            {
-                                if(tableName.Contains("AnagraficaRistoranti"))
-                                {
-                                    entity = (T)(object) new Ristorante //cast prima a object e poi a T
-                                    (
-                                        reader.GetInt32(reader.GetOrdinal("IDRistorante")),
-                                        reader.GetInt32(reader.GetOrdinal("Tipologia")),
-                                        reader.GetString(reader.GetOrdinal("Indirizzo")),
-                                        reader.GetString(reader.GetOrdinal("RagioneSociale")),
-                                        reader.GetString(reader.GetOrdinal("PartitaIva")),
-                                        reader.GetInt32(reader.GetOrdinal("NumPosti")),
-                                        reader.GetDecimal(reader.GetOrdinal("PrezzoMedio")),
-                                        reader.GetString(reader.GetOrdinal("Telefono")),
-                                        reader.GetString(reader.GetOrdinal("Citta"))
-                                    );
-                                }
-                                else if(tableName == "Utenti")
-                                {
-                                    entity = (T)(object) new Utente
-                                    (
-                                       reader.GetString(reader.GetOrdinal("UserName")),
-                                       reader.GetString(reader.GetOrdinal("Password")),
-                                       reader.GetBoolean(reader.GetOrdinal("IsAdministrator")),
-                                       reader.GetString(reader.GetOrdinal("Descrizione")),
-                                       reader.GetString(reader.GetOrdinal("Email")),
-                                       reader.GetString(reader.GetOrdinal("Telefono")),
-                                       reader.GetString(reader.GetOrdinal("Citta"))
-                                   );
-                                }
-                                else if(tableName == "Prenotazioni")
-                                {
-                                    entity = (T)(object) new Prenotazione
-                                    (
-                                        reader.GetInt32(reader.GetOrdinal("IDPrenotazione")),
-                                        reader.GetInt32(reader.GetOrdinal("IDRistorante")),
-                                        reader.GetString(reader.GetOrdinal("NomeUtente")),
-                                        reader.GetDateTime(reader.GetOrdinal("DataRichiesta")),
-                                        reader.GetDateTime(reader.GetOrdinal("DataPrenotazione")),
-                                        reader.GetInt32(reader.GetOrdinal("NumPersone"))
-                                    );
-                                }
-                            }
-                        }
-                    }
-
-                }
-                catch (SqlException ex)
-                {
-                    // Gestione specifica degli errori SQL
-                    Console.WriteLine("Errore SQL: " + ex.Message);
-                    throw new Exception("Errore durante il recupero dell'entità: " + ex.Message, ex) ;  // Rilancia l'eccezione per propagarla ai livelli superiori
-                }
-                catch (Exception ex)
-                {
-                    // Gestione di eccezioni generiche
-                    Console.WriteLine("Errore generico: " + ex.Message);
-                    throw new Exception("Errore durante il recupero dell'entità: " + ex.Message, ex) ;  // Rilancia l'eccezione per propagarla
-                }
-
-            }
-            return entity;
+            //context.Database.OpenConnection();
+            //Set<T>() è un metodo di DbContext che restituisce un DbSet<T>, che rappresenta una collezione di entità del tipo T.
+            return context.Set<T>().Find(id);  // Find() è un metodo di DbSet<T> che cerca un'entità in base alla chiave primaria (id in questo caso)
         }
 
         //invece che fare GetRistoranti, GetUtenti, ecc, faccio tutto qui
         public List<object> GetAllEntities()
         {
-            string tableName = GetTableName(typeof(T));
-            string idName = GetIdColName(typeof(T));
-            //var entities = new List<T>();    
-            var entities = new List<object>();  // Usa List<object> per contenere qualsiasi tipo
-            string query = $"SELECT * FROM {tableName}";
-
-            try
-            {
-                using (var adapter = new SqlDataAdapter(query, connectionString))
-                {
-                    var booksTable = new DataTable();
-                    adapter.Fill(booksTable);
-
-                    foreach (DataRow row in booksTable.Rows)
-                    {
-                        if (tableName == "AnagraficaRistoranti")
-                        {
-
-                            var ristorante = new Ristorante
-                               (
-                                   Convert.ToInt32(row["IDRistorante"]),
-                                   Convert.ToInt32(row["Tipologia"]),
-                                   row["Indirizzo"].ToString(),
-                                   row["RagioneSociale"].ToString(),
-                                   row["PartitaIva"].ToString(),
-                                   Convert.ToInt32(row["NumPosti"]),
-                                   Convert.ToDecimal(row["PrezzoMedio"]),
-                                   row["Telefono"].ToString(),
-                                   row["Citta"].ToString()
-                               //)
-                               );
-                            entities.Add(ristorante);
-                        }
-                        if (tableName == "Utenti")
-                        {
-                            var utente = new Utente
-                            (
-                                row["UserName"].ToString(),
-                                row["Password"].ToString(),
-                                Convert.ToBoolean(row["IsAdministrator"]),
-                                row["Descrizione"].ToString(),
-                                row["Email"].ToString(),
-                                row["Telefono"].ToString(),
-                                row["Citta"].ToString()
-                             //   )
-                             );
-                            entities.Add(utente);
-                        }
-                        else if(tableName == "Prenotazioni")
-                        {
-                            var prenotazione = new Prenotazione
-                           (
-                               Convert.ToInt32(row["IDPrenotazione"]),
-                               Convert.ToInt32(row["IDRistorante"]),
-                               row["NomeUtente"].ToString(),
-                               Convert.ToDateTime(row["DataRichiesta"]),
-                               Convert.ToDateTime(row["DataPrenotazione"]),
-                               Convert.ToInt32(row["NumPersone"])
-                            );
-                            entities.Add(prenotazione);
-                        }
-                    }
-                }
-            }
-            catch (SqlException sqlEx)
-            {
-                // Gestione specifica degli errori SQL
-                Console.WriteLine("Errore SQL: " + sqlEx.Message);
-                throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
-            }
-            catch (Exception ex)
-            {
-                // Gestione di altre eccezioni
-                Console.WriteLine("Errore generico: " + ex.Message);
-                throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
-            }
-
-            return entities;
+            return context.Set<T>().Cast<object>().ToList(); // Restituisce tutte le entità del tipo T come una lista di oggetti
         }
 
         public void AggiungiEntity(T entity)

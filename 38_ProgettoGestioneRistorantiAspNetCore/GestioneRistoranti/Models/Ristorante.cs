@@ -1,34 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Models
 {
+    [Table("AnagraficaRistoranti")] //nome della tabella nel database
     public class Ristorante : AbstractClass
     {
-        private int IDRistorante { get; set; }
+        private int _idRistorante { get; set; }
         [Required]
         [Range(1, 5, ErrorMessage = "Tipologia deve essere compreso tra 1 e 5.")]
-        private int Tipologia { get; set; }     //riferimento a tabella tipologia
+        public int Tipologia { get; set; }     //riferimento a tabella tipologia
         [Required]
         [StringLength(100, ErrorMessage = "L'indirizzo non può superare i 100 caratteri.")]
-        private string Indirizzo { get; set; }
+        public string Indirizzo { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "La Ragione Sociale non può superare i 100 caratteri.")]
-        private string RagioneSociale { get; set; }
+        public string RagioneSociale { get; set; }
         [Required]
         [MaxLength(13)]
         [MinLength(13)]
         [RegularExpression(@"^IT", ErrorMessage = "La Partita IVA deve iniziare con 'IT'.")]
-        private string PartitaIva { get; set; }
+        public string PartitaIva { get; set; }
         [Required]
-        private int NumPosti { get; set; }
+        public int NumPosti { get; set; }
         [Required]
         [RegularExpression(@"^\d+(\.\d{1,2})?$")]   //max 2 numeri decimali
-        private decimal PrezzoMedio {  get; set; }
+        public decimal PrezzoMedio {  get; set; }
 
         public Ristorante(int idRistorante, int tipologia, string indirizzo, string ragioneSociale, string partitaIva, int numPosti, decimal prezzoMedio, string telefono, string citta) : base(telefono, citta)
         {
@@ -49,6 +51,12 @@ namespace Models
         //private List<Prenotazione> Prenotazioni { get; set;}
 
         // Proprietà pubbliche per accedere ai campi privati
+        [Key]
+        public int IDRistorante
+        {
+            get { return _idRistorante; }
+            set { _idRistorante = value; }
+        }
         public int GetIDRistorante() => IDRistorante;
         public int GetTipologia() => Tipologia;
         public string GetIndirizzo() => Indirizzo;
