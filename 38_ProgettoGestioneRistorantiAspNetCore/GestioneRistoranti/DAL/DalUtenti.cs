@@ -74,9 +74,9 @@ namespace Dal
             dbData.ModificaEntity(utente);
         }
 
-        public void CancellaUtente(string username)
+        public void CancellaUtente(Utente utente)
         {
-            dbData.CancellaEntity(username, "Utenti");
+            dbData.CancellaEntity(utente);
         }
 
 

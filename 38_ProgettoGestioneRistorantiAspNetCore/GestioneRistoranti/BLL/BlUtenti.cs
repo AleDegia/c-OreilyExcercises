@@ -32,9 +32,9 @@ namespace BLLL
             dal.ModificaUtente(utente);
         }
 
-        public void CancellaUtente(string username)
+        public void CancellaUtente(Utente utente)
         {
-            dal.CancellaUtente(username);
+            dal.CancellaUtente(utente);
         }
     }
 }

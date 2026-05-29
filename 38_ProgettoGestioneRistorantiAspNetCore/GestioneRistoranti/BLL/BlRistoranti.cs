@@ -65,9 +65,9 @@ namespace Engine
             dal.ModificaRistorante(ristorante);
         }
 
-        public void CancellaRistorante(string id, string nomeTabella)
+        public void CancellaRistorante(Ristorante ristorante)
         {
-            dal.CancellaRistorante(id, nomeTabella);
+            dal.CancellaRistorante(ristorante);
         }
 
         public List<Ristorante> GetRistorantiFiltrati2(string filtro, string input)

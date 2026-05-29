@@ -70,9 +70,9 @@ namespace Dal
             dbData.ModificaEntity(ristorante);
         }
 
-        public void CancellaRistorante(string id, string nomeTabella)
+        public void CancellaRistorante(Ristorante ristorante)
         {
-            dbData.CancellaEntity(id, nomeTabella);
+            dbData.CancellaEntity(ristorante);
         }
 
         //da far fare adl dbData

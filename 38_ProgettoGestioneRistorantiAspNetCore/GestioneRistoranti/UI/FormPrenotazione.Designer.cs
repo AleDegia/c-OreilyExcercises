@@ -28,420 +28,420 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.UtentiPrenotati = new System.Windows.Forms.ListBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.Nome = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBoxIdRist = new System.Windows.Forms.TextBox();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.label16 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.SuspendLayout();
+            label1 = new Label();
+            label2 = new Label();
+            monthCalendar1 = new MonthCalendar();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+            UtentiPrenotati = new ListBox();
+            label8 = new Label();
+            panel1 = new Panel();
+            button5 = new Button();
+            button3 = new Button();
+            button2 = new Button();
+            panel2 = new Panel();
+            label10 = new Label();
+            label9 = new Label();
+            listBox1 = new ListBox();
+            dateTimePicker1 = new DateTimePicker();
+            label12 = new Label();
+            label13 = new Label();
+            Nome = new Label();
+            textBox4 = new TextBox();
+            textBox1 = new TextBox();
+            label14 = new Label();
+            button4 = new Button();
+            textBoxIdRist = new TextBox();
+            panel3 = new Panel();
+            label16 = new Label();
+            button1 = new Button();
+            button6 = new Button();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
+            SuspendLayout();
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(603, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(168, 31);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Prenotazioni";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            label1.AutoSize = true;
+            label1.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(528, 36);
+            label1.Name = "label1";
+            label1.Size = new Size(132, 26);
+            label1.TabIndex = 4;
+            label1.Text = "Prenotazioni";
+            label1.Click += label1_Click;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(784, 38);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(210, 31);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "nomeRistorante";
+            label2.AutoSize = true;
+            label2.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(686, 36);
+            label2.Name = "label2";
+            label2.Size = new Size(164, 26);
+            label2.TabIndex = 5;
+            label2.Text = "nomeRistorante";
+            label2.Click += label2_Click;
             // 
             // monthCalendar1
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(57, 202);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 6;
-            this.monthCalendar1.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar1_DateChanged);
+            monthCalendar1.Location = new Point(50, 189);
+            monthCalendar1.Margin = new Padding(8, 8, 8, 8);
+            monthCalendar1.Name = "monthCalendar1";
+            monthCalendar1.TabIndex = 6;
+            monthCalendar1.DateChanged += monthCalendar1_DateChanged;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(53, 454);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(102, 16);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Posti  Prenotati: ";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            label3.AutoSize = true;
+            label3.Location = new Point(46, 426);
+            label3.Name = "label3";
+            label3.Size = new Size(93, 15);
+            label3.TabIndex = 7;
+            label3.Text = "Posti  Prenotati: ";
+            label3.Click += label3_Click;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(172, 454);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(138, 18);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "varPostiPrenotati";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            label4.AutoSize = true;
+            label4.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.Black;
+            label4.Location = new Point(150, 426);
+            label4.Name = "label4";
+            label4.Size = new Size(116, 15);
+            label4.TabIndex = 8;
+            label4.Text = "varPostiPrenotati";
+            label4.Click += label4_Click;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.SystemColors.InfoText;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.Lime;
-            this.label5.Location = new System.Drawing.Point(175, 486);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(142, 17);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "varPostiDisponibili";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
+            label5.AutoSize = true;
+            label5.BackColor = SystemColors.InfoText;
+            label5.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.ForeColor = Color.Lime;
+            label5.Location = new Point(153, 456);
+            label5.Name = "label5";
+            label5.Size = new Size(111, 13);
+            label5.TabIndex = 10;
+            label5.Text = "varPostiDisponibili";
+            label5.Click += label5_Click;
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(172, 426);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(131, 18);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "constPostiTotali";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
+            label6.AutoSize = true;
+            label6.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.Location = new Point(150, 399);
+            label6.Name = "label6";
+            label6.Size = new Size(109, 15);
+            label6.TabIndex = 12;
+            label6.Text = "constPostiTotali";
+            label6.Click += label6_Click;
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(53, 426);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(83, 16);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "Posti  Totali: ";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
+            label7.AutoSize = true;
+            label7.Location = new Point(46, 399);
+            label7.Name = "label7";
+            label7.Size = new Size(74, 15);
+            label7.TabIndex = 11;
+            label7.Text = "Posti  Totali: ";
+            label7.Click += label7_Click;
             // 
             // UtentiPrenotati
             // 
-            this.UtentiPrenotati.FormattingEnabled = true;
-            this.UtentiPrenotati.ItemHeight = 16;
-            this.UtentiPrenotati.Location = new System.Drawing.Point(881, 176);
-            this.UtentiPrenotati.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.UtentiPrenotati.Name = "UtentiPrenotati";
-            this.UtentiPrenotati.Size = new System.Drawing.Size(465, 228);
-            this.UtentiPrenotati.TabIndex = 13;
-            this.UtentiPrenotati.SelectedIndexChanged += new System.EventHandler(this.UtentiPrenotati_SelectedIndexChanged);
+            UtentiPrenotati.FormattingEnabled = true;
+            UtentiPrenotati.Location = new Point(771, 165);
+            UtentiPrenotati.Margin = new Padding(3, 2, 3, 2);
+            UtentiPrenotati.Name = "UtentiPrenotati";
+            UtentiPrenotati.Size = new Size(407, 214);
+            UtentiPrenotati.TabIndex = 13;
+            UtentiPrenotati.SelectedIndexChanged += UtentiPrenotati_SelectedIndexChanged;
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(55, 486);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(109, 16);
-            this.label8.TabIndex = 16;
-            this.label8.Text = "Posti Disponibili: ";
+            label8.AutoSize = true;
+            label8.Location = new Point(48, 456);
+            label8.Name = "label8";
+            label8.Size = new Size(98, 15);
+            label8.TabIndex = 16;
+            label8.Text = "Posti Disponibili: ";
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.button5);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.monthCalendar1);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.label8);
-            this.panel1.Location = new System.Drawing.Point(275, 130);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(420, 564);
-            this.panel1.TabIndex = 17;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            panel1.BackColor = SystemColors.MenuBar;
+            panel1.Controls.Add(label5);
+            panel1.Controls.Add(button5);
+            panel1.Controls.Add(button3);
+            panel1.Controls.Add(button2);
+            panel1.Controls.Add(panel2);
+            panel1.Controls.Add(monthCalendar1);
+            panel1.Controls.Add(label7);
+            panel1.Controls.Add(label3);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(label6);
+            panel1.Controls.Add(label8);
+            panel1.Location = new Point(241, 122);
+            panel1.Margin = new Padding(4);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(368, 529);
+            panel1.TabIndex = 17;
+            panel1.Paint += panel1_Paint;
             // 
             // button5
             // 
-            this.button5.BackColor = System.Drawing.Color.Transparent;
-            this.button5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Location = new System.Drawing.Point(153, 128);
-            this.button5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(112, 31);
-            this.button5.TabIndex = 17;
-            this.button5.Text = "Settimana";
-            this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            button5.BackColor = Color.Transparent;
+            button5.Cursor = Cursors.Hand;
+            button5.FlatStyle = FlatStyle.Flat;
+            button5.Location = new Point(134, 120);
+            button5.Margin = new Padding(4);
+            button5.Name = "button5";
+            button5.Size = new Size(98, 29);
+            button5.TabIndex = 17;
+            button5.Text = "Settimana";
+            button5.UseVisualStyleBackColor = false;
+            button5.Click += button5_Click;
             // 
             // button3
             // 
-            this.button3.BackColor = System.Drawing.Color.Transparent;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(265, 128);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(95, 31);
-            this.button3.TabIndex = 16;
-            this.button3.Text = "Mese";
-            this.button3.UseVisualStyleBackColor = false;
+            button3.BackColor = Color.Transparent;
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Location = new Point(232, 120);
+            button3.Margin = new Padding(4);
+            button3.Name = "button3";
+            button3.Size = new Size(83, 29);
+            button3.TabIndex = 16;
+            button3.Text = "Mese";
+            button3.UseVisualStyleBackColor = false;
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(57, 128);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 31);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Giorno";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            button2.BackColor = Color.CornflowerBlue;
+            button2.Cursor = Cursors.Hand;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Location = new Point(50, 120);
+            button2.Margin = new Padding(4);
+            button2.Name = "button2";
+            button2.Size = new Size(88, 29);
+            button2.TabIndex = 7;
+            button2.Text = "Giorno";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.panel2.Controls.Add(this.label10);
-            this.panel2.Controls.Add(this.label9);
-            this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(420, 89);
-            this.panel2.TabIndex = 3;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            panel2.BackColor = Color.CornflowerBlue;
+            panel2.Controls.Add(label10);
+            panel2.Controls.Add(label9);
+            panel2.Location = new Point(0, 0);
+            panel2.Margin = new Padding(4);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(368, 83);
+            panel2.TabIndex = 3;
+            panel2.Paint += panel2_Paint;
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft YaHei Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(21, 52);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(150, 20);
-            this.label10.TabIndex = 1;
-            this.label10.Text = "Prenota Gratuitamente";
+            label10.AutoSize = true;
+            label10.Font = new Font("Microsoft YaHei Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label10.Location = new Point(18, 49);
+            label10.Margin = new Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new Size(121, 16);
+            label10.TabIndex = 1;
+            label10.Text = "Prenota Gratuitamente";
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(20, 12);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(257, 27);
-            this.label9.TabIndex = 0;
-            this.label9.Text = "Consulta le prenotazioni";
+            label9.AutoSize = true;
+            label9.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label9.Location = new Point(18, 11);
+            label9.Margin = new Padding(4, 0, 4, 0);
+            label9.Name = "label9";
+            label9.Size = new Size(208, 22);
+            label9.TabIndex = 0;
+            label9.Text = "Consulta le prenotazioni";
             // 
             // listBox1
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(881, 433);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(465, 260);
-            this.listBox1.TabIndex = 18;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            listBox1.FormattingEnabled = true;
+            listBox1.Location = new Point(771, 406);
+            listBox1.Margin = new Padding(3, 2, 3, 2);
+            listBox1.Name = "listBox1";
+            listBox1.Size = new Size(407, 244);
+            listBox1.TabIndex = 18;
+            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(1060, 548);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(256, 22);
-            this.dateTimePicker1.TabIndex = 67;
-            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            dateTimePicker1.Location = new Point(928, 514);
+            dateTimePicker1.Margin = new Padding(4);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(224, 23);
+            dateTimePicker1.TabIndex = 67;
+            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(927, 582);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(109, 16);
-            this.label12.TabIndex = 66;
-            this.label12.Text = "Numero Persone";
+            label12.AutoSize = true;
+            label12.Location = new Point(811, 546);
+            label12.Name = "label12";
+            label12.Size = new Size(96, 15);
+            label12.TabIndex = 66;
+            label12.Text = "Numero Persone";
             // 
             // label13
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(927, 550);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(118, 16);
-            this.label13.TabIndex = 65;
-            this.label13.Text = "Data Prenotazione";
+            label13.AutoSize = true;
+            label13.Location = new Point(811, 516);
+            label13.Name = "label13";
+            label13.Size = new Size(103, 15);
+            label13.TabIndex = 65;
+            label13.Text = "Data Prenotazione";
             // 
             // Nome
             // 
-            this.Nome.AutoSize = true;
-            this.Nome.Location = new System.Drawing.Point(927, 516);
-            this.Nome.Name = "Nome";
-            this.Nome.Size = new System.Drawing.Size(86, 16);
-            this.Nome.TabIndex = 64;
-            this.Nome.Text = "Nome Utente";
+            Nome.AutoSize = true;
+            Nome.Location = new Point(811, 484);
+            Nome.Name = "Nome";
+            Nome.Size = new Size(78, 15);
+            Nome.TabIndex = 64;
+            Nome.Text = "Nome Utente";
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(1059, 582);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(257, 22);
-            this.textBox4.TabIndex = 63;
+            textBox4.Location = new Point(927, 546);
+            textBox4.Margin = new Padding(3, 2, 3, 2);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(225, 23);
+            textBox4.TabIndex = 63;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(1060, 507);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(257, 22);
-            this.textBox1.TabIndex = 62;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            textBox1.Location = new Point(928, 475);
+            textBox1.Margin = new Padding(3, 2, 3, 2);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(225, 23);
+            textBox1.TabIndex = 62;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // label14
             // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(1028, 459);
-            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(185, 20);
-            this.label14.TabIndex = 68;
-            this.label14.Text = "Conferma Prenotazione";
+            label14.AutoSize = true;
+            label14.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label14.Location = new Point(900, 430);
+            label14.Margin = new Padding(4, 0, 4, 0);
+            label14.Name = "label14";
+            label14.Size = new Size(147, 16);
+            label14.TabIndex = 68;
+            label14.Text = "Conferma Prenotazione";
             // 
             // button4
             // 
-            this.button4.BackColor = System.Drawing.Color.MidnightBlue;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.ForeColor = System.Drawing.Color.Snow;
-            this.button4.Location = new System.Drawing.Point(1060, 639);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(137, 36);
-            this.button4.TabIndex = 69;
-            this.button4.Text = "PRENOTA";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            button4.BackColor = Color.MidnightBlue;
+            button4.FlatStyle = FlatStyle.Flat;
+            button4.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button4.ForeColor = Color.Snow;
+            button4.Location = new Point(928, 599);
+            button4.Margin = new Padding(4);
+            button4.Name = "button4";
+            button4.Size = new Size(120, 34);
+            button4.TabIndex = 69;
+            button4.Text = "PRENOTA";
+            button4.UseVisualStyleBackColor = false;
+            button4.Click += button4_Click;
             // 
             // textBoxIdRist
             // 
-            this.textBoxIdRist.Location = new System.Drawing.Point(677, -1);
-            this.textBoxIdRist.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBoxIdRist.Name = "textBoxIdRist";
-            this.textBoxIdRist.Size = new System.Drawing.Size(225, 22);
-            this.textBoxIdRist.TabIndex = 70;
-            this.textBoxIdRist.Visible = false;
+            textBoxIdRist.Location = new Point(592, -1);
+            textBoxIdRist.Margin = new Padding(3, 2, 3, 2);
+            textBoxIdRist.Name = "textBoxIdRist";
+            textBoxIdRist.Size = new Size(197, 23);
+            textBoxIdRist.TabIndex = 70;
+            textBoxIdRist.Visible = false;
             // 
             // panel3
             // 
-            this.panel3.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.panel3.Controls.Add(this.label16);
-            this.panel3.Location = new System.Drawing.Point(881, 130);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(467, 46);
-            this.panel3.TabIndex = 4;
+            panel3.BackColor = Color.CornflowerBlue;
+            panel3.Controls.Add(label16);
+            panel3.Location = new Point(771, 122);
+            panel3.Margin = new Padding(4);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(409, 43);
+            panel3.TabIndex = 4;
             // 
             // label16
             // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(20, 12);
-            this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(276, 27);
-            this.label16.TabIndex = 0;
-            this.label16.Text = "                 Utenti Prenotati";
+            label16.AutoSize = true;
+            label16.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label16.Location = new Point(18, 11);
+            label16.Margin = new Padding(4, 0, 4, 0);
+            label16.Name = "label16";
+            label16.Size = new Size(226, 22);
+            label16.TabIndex = 0;
+            label16.Text = "                 Utenti Prenotati";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1152, 377);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 28);
-            this.button1.TabIndex = 71;
-            this.button1.Text = "Modifica";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            button1.Location = new Point(1008, 353);
+            button1.Margin = new Padding(4);
+            button1.Name = "button1";
+            button1.Size = new Size(88, 26);
+            button1.TabIndex = 71;
+            button1.Text = "Modifica";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(1248, 377);
-            this.button6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(100, 28);
-            this.button6.TabIndex = 72;
-            this.button6.Text = "Elimina";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            button6.Location = new Point(1092, 353);
+            button6.Margin = new Padding(4);
+            button6.Name = "button6";
+            button6.Size = new Size(88, 26);
+            button6.TabIndex = 72;
+            button6.Text = "Elimina";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // FormPrenotazione
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
-            this.AutoScrollMinSize = new System.Drawing.Size(20, 20);
-            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1579, 742);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.textBoxIdRist);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.label14);
-            this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.Nome);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.UtentiPrenotati);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "FormPrenotazione";
-            this.Text = "Prenotazione";
-            this.Load += new System.EventHandler(this.Prenotazione_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
+            AutoScrollMinSize = new Size(20, 20);
+            BackColor = SystemColors.ButtonHighlight;
+            ClientSize = new Size(1382, 696);
+            Controls.Add(button6);
+            Controls.Add(button1);
+            Controls.Add(panel3);
+            Controls.Add(textBoxIdRist);
+            Controls.Add(button4);
+            Controls.Add(label14);
+            Controls.Add(dateTimePicker1);
+            Controls.Add(label12);
+            Controls.Add(label13);
+            Controls.Add(Nome);
+            Controls.Add(textBox4);
+            Controls.Add(textBox1);
+            Controls.Add(listBox1);
+            Controls.Add(panel1);
+            Controls.Add(UtentiPrenotati);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Margin = new Padding(3, 2, 3, 2);
+            Name = "FormPrenotazione";
+            Text = "Prenotazione";
+            Load += Prenotazione_Load;
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

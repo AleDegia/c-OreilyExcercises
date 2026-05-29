@@ -122,53 +122,19 @@ namespace DALe
         {
             try
             {
-                using (SqlConnection openCon = new SqlConnection(connectionString))
+                if (typeof(T) == typeof(Ristorante) && entity is Ristorante ristorante)
                 {
-                    openCon.Open(); //apro conn una sola volta
-                    string queryRistorante = "INSERT into AnagraficaRistoranti (Tipologia, Indirizzo, RagioneSociale, PartitaIva, NumPosti, PrezzoMedio, Telefono, Citta) VALUES (@Tipologia, @Indirizzo,@RagioneSociale, @PartitaIva, @NumPosti, @PrezzoMedio, @Telefono, @Citta)";
-                    string queryUtente = "INSERT into Utenti (Username, Password, IsAdministrator, Descrizione, Email, Telefono, Citta) VALUES (@UserName, @Password, @IsAdministrator, @Descrizione, @Email, @Telefono, @Citta)";
+                    context.Add(ristorante);
+                    context.SaveChanges();   //esegue effettivamente l'insert
+                }
+                else if (typeof(T) == typeof(Utente) && entity is Utente utente)
+                {
 
-                    if (typeof(T) == typeof(Ristorante) && entity is Ristorante ristorante)
-                    {
-
-                        using (SqlCommand querySaveStaff = new SqlCommand(queryRistorante))
-                        {
-                            querySaveStaff.Connection = openCon;
-
-                            querySaveStaff.Parameters.AddWithValue("@Tipologia", ristorante.GetTipologia());
-                            querySaveStaff.Parameters.AddWithValue("@Indirizzo", ristorante.GetIndirizzo());
-                            querySaveStaff.Parameters.AddWithValue("@RagioneSociale", ristorante.GetRagioneSociale());
-                            querySaveStaff.Parameters.AddWithValue("@PartitaIva", ristorante.GetPartitaIva());
-                            querySaveStaff.Parameters.AddWithValue("@NumPosti", ristorante.GetNumPosti());
-                            querySaveStaff.Parameters.AddWithValue("@PrezzoMedio", ristorante.GetPrezzoMedio());
-                            querySaveStaff.Parameters.AddWithValue("@Telefono", ristorante.GetTelefono());
-                            querySaveStaff.Parameters.AddWithValue("@Citta", ristorante.GetCitta());
-
-                            querySaveStaff.ExecuteNonQuery();
-
-                        }
-                    }
-                    else if (typeof(T) == typeof(Utente) && entity is Utente utente)
-                    {
-
-                        using (SqlCommand querySaveStaff = new SqlCommand(queryUtente))
-                        {
-                            querySaveStaff.Connection = openCon;
-
-                            querySaveStaff.Parameters.AddWithValue("@UserName", utente.GetUserName());
-                            querySaveStaff.Parameters.AddWithValue("@Password", utente.GetPassword());
-                            querySaveStaff.Parameters.AddWithValue("@IsAdministrator", utente.GetIsAdministrator());
-                            querySaveStaff.Parameters.AddWithValue("@Descrizione", utente.GetDescrizione());
-                            querySaveStaff.Parameters.AddWithValue("@Email", utente.GetEmail());
-                            querySaveStaff.Parameters.AddWithValue("@Telefono", utente.GetTelefono());
-                            querySaveStaff.Parameters.AddWithValue("@Citta", utente.GetCitta());
-
-                            querySaveStaff.ExecuteNonQuery();
-                        }
-                    }
-
+                    context.Add(utente);
+                    context.SaveChanges(); 
                 }
             }
+            
             catch (SqlException sqlEx)
             {
                 // Gestione specifica degli errori SQL
@@ -185,105 +151,31 @@ namespace DALe
 
         public void ModificaEntity(T entity)
         {
-            string queryRistorante = $"UPDATE AnagraficaRistoranti SET Tipologia = @Tipologia, Indirizzo = @Indirizzo,  RagioneSociale = @RagioneSociale,  PartitaIva = @PartitaIva,  NumPosti = @NumPosti, PrezzoMedio = @PrezzoMedio, Telefono = @Telefono, Citta = @Citta WHERE IDRistorante = @IDRistorante";
-            string queryUtente = $"UPDATE Utenti SET UserName = @Username, Password = @Password, IsAdministrator = @IsAdministrator,  Descrizione = @Descrizione,  Email = @Email,  Telefono = @Telefono, Citta = @Citta WHERE Username = @Username";
-
-            using (SqlConnection openCon = new SqlConnection(connectionString))  // creo ogg per connettermi al db
+            try
             {
-                try
-                {
-                    openCon.Open();
-
-                    if (entity is Ristorante ristorante)
-                    {
-
-                        //UPDATE table1 SET table1.column = table2.expression1 FROM table1 [WHERE conditions];
-                        using (SqlCommand cmd = new SqlCommand(queryRistorante, openCon))  // Prepara la query
-                        {
-                            cmd.Parameters.AddWithValue("@IDRistorante", ristorante.GetIDRistorante());
-                            cmd.Parameters.AddWithValue("@Tipologia", ristorante.GetTipologia());
-                            cmd.Parameters.AddWithValue("@Indirizzo", ristorante.GetIndirizzo());
-                            cmd.Parameters.AddWithValue("@RagioneSociale", ristorante.GetRagioneSociale());
-                            cmd.Parameters.AddWithValue("@PartitaIva", ristorante.GetPartitaIva());
-                            cmd.Parameters.AddWithValue("@NumPosti", ristorante.GetNumPosti());
-                            cmd.Parameters.AddWithValue("@PrezzoMedio", ristorante.GetPrezzoMedio());
-                            cmd.Parameters.AddWithValue("@Telefono", ristorante.GetCitta());
-                            cmd.Parameters.AddWithValue("@Citta", ristorante.GetTelefono());
-
-                            cmd.ExecuteNonQuery();
-                            //MessageBox.Show("Ristorante Aggiornato!");
-                        }
-                    }
-                    else if(entity is Utente utente)
-                    {
-                        using (SqlCommand cmd = new SqlCommand(queryUtente, openCon))  // Prepara la query
-                        {
-                            cmd.Parameters.AddWithValue("@UserName", utente.GetUserName());
-                            cmd.Parameters.AddWithValue("@Password", utente.GetPassword());
-                            cmd.Parameters.AddWithValue("@IsAdministrator", utente.GetIsAdministrator());
-                            cmd.Parameters.AddWithValue("@Descrizione", utente.GetDescrizione());
-                            cmd.Parameters.AddWithValue("@Email", utente.GetEmail());
-                            cmd.Parameters.AddWithValue("@Telefono", utente.GetCitta());
-                            cmd.Parameters.AddWithValue("@Citta", utente.GetTelefono());
-
-                            cmd.ExecuteNonQuery();
-                            //MessageBox.Show("Utente Aggiornato!");
-                        }
-                    }
-                    else if(entity is Prenotazione)
-                    {
-
-                    }
-                }
-                catch (SqlException sqlEx)
-                {
-                    // Gestione specifica degli errori SQL
-                    Console.WriteLine("Errore SQL: " + sqlEx.Message);
-                    throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
-                }
-                catch (Exception ex)
-                {
-                    // Gestione di altre eccezioni
-                    Console.WriteLine("Errore generico: " + ex.Message);
-                    throw new Exception("Si è verificato un errore durante l'inserimento dell'entità", ex);  // Rilancio dell'eccezione
-                }
+                context.Update(entity);     //prima dovevo creare oggetto del tipo specifico e inserire le proprietà, EF invece vede il tipo da solo e si adatta
+                context.SaveChanges();
             }
+            catch (SqlException sqlEx)
+            {
+                // Gestione specifica degli errori SQL
+                Console.WriteLine("Errore SQL: " + sqlEx.Message);
+                throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
+            }
+            catch (Exception ex)
+            {
+                // Gestione di altre eccezioni
+                Console.WriteLine("Errore generico: " + ex.Message);
+                throw new Exception("Si è verificato un errore durante l'inserimento dell'entità", ex);  // Rilancio dell'eccezione
+            }
+            
         }
 
-        public void CancellaEntity(string id, string nomeTabella)
+        public void CancellaEntity(T entity)
         {
-            string query = $"DELETE FROM AnagraficaRistoranti WHERE IDRistorante = @id";
-            string queryUtente = $"DELETE FROM Utenti WHERE UserName = @username";
-            string queryPrenotazione = $"DELETE FROM Prenotazioni WHERE NomeUtente = @username";
-            using (SqlConnection openCon = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    openCon.Open();
-                    if (nomeTabella == "AnagraficaRistoranti")
-                    {
-                        using (SqlCommand cmd = new SqlCommand(query, openCon))
-                        {
-                            cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                    else if (nomeTabella == "Utenti")
-                    {
-                        using (SqlCommand cmd = new SqlCommand(queryUtente, openCon))
-                        {
-                            cmd.Parameters.AddWithValue("@username", id);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                    else if (nomeTabella == "Prenotazioni")
-                    {
-                        using (SqlCommand cmd = new SqlCommand(queryPrenotazione, openCon))
-                        {
-                            cmd.Parameters.AddWithValue("@username", id);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
+                try { 
+                    context.Remove(entity);
+                    context.SaveChanges();
                 }
                 catch (SqlException sqlEx)
                 {
@@ -297,11 +189,12 @@ namespace DALe
                     Console.WriteLine("Errore generico: " + ex.Message);
                     throw new Exception("Si è verificato un errore durante il recupero delle entità", ex);  // Rilancio dell'eccezione
                 }
-            }
+            
 
             //aggiorno lista
             GetAllEntities();
         }
+
 
         public DataTable ExecuteCommand(string query, List<SqlParameter> parameters)
         {
@@ -370,46 +263,13 @@ namespace DALe
         }
 
 
-
-
-
-
-
         public Utente GetUtente(string username)
         {
             // La query SQL per cercare un utente in base al nome utente
-            string query = "SELECT TOP 1 * FROM Utenti WHERE UserName = @userName";
-            Utente utente = null;
-
-            using (SqlConnection openCon = new SqlConnection(connectionString))  // Connessione al DB
-            {
+            //string query = "SELECT TOP 1 * FROM Utenti WHERE UserName = @userName";
                 try
                 {
-                    openCon.Open();  // Apre la connessione
-
-                    using (SqlCommand command = new SqlCommand(query, openCon))  // Crea il comando
-                    {
-                        // Aggiungi il parametro per evitare attacchi di SQL injection
-                        command.Parameters.AddWithValue("@userName", username);
-
-                        using (SqlDataReader reader = command.ExecuteReader())  // Esegui la query
-                        {
-                            if (reader.Read())  // Se un record è stato trovato
-                            {
-                                // Crea l'oggetto Utente con i dati letti dal database
-                                utente = new Utente
-                                (
-                                    reader.GetString(reader.GetOrdinal("UserName")),
-                                    reader.GetString(reader.GetOrdinal("Password")),
-                                    reader.GetBoolean(reader.GetOrdinal("IsAdministrator")),
-                                    reader.GetString(reader.GetOrdinal("Descrizione")),
-                                    reader.GetString(reader.GetOrdinal("Email")),
-                                    reader.GetString(reader.GetOrdinal("Telefono")),
-                                    reader.GetString(reader.GetOrdinal("Citta"))
-                                );
-                            }
-                        }
-                    }
+                   return context.Find<Utente>(username);  // Find() è un metodo di DbSet<T> che cerca un'entità in base alla chiave primaria (username in questo caso)
                 }
                 catch (SqlException ex)
                 {
@@ -423,10 +283,6 @@ namespace DALe
                     Console.WriteLine("Errore generico: " + ex.Message);
                     throw new Exception("Errore durante il recupero dell'utente", ex);  // Rilancia l'eccezione
                 }
-            }
-
-            // Ritorna l'utente trovato, oppure null se non trovato
-            return utente;
         }
 
     }

@@ -38,7 +38,7 @@ namespace UI
         System.Windows.Forms.Label postiOgniGiorno;
 
         //dizionario dei posti prenotati in relazione alla data
-        Dictionary<DateTime, int > dateEposti = new Dictionary< DateTime, int>();
+        Dictionary<DateTime, int> dateEposti = new Dictionary<DateTime, int>();
         List<DateTime> rangeDiDate = new List<DateTime>();
 
         public FormPrenotazione(Ristorante ristorante, string username)
@@ -104,7 +104,7 @@ namespace UI
 
         private void label4_Click(object sender, EventArgs e)
         {
-            postiOgniGiorno = this.GetPostiDisponibili(); 
+            postiOgniGiorno = this.GetPostiDisponibili();
         }
 
         private void label7_Click(object sender, EventArgs e)
@@ -117,6 +117,7 @@ namespace UI
             label6.Text = ristorante.GetNumPosti().ToString();
             prenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
             textBox1.Text = username;
+            label2.Text = ristorante.GetRagioneSociale();
             dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
             textBoxIdRist.Text = ristorante.GetIDRistorante().ToString();
 
@@ -154,11 +155,11 @@ namespace UI
                 int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
                 label5.Text = postiDisp.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Non ci sono prenotazioni per questo ristorante");
                 label6.Text = ristorante.GetNumPosti().ToString();
-                label4.Text= "0";
+                label4.Text = "0";
                 label5.Text = ristorante.GetNumPosti().ToString();
             }
         }
@@ -200,7 +201,7 @@ namespace UI
             dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
 
             //vedo se è stato selezionato un range di date
-            if (inizioRangeSelezione<fineRangeSelezione)
+            if (inizioRangeSelezione < fineRangeSelezione)
             {
                 dateEposti.Clear();
                 monthCalendar1.SelectionRange = new SelectionRange(inizioRangeSelezione, fineRangeSelezione);
@@ -262,7 +263,7 @@ namespace UI
             //caricamento utenti
             dataSelezionata = monthCalendar1.SelectionStart;
             prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
-            
+
             UtentiPrenotati.Items.Clear();
             foreach (Prenotazione prenotazione in prenotazioniXdata)
             {
@@ -287,14 +288,14 @@ namespace UI
             }
             //recupero data selezionata da utente
             dataSelezionata = monthCalendar1.SelectionStart;
-           
+
             try
-            { 
+            {
                 label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
                 int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
                 label5.Text = postiDisp.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //MessageBox.Show("non ci sono prenotazioni per la data selezionata");
                 label5.Text = label6.Text;
@@ -342,7 +343,7 @@ namespace UI
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -397,11 +398,11 @@ namespace UI
 
         private void button5_Click(object sender, EventArgs e)
         {
-           
-            // Cambia il colore di sfondo del bottone quando viene cliccato
-        
 
-    }
+            // Cambia il colore di sfondo del bottone quando viene cliccato
+
+
+        }
 
         private void UtentiPrenotati_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -420,7 +421,7 @@ namespace UI
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            if(UtentiPrenotati.SelectedItem !=null)
+            if (UtentiPrenotati.SelectedItem != null)
             {
                 Prenotazione prenotazione = blPrenotazioni.GetPrenotazionePerNome(username);
                 UpdatePrenotazione updatePrenotazione = new UpdatePrenotazione(prenotazione, this);
@@ -446,12 +447,17 @@ namespace UI
                         UtentiPrenotati.Items.Add(username);
                     }
                 }
-                
+
             }
             else
             {
                 MessageBox.Show("selezina un utente/prenotazione");
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -296,7 +296,7 @@ namespace DALe
 
         public void CancellaPrenotazione(string username)
         {
-            dbData.CancellaEntity(username, "Prenotazioni");
+            //dbData.CancellaEntity(username, "Prenotazioni");
         }
     }
 }

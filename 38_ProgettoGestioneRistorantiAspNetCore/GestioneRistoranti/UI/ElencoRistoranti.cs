@@ -152,11 +152,9 @@ namespace ProgettoGestioneRistoranti
 
                 //riga selezionata
                 DataGridViewRow row = dataGridView1.SelectedRows[0];
-                // recupero valore chiave primaria
-                string valore = row.Cells[0].Value.ToString();
-                MessageBox.Show("valore è " + valore);
+                ristorante = GetRistoranteFromSelectedRow(row);
 
-                bl.CancellaRistorante(valore, "AnagraficaRistoranti");
+                bl.CancellaRistorante(ristorante);
                 CleanDataGridView();
 
                 AggiungiColonne();

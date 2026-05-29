@@ -127,9 +127,9 @@ namespace UI
                 DataGridViewRow row = dataGridView1.SelectedRows[0];
                 // recupero valore chiave primaria
                 string valore = row.Cells[0].Value.ToString();
-                MessageBox.Show("valore è " + valore);
+                utente = GetUtenteFromDataGridView(row);
 
-                blUtenti.CancellaUtente(valore);
+                blUtenti.CancellaUtente(utente);
                 CleanDataGridView();
 
                 AggiungiColonne();
@@ -143,6 +143,11 @@ namespace UI
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

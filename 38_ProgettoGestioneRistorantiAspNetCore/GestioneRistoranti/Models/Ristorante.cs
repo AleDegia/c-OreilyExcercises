@@ -52,6 +52,7 @@ namespace Models
 
         // Proprietà pubbliche per accedere ai campi privati
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IDRistorante
         {
             get { return _idRistorante; }
