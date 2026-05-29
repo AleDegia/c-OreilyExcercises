@@ -183,7 +183,6 @@ namespace ProgettoGestioneRistoranti
                 dataGridView1.Columns.Clear();
 
                 AggiungiColonne();
-
                 AggiungiRighe(ristorantiFiltrati);
             }
         }

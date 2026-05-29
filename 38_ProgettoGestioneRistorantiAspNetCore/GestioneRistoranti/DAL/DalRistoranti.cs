@@ -20,6 +20,15 @@ namespace Dal
             dbData = new DbData<Ristorante>();
         }
 
+        Dictionary<string, int> tipologieRistorante = new Dictionary<string, int>()
+        {
+            { "italiano", 1 },
+            { "giapponese", 2 },
+            { "cinese", 3 },
+            { "messicano", 4 },
+            { "fastFood", 5 }
+        };
+
 
         public Ristorante GetRistorante(int id)
         {
@@ -85,7 +94,8 @@ namespace Dal
             {
                 case "Tipologia":
                     query = "SELECT * FROM AnagraficaRistoranti WHERE Tipologia = @Tipologia";
-                    parameters.Add(new SqlParameter("@Tipologia", SqlDbType.Int) { Value = Convert.ToInt32(inputUtente) });
+                    int input = tipologieRistorante[inputUtente.ToLower()];
+                    parameters.Add(new SqlParameter("@Tipologia", SqlDbType.Int) { Value = input});
                     break;
 
                 case "Citta":

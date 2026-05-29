@@ -10,6 +10,7 @@ namespace BLLL
         public BlUtenti()
         {
             dal = new DalUtenti();
+            
         }
 
         public Utente GetUtente(string username)

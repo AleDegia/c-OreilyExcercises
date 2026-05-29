@@ -54,6 +54,7 @@ namespace UI
             this.username = username;
         }
 
+
         public void CaricaPrenotazioni()
         {
             label6.Text = ristorante.GetNumPosti().ToString();
