@@ -1,23 +1,40 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Models;
 
 namespace DALe
 {
     public class DalPrenotazioni
     {
         private DbData<Prenotazione> dbData;
+        private readonly GestioneRistorantiContext context;
         public DalPrenotazioni() 
         {
             dbData = new DbData<Prenotazione>();
+            var configuration = new ConfigurationBuilder()
+               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+               .AddJsonFile("appsettings.json", optional: false)
+               .Build();
+
+            var connectionString = configuration.GetConnectionString(
+            "GestioneRistorantiConnectionString"
+        );
+
+            var options = new DbContextOptionsBuilder<GestioneRistorantiContext>()
+       .UseSqlServer(connectionString)
+       .Options;
+
+            context = new GestioneRistorantiContext(options);
         }
 
         public List<Prenotazione> GetAllPrenotazioni()
@@ -42,84 +59,17 @@ namespace DALe
 
         public void AggiungiPrenotazione(Prenotazione prenotazione)
         {
-            try
-            {
-                string query = "INSERT INTO Prenotazioni (IDRistorante, NomeUtente, DataRichiesta, DataPrenotazione, NumPersone) " +
-                               "VALUES (@IDRistorante, @NomeUtente, @DataRichiesta, @DataPrenotazione, @NumPersone)";
-
-                List<SqlParameter> parameters = new List<SqlParameter>
-                {
-                    new SqlParameter("@IDRistorante", SqlDbType.Int) { Value = prenotazione.IDRistorante },
-                    new SqlParameter("@NomeUtente", SqlDbType.VarChar) { Value = prenotazione.NomeUtente },
-                    new SqlParameter("@DataRichiesta", SqlDbType.DateTime) { Value = prenotazione.DataRichiesta },
-                    new SqlParameter("@DataPrenotazione", SqlDbType.DateTime) { Value = prenotazione.DataPrenotazione },
-                    new SqlParameter("@NumPersone", SqlDbType.Int) { Value = prenotazione.NumPersone }
-                };
-
-                // Usa ExecuteCommand per eseguire l'inserimento
-                dbData.ExecuteCommand(query, parameters);
-
-            }
-            catch (SqlException sqlEx)
-            {
-                // Gestione specifica degli errori SQL
-                Console.WriteLine("Errore SQL: " + sqlEx.Message);
-                throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
-            }
-            catch (Exception ex)
-            {
-                // Gestione di altre eccezioni
-                Console.WriteLine("Errore generico: " + ex.Message);
-                throw new Exception("Si è verificato un errore durante l'esecuzione della prenotazione", ex);  // Rilancio dell'eccezione
-            }
+            context.Prenotazioni.Add(prenotazione);
+            context.SaveChanges();
         }
 
 
 
         public List<Prenotazione> GetAllPrenotazioniRistorante(int idRistorante)
         {
-            string query = "SELECT * FROM Prenotazioni WHERE IDRistorante = @IDRistorante";
-            List<Prenotazione> prenotazioni = new List<Prenotazione>();
-
-            // Parametri per la query
-            List<SqlParameter> parameters = new List<SqlParameter>
-            {
-                new SqlParameter("@IDRistorante", SqlDbType.Int) { Value = idRistorante }
-            };
-
-            try
-            {
-                DataTable tablePrenotazioni = dbData.ExecuteCommand(query, parameters);
-
-                // Creazione della lista delle prenotazioni
-                foreach (DataRow row in tablePrenotazioni.Rows)
-                {
-                    var prenotazione = new Prenotazione
-                    (
-                        Convert.ToInt32(row["IDPrenotazione"]),
-                        Convert.ToInt32(row["IDRistorante"]),
-                        row["NomeUtente"].ToString(),
-                        Convert.ToDateTime(row["DataRichiesta"]),
-                        Convert.ToDateTime(row["DataPrenotazione"]),
-                        Convert.ToInt32(row["NumPersone"])
-                    );
-                    prenotazioni.Add(prenotazione);
-                }
-            }
-            catch (SqlException sqlEx)
-            {
-                // Gestione specifica degli errori SQL
-                Console.WriteLine("Errore SQL: " + sqlEx.Message);
-                throw new Exception("Errore durante l'esecuzione della query nel database", sqlEx);  // Rilancio dell'eccezione
-            }
-            catch (Exception ex)
-            {
-                // Gestione di altre eccezioni
-                Console.WriteLine("Errore generico: " + ex.Message);
-                throw new Exception("Si è verificato un errore durante il recupero delle prenotazioni", ex);  // Rilancio dell'eccezione
-            }
-
-            return prenotazioni;
+            return context.Prenotazioni
+                      .Where(p => p.IDRistorante == idRistorante)
+                      .ToList();
         }
 
 
@@ -178,72 +128,35 @@ namespace DALe
 
         public void AggiornaPrenotazioneELog(Prenotazione prenotazione)
         {
-            //string connectionString = ConfigurationManager.ConnectionStrings["GestioneRistorantiConnectionString"].ConnectionString;
-            string queryPrenotazione = @"UPDATE Prenotazioni 
-                                 SET IDRistorante = @IDRistorante,  
-                                     NomeUtente = @NomeUtente,  
-                                     DataRichiesta = @DataRichiesta,  
-                                     DataPrenotazione = @DataPrenotazione, 
-                                     NumPersone = @NumPersone 
-                                 WHERE IDPrenotazione = @IDPrenotazione";
-
-            // Modifica: Query INSERT per LogPrenotazioni
-            string queryLog = @"INSERT INTO LogPrenotazioni 
-                        (IDPrenotazione, DataEvento, TipoEvento, DescrizioneEvento) 
-                        VALUES 
-                        (@IDPrenotazione, @DataEvento, @TipoEvento, @DescrizioneEvento)";
-
-            using (var connection = dbData.GetConn())
+            try
             {
-                //connection.Open();
+                var prenotazioneDb = context.Prenotazioni
+                    .FirstOrDefault(p => p.IDPrenotazione == prenotazione.IDPrenotazione);
 
-                // Inizializzo la transazione
-                SqlTransaction sqlTran = connection.BeginTransaction();
+                if (prenotazioneDb == null)
+                    throw new Exception("Prenotazione non trovata");
 
-                // Creo il comando SQL associato alla transazione
-                SqlCommand command = connection.CreateCommand();
-                command.Transaction = sqlTran;
+                prenotazioneDb.IDRistorante = prenotazione.IDRistorante;
+                prenotazioneDb.NomeUtente = prenotazione.NomeUtente;
+                prenotazioneDb.DataRichiesta = prenotazione.DataRichiesta;
+                prenotazioneDb.DataPrenotazione = prenotazione.DataPrenotazione;
+                prenotazioneDb.NumPersone = prenotazione.NumPersone;
 
-                try
+                var log = new LogPrenotazione
                 {
-                    //aggiornamento per la prenotazione
-                    command.CommandText = queryPrenotazione;
-                    command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@IDPrenotazione", prenotazione.IDPrenotazione);
-                    command.Parameters.AddWithValue("@IDRistorante", prenotazione.IDRistorante);
-                    command.Parameters.AddWithValue("@NomeUtente", prenotazione.NomeUtente);
-                    command.Parameters.AddWithValue("@DataRichiesta", prenotazione.DataRichiesta);
-                    command.Parameters.AddWithValue("@DataPrenotazione", prenotazione.DataPrenotazione);
-                    command.Parameters.AddWithValue("@NumPersone", prenotazione.NumPersone);
-                    command.ExecuteNonQuery();
+                    IDPrenotazione = prenotazione.IDPrenotazione,
+                    DataEvento = DateTime.Now,
+                    TipoEvento = "Modifica",
+                    DescrizioneEvento = $"Modifica prenotazione per l'utente {prenotazione.NomeUtente}"
+                };
 
-                    //inserimento per LogPrenotazione
-                    command.CommandText = queryLog;
-                    command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@IDPrenotazione", /*"ciao"*/prenotazione.IDPrenotazione); // ID della prenotazione
-                    command.Parameters.AddWithValue("@DataEvento", DateTime.Now);  // Data dell'evento
-                    command.Parameters.AddWithValue("@TipoEvento", "Modifica");  // Tipo di evento
-                    command.Parameters.AddWithValue("@DescrizioneEvento", $"Modifica prenotazione per l'utente {prenotazione.NomeUtente}"); // Descrizione evento
-                    command.ExecuteNonQuery();
+                context.LogPrenotazioni.Add(log);
 
-                    // Se entrambe le query sono andate a buon fine faccio il commit
-                    sqlTran.Commit();
-                    Console.WriteLine("Prenotazione e Log aggiornati con successo.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Errore: {ex.Message}");
-                    try
-                    {
-                        sqlTran.Rollback();
-                    }
-                    catch (Exception exRollback)
-                    {
-                        Console.WriteLine($"Errore rollback: {exRollback.Message}");
-                        throw;
-                    }
-                    throw;  // Rilancia l'eccezione originale
-                }
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Errore durante aggiornamento prenotazione e inserimento log", ex);
             }
         }
 

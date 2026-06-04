@@ -1,9 +1,12 @@
 ﻿using DALe;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Models;
 using System;
 using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -14,10 +17,25 @@ namespace Dal
     {
 
         private DbData<Ristorante> dbData;
+        private readonly GestioneRistorantiContext context;
 
         public DalRistoranti()
         {
             dbData = new DbData<Ristorante>();
+            var configuration = new ConfigurationBuilder()
+               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+               .AddJsonFile("appsettings.json", optional: false)
+               .Build();
+
+                var connectionString = configuration.GetConnectionString(
+                "GestioneRistorantiConnectionString"
+            );
+
+            var options = new DbContextOptionsBuilder<GestioneRistorantiContext>()
+       .UseSqlServer(connectionString)
+       .Options;
+
+            context = new GestioneRistorantiContext(options);
         }
 
         Dictionary<string, int> tipologieRistorante = new Dictionary<string, int>()
@@ -87,77 +105,87 @@ namespace Dal
         //da far fare adl dbData
         public List<Ristorante> GetRistorantiFiltrati(string filtro, string inputUtente)
         {
-            string query = string.Empty;
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            //recupero tutti i ristoranti
+            IQueryable<Ristorante> query = context.Ristoranti;
 
             switch (filtro)
             {
                 case "Tipologia":
-                    query = "SELECT * FROM AnagraficaRistoranti WHERE Tipologia = @Tipologia";
-                    int input = tipologieRistorante[inputUtente.ToLower()];
-                    parameters.Add(new SqlParameter("@Tipologia", SqlDbType.Int) { Value = input});
+                    int tipologia = tipologieRistorante[inputUtente.ToLower()];
+                    query = query.Where(r => r.Tipologia == tipologia); //filtro per tipologia
                     break;
 
                 case "Citta":
-                    query = "SELECT * FROM AnagraficaRistoranti WHERE Citta = @Citta";
-                    parameters.Add(new SqlParameter("@Citta", SqlDbType.VarChar) { Value = inputUtente });
+                    query = query.Where(r => r.Citta == inputUtente);
                     break;
 
                 case "Prezzo":
-                    string prezzo = inputUtente.Contains(",") ? inputUtente.Replace(",", ".") : inputUtente;  //da virgola a punto
-                    query = "SELECT * FROM AnagraficaRistoranti WHERE PrezzoMedio = @PrezzoMedio";
-                    parameters.Add(new SqlParameter("@PrezzoMedio", SqlDbType.Decimal) { Value = Convert.ToDecimal(prezzo) });
+                    string prezzo = inputUtente.Replace(",", ".");
+
+                    decimal prezzoMedio = Convert.ToDecimal(
+                        prezzo,
+                        CultureInfo.InvariantCulture
+                    );
+
+                    query = query.Where(r => r.PrezzoMedio == prezzoMedio);
                     break;
 
                 default:
-                    return null;  // Se il filtro non è riconosciuto
+                    return new List<Ristorante>();
             }
 
-            DataTable tableRistoranti = dbData.ExecuteCommand(query, parameters);
-
-            List<Ristorante> ristorantiFiltrati = new List<Ristorante>();
-
-            foreach (DataRow row in tableRistoranti.Rows)
-            {
-                var ristorante = new Ristorante
-                (
-                    Convert.ToInt32(row["IDRistorante"]),
-                    Convert.ToInt32(row["Tipologia"]),
-                    row["Indirizzo"].ToString(),
-                    row["RagioneSociale"].ToString(),
-                    row["PartitaIva"].ToString(),
-                    Convert.ToInt32(row["NumPosti"]),
-                    Convert.ToDecimal(row["PrezzoMedio"]),
-                    row["Telefono"].ToString(),
-                    row["Citta"].ToString()
-                );
-                ristorantiFiltrati.Add(ristorante);
-            }
-
-            return ristorantiFiltrati;
+            return query.ToList();
         }
 
 
         public DataTable GetDatiElencoRistoranti()
         {
-            //messe le prime 3 e poi nascoste dal datagridview nel form elencoRistoranti
-            string query = @"
-            SELECT IdRistorante, 
-                   AnagraficaRistoranti.Tipologia, 
-                   AnagraficaRistoranti.NumPosti,
-                   AnagraficaRistoranti.PartitaIva, 
-                   Descrizione AS TipoRistorante, 
-                   RagioneSociale, 
-                   Indirizzo, 
-                   Citta, 
-                   Telefono
-            FROM AnagraficaRistoranti
-            LEFT JOIN Tipologia ON AnagraficaRistoranti.Tipologia = Tipologia.Tipologia";
+            var result =
+                from r in context.Ristoranti
+                join t in context.Tipologie
+                    on r.Tipologia equals t.Tipologia into tipologie
+                from t in tipologie.DefaultIfEmpty()
+                select new      //faccio new perche devo fare nuovo ogg con i campi che mi servono, non posso fare select r perche mi da tutti i campi di ristorante senza il nome della tipologia, invece con new posso fare un oggetto anonimo con i campi di ristorante e aggiungere il campo della tipologia
+                {
+                    r.IDRistorante,
+                    r.Tipologia,
+                    r.NumPosti,
+                    r.PartitaIva,
+                    r.RagioneSociale,
+                    r.Indirizzo,
+                    r.Citta,
+                    r.Telefono,
+                    TipoRistorante = t != null ? t.Descrizione : null
+                };
 
-            //List<SqlParameter> parameters = new List<SqlParameter>();
+            DataTable dt = new DataTable();
 
-            // Chiamo il metodo ExecuteSelectCommand per ottenere i dati
-            return dbData.ExecuteCommand(query);
+            dt.Columns.Add("IdRistorante", typeof(int));
+            dt.Columns.Add("Tipologia", typeof(string));
+            dt.Columns.Add("NumPosti", typeof(int));
+            dt.Columns.Add("PartitaIva", typeof(string));
+            dt.Columns.Add("RagioneSociale", typeof(string));
+            dt.Columns.Add("Indirizzo", typeof(string));
+            dt.Columns.Add("Citta", typeof(string));
+            dt.Columns.Add("Telefono", typeof(string));
+            dt.Columns.Add("TipoRistorante", typeof(string));
+
+            foreach (var item in result.ToList())
+            {
+                dt.Rows.Add(
+                    item.IDRistorante,
+                    item.Tipologia,
+                    item.NumPosti,
+                    item.PartitaIva,
+                    item.TipoRistorante,
+                    item.RagioneSociale,
+                    item.Indirizzo,
+                    item.Citta,
+                    item.Telefono
+                );
+            }
+
+            return dt;
         }
 
 

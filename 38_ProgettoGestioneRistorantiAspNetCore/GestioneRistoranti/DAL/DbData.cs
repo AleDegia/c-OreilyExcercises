@@ -22,10 +22,10 @@ namespace DALe
         private readonly string connectionString;
         private SqlConnection connectionObj;
         private GestioneRistorantiContext context;
-        public DbData(GestioneRistorantiContext context)
-        {
-            this.context = context;
-        }
+        //public DbData(GestioneRistorantiContext context)
+        //{
+        //    this.context = context;
+        //}
 
         //public DbData(){ }
         
@@ -195,7 +195,7 @@ namespace DALe
             GetAllEntities();
         }
 
-
+        //prima: Dal crea sql, DbData parla con db e la esegue, ora Dal passa l'entità e DBData esegue con EF 
         public DataTable ExecuteCommand(string query, List<SqlParameter> parameters)
         {
             DataTable result = new DataTable();

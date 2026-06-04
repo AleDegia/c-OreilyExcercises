@@ -16,5 +16,9 @@ namespace DALe
         public DbSet<Ristorante> Ristoranti { get; set; }
 
         public DbSet<Prenotazione> Prenotazioni { get; set; }
+
+        public DbSet<Tipologie> Tipologie { get; set; }
+
+        public DbSet<LogPrenotazione> LogPrenotazioni { get; set; }
     }
 }
