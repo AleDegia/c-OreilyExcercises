@@ -1,4 +1,6 @@
 ﻿using DALe;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -8,16 +10,26 @@ namespace Dal
 {
     public class DalUtenti
     {
-        private readonly DbData<Utente> dbData; //ciò che dice a DbData che T = Utente
+        private readonly GestioneRistorantiContext context;
 
-        public DalUtenti(DbData<Utente> dbData)             
-        {
-            this.dbData = dbData;
-        }
+      
 
         public DalUtenti()
         {
-            dbData = new DbData<Utente>();
+            var configuration = new ConfigurationBuilder()
+             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+             .AddJsonFile("appsettings.json", optional: false)
+             .Build();
+
+            var connectionString = configuration.GetConnectionString(
+            "GestioneRistorantiConnectionString"
+        );
+
+            var options = new DbContextOptionsBuilder<GestioneRistorantiContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            context = new GestioneRistorantiContext(options);
         }
 
         public Utente GetUtente(string username) 
@@ -25,7 +37,7 @@ namespace Dal
             //per prendere la propagazione dell'errore da dbData
             try
             {
-                return dbData.GetUtente(username);
+                return context.Utenti.Find(username);
             }
             catch (Exception ex)
             {
@@ -40,11 +52,7 @@ namespace Dal
             try
             {
                 // Ottengo la lista generica 
-                List<object> entities = dbData.GetAllEntities();
-
-                // Filtro e casto ogni elemento della lista a Ristorante
-                List<Utente> utenti = entities.OfType<Utente>().ToList();
-
+                List<Utente> utenti = context.Utenti.ToList(); ;
                 return utenti;
             }
             catch (Exception ex)
@@ -59,7 +67,8 @@ namespace Dal
         {
             try
             {
-                dbData.AggiungiEntity(utente);
+                context.Add(utente);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -71,12 +80,14 @@ namespace Dal
 
         public void ModificaUtente(Utente utente)
         { 
-            dbData.ModificaEntity(utente);
+            context.Update(utente);
+            context.SaveChanges();
         }
 
         public void CancellaUtente(Utente utente)
         {
-            dbData.CancellaEntity(utente);
+            context.Remove(utente);
+            context.SaveChanges();
         }
 
 

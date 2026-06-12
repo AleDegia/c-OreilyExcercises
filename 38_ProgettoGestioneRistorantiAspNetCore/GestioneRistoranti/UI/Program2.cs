@@ -28,13 +28,11 @@ namespace ProgettoGestioneRistoranti
 
             services.AddSingleton<IConfiguration>(Configuration);
 
-            services.AddScoped<DbData<Utente>>();
             services.AddScoped<DalUtenti>();
             //services.AddScoped<BlUtenti>();
 
             //services.AddScoped<intAnimali, Animale>();
 
-            services.AddScoped<DbData<Prenotazione>>();
             services.AddScoped<DalRistoranti>();
             //services.AddScoped<DalPrenotazioni>();
             //services.AddScoped<BlPrenotazioni>();

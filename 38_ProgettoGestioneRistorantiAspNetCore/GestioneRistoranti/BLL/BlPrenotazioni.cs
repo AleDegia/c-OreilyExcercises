@@ -48,7 +48,7 @@ namespace BLLL
 
         public List<Prenotazione> GetPrenotazioni()
         {
-            List<Prenotazione> prenotazioni = dal.GetPrenotazioni();
+            List<Prenotazione> prenotazioni = dal.GetAllPrenotazioni();
             return prenotazioni;
         }
 

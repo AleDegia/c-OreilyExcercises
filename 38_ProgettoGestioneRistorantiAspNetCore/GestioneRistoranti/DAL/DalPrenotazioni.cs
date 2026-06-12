@@ -17,11 +17,9 @@ namespace DALe
 {
     public class DalPrenotazioni
     {
-        private DbData<Prenotazione> dbData;
         private readonly GestioneRistorantiContext context;
         public DalPrenotazioni() 
         {
-            dbData = new DbData<Prenotazione>();
             var configuration = new ConfigurationBuilder()
                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                .AddJsonFile("appsettings.json", optional: false)
@@ -68,12 +66,12 @@ namespace DALe
         }
 
 
-        public List<Prenotazione> GetPrenotazioni()
-        {
-            List<object> entities = dbData.GetAllEntities();
-            List<Prenotazione> prenotazioni = entities.OfType<Prenotazione>().ToList();
-            return prenotazioni;
-        }
+        //public List<Prenotazione> GetPrenotazioni()
+        //{
+        //    List<object> entities = dbData.GetAllEntities();
+        //    List<Prenotazione> prenotazioni = entities.OfType<Prenotazione>().ToList();
+        //    return prenotazioni;
+        //}
 
         public void AggiornaPrenotazioneELog(Prenotazione prenotazione)
         {

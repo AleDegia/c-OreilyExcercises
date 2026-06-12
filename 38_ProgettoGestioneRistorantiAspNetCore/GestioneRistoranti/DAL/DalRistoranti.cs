@@ -16,12 +16,12 @@ namespace Dal
     public class DalRistoranti
     {
 
-        private DbData<Ristorante> dbData;
+        //private DbData<Ristorante> dbData;
         private readonly GestioneRistorantiContext context;
 
         public DalRistoranti()
         {
-            dbData = new DbData<Ristorante>();
+            //dbData = new DbData<Ristorante>();
             var configuration = new ConfigurationBuilder()
                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                .AddJsonFile("appsettings.json", optional: false)
@@ -53,7 +53,7 @@ namespace Dal
             //per prendere la propagazione dell'errore da dbData
             try
             {
-                return dbData.GetEntity(id);
+                return context.Ristoranti.Find(id);
             }
             catch (Exception ex)
             {
@@ -67,9 +67,7 @@ namespace Dal
             try
             {
                 // Ottengo la lista generica
-                List<object> entities = dbData.GetAllEntities();
-                // Filtro e casto ogni elemento della lista a Ristorante
-                List<Ristorante> ristoranti = entities.OfType<Ristorante>().ToList();
+                List<Ristorante> ristoranti = context.Ristoranti.ToList<Ristorante>() ;
                 return ristoranti;
             }
             catch (Exception ex)
@@ -83,7 +81,8 @@ namespace Dal
         {
             try
             {
-                dbData.AggiungiEntity(ristorante);
+                context.Ristoranti.Add(ristorante);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -94,12 +93,14 @@ namespace Dal
 
         public void ModificaRistorante(Ristorante ristorante)
         {
-            dbData.ModificaEntity(ristorante);
+            context.Update(ristorante);
+            context.SaveChanges();
         }
 
         public void CancellaRistorante(Ristorante ristorante)
         {
-            dbData.CancellaEntity(ristorante);
+            context.Remove(ristorante);
+            context.SaveChanges();
         }
 
         //da far fare adl dbData
