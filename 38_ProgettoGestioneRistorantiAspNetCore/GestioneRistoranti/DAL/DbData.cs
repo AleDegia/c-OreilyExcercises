@@ -41,8 +41,8 @@ namespace DALe
             );
 
             var options = new DbContextOptionsBuilder<GestioneRistorantiContext>()
-       .UseSqlServer(connectionString)
-       .Options;
+               .UseSqlServer(connectionString)
+               .Options;
 
             context = new GestioneRistorantiContext(options);
         }
@@ -196,71 +196,71 @@ namespace DALe
         }
 
         //prima: Dal crea sql, DbData parla con db e la esegue, ora Dal passa l'entità e DBData esegue con EF 
-        public DataTable ExecuteCommand(string query, List<SqlParameter> parameters)
-        {
-            DataTable result = new DataTable();
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
+        //public DataTable ExecuteCommand(string query, List<SqlParameter> parameters)
+        //{
+        //    DataTable result = new DataTable();
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    {
+        //        conn.Open();
 
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = query;
+        //        using (SqlCommand cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = query;
 
-                    if (parameters != null)
-                    {
-                        foreach (SqlParameter parameter in parameters)
-                        {
-                            cmd.Parameters.Add(parameter);
-                        }
-                    }
+        //            if (parameters != null)
+        //            {
+        //                foreach (SqlParameter parameter in parameters)
+        //                {
+        //                    cmd.Parameters.Add(parameter);
+        //                }
+        //            }
 
-                    // Esegui il comando SELECT
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        // Carica i dati nel DataTable
-                        result.Load(reader);
-                    }
-                }
-            }
-            return result;
-        }
+        //            // Esegui il comando SELECT
+        //            using (SqlDataReader reader = cmd.ExecuteReader())
+        //            {
+        //                // Carica i dati nel DataTable
+        //                result.Load(reader);
+        //            }
+        //        }
+        //    }
+        //    return result;
+        //}
 
 
-        public DataTable ExecuteCommand(string query, List<SqlParameter> parameters = null, CommandType commandType = CommandType.Text)
-        {
-            DataTable result = new DataTable();
+        //public DataTable ExecuteCommand(string query, List<SqlParameter> parameters = null, CommandType commandType = CommandType.Text)
+        //{
+        //    DataTable result = new DataTable();
 
-            // Utilizza la connessione solo all'interno di questo metodo
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
+        //    // Utilizza la connessione solo all'interno di questo metodo
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    {
+        //        conn.Open();
 
-                // Crea il comando con il tipo di comando desiderato
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = query;
-                    cmd.CommandType = commandType;
+        //        // Crea il comando con il tipo di comando desiderato
+        //        using (SqlCommand cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = query;
+        //            cmd.CommandType = commandType;
 
-                    // Aggiungi i parametri, se esistono
-                    if (parameters != null)
-                    {
-                        foreach (SqlParameter parameter in parameters)
-                        {
-                            cmd.Parameters.Add(parameter);
-                        }
-                    }
+        //            // Aggiungi i parametri, se esistono
+        //            if (parameters != null)
+        //            {
+        //                foreach (SqlParameter parameter in parameters)
+        //                {
+        //                    cmd.Parameters.Add(parameter);
+        //                }
+        //            }
 
-                    // Esegui il comando e carica i dati nel DataTable
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        result.Load(reader);
-                    }
-                }
-            }
+        //            // Esegui il comando e carica i dati nel DataTable
+        //            using (SqlDataReader reader = cmd.ExecuteReader())
+        //            {
+        //                result.Load(reader);
+        //            }
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
 
         public Utente GetUtente(string username)

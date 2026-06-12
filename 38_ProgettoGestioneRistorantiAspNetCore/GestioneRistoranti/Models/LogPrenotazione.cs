@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,9 @@ namespace Models
 {
     public class LogPrenotazione
     {
-        private int _idLog { get; set; }
-        private int _idPrenotazione { get; set; }   //chiave secondaria -> fa riferimento a chiave primaria di un altra tabella
+        [Key]
+        public int _idLog { get; set; }
+        private int _idPrenotazione { get; set; }   //chiave secondaria -> fa riferimento a chiave primaria dell'altra tabella
         private DateTime _dataEvento { get; set; }
         private string _tipoEvento { get; set; }    //tipo di query fatta su Prenotazione
         private string _descrizioneEvento { get; set; }
