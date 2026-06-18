@@ -63,12 +63,13 @@ namespace UI
             textBoxIdRist.Text = ristorante.GetIDRistorante().ToString();
 
             //Aggiungo ogni coppia di dataPrenotazione e numPersonePrenotate al dizionario
-            foreach (var p in prenotazioni)
+            for (int i = 0; i < prenotazioni.Count; i++)
             {
+                var p = prenotazioni[i];
                 if (dateEposti.ContainsKey(p.DataPrenotazione.Date))
                 {
-                    // Se la data esiste, somma il numero di persone
-                    dateEposti[p.DataPrenotazione.Date] += p.NumPersone;
+                    if(i == prenotazioni.Count - 1)
+                        dateEposti[p.DataPrenotazione.Date] += p.NumPersone;     // Se la data esiste, somma il numero di persone
                 }
                 else
                     dateEposti.Add(p.DataPrenotazione.Date, p.NumPersone);
@@ -457,6 +458,11 @@ namespace UI
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
         {
 
         }

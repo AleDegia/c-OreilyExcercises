@@ -66,12 +66,7 @@ namespace DALe
         }
 
 
-        //public List<Prenotazione> GetPrenotazioni()
-        //{
-        //    List<object> entities = dbData.GetAllEntities();
-        //    List<Prenotazione> prenotazioni = entities.OfType<Prenotazione>().ToList();
-        //    return prenotazioni;
-        //}
+
 
         public void AggiornaPrenotazioneELog(Prenotazione prenotazione)
         {

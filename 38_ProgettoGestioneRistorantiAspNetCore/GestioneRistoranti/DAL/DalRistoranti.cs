@@ -47,7 +47,6 @@ namespace Dal
             { "fastFood", 5 }
         };
 
-
         public Ristorante GetRistorante(int id)
         {
             //per prendere la propagazione dell'errore da dbData

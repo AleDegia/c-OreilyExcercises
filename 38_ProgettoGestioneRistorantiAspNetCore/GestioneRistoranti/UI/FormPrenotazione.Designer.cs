@@ -89,7 +89,7 @@
             // monthCalendar1
             // 
             monthCalendar1.Location = new Point(50, 189);
-            monthCalendar1.Margin = new Padding(8, 8, 8, 8);
+            monthCalendar1.Margin = new Padding(8);
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 6;
             monthCalendar1.DateChanged += monthCalendar1_DateChanged;
@@ -168,6 +168,7 @@
             label8.Size = new Size(98, 15);
             label8.TabIndex = 16;
             label8.Text = "Posti Disponibili: ";
+            label8.Click += label8_Click;
             // 
             // panel1
             // 

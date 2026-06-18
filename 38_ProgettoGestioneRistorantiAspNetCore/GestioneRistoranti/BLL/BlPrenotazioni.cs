@@ -1,54 +1,71 @@
-﻿using System;
+﻿using Dal;
+using DALe;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dal;
-using Models;
-using DALe;
 using System.Xml.Linq;
 
 namespace BLLL
 {
     public class BlPrenotazioni
     {
-        private DalPrenotazioni dal;
+        private GestioneRistorantiContext context;
         public BlPrenotazioni()
         {
-            dal = new DalPrenotazioni();
+            var configuration = new ConfigurationBuilder()
+              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+              .AddJsonFile("appsettings.json", optional: false)
+              .Build();
+
+            var connectionString = configuration.GetConnectionString(
+            "GestioneRistorantiConnectionString"
+        );
+
+            var options = new DbContextOptionsBuilder<GestioneRistorantiContext>()
+       .UseSqlServer(connectionString)
+       .Options;
+
+            context = new GestioneRistorantiContext(options);
         }
 
         public List<Prenotazione> GetAllPrenotazioni()
         {
-            return dal.GetAllPrenotazioni();
+            return context.Prenotazioni.ToList();
         }
 
         public void AggiungiPrenotazione(Prenotazione prenotazione)
         {
-            dal.AggiungiPrenotazione(prenotazione);
+            context.Prenotazioni.Add(prenotazione);
+            context.SaveChanges();
         }
 
         public List<Prenotazione> GetAllPrenotazioniRistorante(int idRistorante)
         {
-            List<Prenotazione> prenotazioni = dal.GetAllPrenotazioniRistorante(idRistorante);
-            return prenotazioni;
+            return context.Prenotazioni
+                       .Where(p => p.IDRistorante == idRistorante)
+                       .ToList();
         }
 
         public List<Prenotazione> GetPrenotazioniPerData(DateTime data)
         {
-            List<Prenotazione> prenotazioni = dal.GetPrenotazioniPerData(data);
-            return prenotazioni;
+            return context.Prenotazioni
+                     .Where(p => p.DataPrenotazione.Date == data.Date)
+                     .ToList();
         }
 
         public Prenotazione GetPrenotazionePerNome(string username)
         {
-            Prenotazione pren = dal.GetPrenotazione(username);
-            return pren;
+            return context.Prenotazioni.FirstOrDefault(p => p.NomeUtente == username);
         }
 
         public List<Prenotazione> GetPrenotazioni()
         {
-            List<Prenotazione> prenotazioni = dal.GetAllPrenotazioni();
+            List<Prenotazione> prenotazioni = context.Prenotazioni.ToList(); 
             return prenotazioni;
         }
 
@@ -56,17 +73,39 @@ namespace BLLL
         {
             try
             {
-                dal.AggiornaPrenotazioneELog(prenotazione);
+                var prenotazioneDb = context.Prenotazioni
+                    .FirstOrDefault(p => p.IDPrenotazione == prenotazione.IDPrenotazione);
+
+                if (prenotazioneDb == null)
+                    throw new Exception("Prenotazione non trovata");
+
+                prenotazioneDb.IDRistorante = prenotazione.IDRistorante;
+                prenotazioneDb.NomeUtente = prenotazione.NomeUtente;
+                prenotazioneDb.DataRichiesta = prenotazione.DataRichiesta;
+                prenotazioneDb.DataPrenotazione = prenotazione.DataPrenotazione;
+                prenotazioneDb.NumPersone = prenotazione.NumPersone;
+
+                var log = new LogPrenotazione
+                {
+                    IDPrenotazione = prenotazione.IDPrenotazione,
+                    DataEvento = DateTime.Now,
+                    TipoEvento = "Modifica",
+                    DescrizioneEvento = $"Modifica prenotazione per l'utente {prenotazione.NomeUtente}"
+                };
+
+                context.LogPrenotazioni.Add(log);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
-                throw;  // Rilancio l'eccezione mantenendo la stack trace
+                throw new Exception("Errore durante aggiornamento prenotazione e inserimento log", ex);
             }
         }
 
         public void CancellaPrenotazione(string username)
         {
-            dal.CancellaPrenotazione(username);
+           // dal.CancellaPrenotazione(username);
+           context.Prenotazioni.RemoveRange(context.Prenotazioni.Where(p => p.NomeUtente == username));
         }
     }
 }
