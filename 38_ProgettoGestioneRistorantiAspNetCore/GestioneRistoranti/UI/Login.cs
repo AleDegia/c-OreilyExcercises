@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BLLL;
+using Microsoft.Extensions.Configuration;
+using Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,8 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BLLL;
-using Models;
 using UI;
 
 namespace ProgettoGestioneRistoranti
@@ -19,7 +20,7 @@ namespace ProgettoGestioneRistoranti
         private BlUtenti blUtenti;
         private List<Utente> utenti;
         private Homepage homepage;
-        public Login()
+        public Login(IConfiguration configuration)
         {
             blUtenti = new BlUtenti();
             InitializeComponent();

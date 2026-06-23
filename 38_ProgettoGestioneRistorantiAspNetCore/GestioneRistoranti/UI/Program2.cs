@@ -1,18 +1,21 @@
+using BLL;
 using BLLL;
 using Dal;
 using DALe;
+using Engine;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Models;
 using ProgettoGestioneRistorantiWeb;
 using UI;
-using Microsoft.EntityFrameworkCore;
 
 namespace ProgettoGestioneRistoranti
 {
     internal static class Program2
     {
         public static IConfiguration Configuration { get; private set; }
+        public static IServiceProvider ServiceProvider { get; private set; }
 
         [STAThread]
         static void Main()
@@ -23,8 +26,17 @@ namespace ProgettoGestioneRistoranti
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false)
                 .Build();
-
+            
             var services = new ServiceCollection();
+
+
+            services.AddDbContext<GestioneRistorantiContext>(options =>
+                options.UseSqlServer(
+                Configuration.GetConnectionString("GestioneRistorantiConnectionString")));
+
+            services.AddScoped<BlPrenotazioni>();
+            services.AddScoped<BlRistoranti>();
+            services.AddScoped<BlUtenti>();
 
             services.AddSingleton<IConfiguration>(Configuration);
 
@@ -42,9 +54,10 @@ namespace ProgettoGestioneRistoranti
             //services.AddTransient<ElencoPrenotazioni>();
             services.AddTransient<InsertUtente>();
 
-            using var serviceProvider = services.BuildServiceProvider();
-            
-            var loginForm = serviceProvider.GetRequiredService<Login>();
+            ServiceProvider = services.BuildServiceProvider();
+            Utility.ServiceProvider = ServiceProvider;
+
+            var loginForm = ServiceProvider.GetRequiredService<Login>();
             //var dal = serviceProvider.GetRequiredService<DalUtenti>();
             Application.Run(loginForm);
         }

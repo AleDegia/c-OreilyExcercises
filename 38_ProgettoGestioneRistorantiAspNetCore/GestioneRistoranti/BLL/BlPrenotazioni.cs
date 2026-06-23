@@ -1,7 +1,9 @@
-﻿using Dal;
+﻿using BLL;
+using Dal;
 using DALe;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -15,22 +17,15 @@ namespace BLLL
     public class BlPrenotazioni
     {
         private GestioneRistorantiContext context;
+
+        //public BlPrenotazioni(GestioneRistorantiContext context)
+        //{
+        //    this.context = context;
+        //}
         public BlPrenotazioni()
         {
-            var configuration = new ConfigurationBuilder()
-              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-              .AddJsonFile("appsettings.json", optional: false)
-              .Build();
-
-            var connectionString = configuration.GetConnectionString(
-            "GestioneRistorantiConnectionString"
-        );
-
-            var options = new DbContextOptionsBuilder<GestioneRistorantiContext>()
-       .UseSqlServer(connectionString)
-       .Options;
-
-            context = new GestioneRistorantiContext(options);
+            IConfiguration configuration = Utility.ServiceProvider.GetRequiredService<IConfiguration>();
+            context = Utility.ServiceProvider.GetRequiredService<GestioneRistorantiContext>();
         }
 
         public List<Prenotazione> GetAllPrenotazioni()
@@ -106,6 +101,7 @@ namespace BLLL
         {
            // dal.CancellaPrenotazione(username);
            context.Prenotazioni.RemoveRange(context.Prenotazioni.Where(p => p.NomeUtente == username));
+           context.SaveChanges();
         }
     }
 }
