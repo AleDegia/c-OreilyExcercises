@@ -40,14 +40,6 @@ namespace ProgettoGestioneRistoranti
 
             services.AddSingleton<IConfiguration>(Configuration);
 
-            services.AddScoped<DalUtenti>();
-            //services.AddScoped<BlUtenti>();
-
-            //services.AddScoped<intAnimali, Animale>();
-
-            services.AddScoped<DalRistoranti>();
-            //services.AddScoped<DalPrenotazioni>();
-            //services.AddScoped<BlPrenotazioni>();
 
             services.AddTransient<Login>();
             //services.AddTransient<Homepage>();

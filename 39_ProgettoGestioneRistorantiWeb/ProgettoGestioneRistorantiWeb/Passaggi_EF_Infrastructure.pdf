@@ -1,0 +1,161 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 2021 >>
+stream
+BT
+/F2 16 Tf
+50 795 Td
+(PROGETTO GESTIONE RISTORANTI WEB) Tj
+/F1 11 Tf
+0 -21 Td
+(Passaggi eseguiti finora) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(1. Analisi struttura progetto) Tj
+0 -21 Td
+(- Verificata la cartella 39_ProgettoGestioneRistorantiWeb.) Tj
+0 -21 Td
+(- Trovati i progetti Domain, Infrastructure, ProgettoGestioneRistorantiWeb.) Tj
+0 -21 Td
+(- Verificato che il progetto 38 contiene la vecchia soluzione a layer con Models, DAL, BLL e UI WinForms.) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(2. Chiarimento architettura) Tj
+0 -21 Td
+(- Domain contiene entita e regole di dominio.) Tj
+0 -21 Td
+(- Infrastructure contiene Entity Framework, DbContext, accesso database e DI.) Tj
+0 -21 Td
+(- ProgettoGestioneRistorantiWeb contiene la Web API ASP.NET Core.) Tj
+0 -21 Td
+(- Il frontend React andra in ClientApp o progetto separato.) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(3. Entity Framework in Infrastructure) Tj
+0 -21 Td
+(- Confermato che EF Core va nel progetto Infrastructure.) Tj
+0 -21 Td
+(- Rilevato che esistevano due cartelle: Infrasructure e Infrastructure.) Tj
+0 -21 Td
+(- Scelto Infrastructure come progetto corretto.) Tj
+0 -21 Td
+(- Verificato che Infrastructure.csproj contiene gia i pacchetti EF Core.) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(4. Reference tra progetti) Tj
+0 -21 Td
+(- Aggiunta reference da Infrastructure a Domain.) Tj
+0 -21 Td
+(- Aggiunta reference da ProgettoGestioneRistorantiWeb a Infrastructure.) Tj
+0 -21 Td
+(- Aggiunta reference da ProgettoGestioneRistorantiWeb a Domain.) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(5. Correzione solution) Tj
+0 -21 Td
+(- Aggiornato ProgettoGestioneRistorantiWeb.slnx.) Tj
+0 -21 Td
+(- La solution ora punta a Infrastructure/Infrastructure.csproj.) Tj
+0 -21 Td
+(- Prima puntava alla vecchia cartella Infrasructure.) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(6. DbContext creato) Tj
+0 -21 Td
+(- Creato Infrastructure/Data/GestioneRistorantiDbContext.cs.) Tj
+0 -21 Td
+(- Aggiunti DbSet per Utenti, Ristoranti, Prenotazioni e Tipologie.) Tj
+0 -21 Td
+(- Configurate le chiavi e alcune proprieta principali con Fluent API.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 1258 >>
+stream
+BT
+/F2 16 Tf
+50 795 Td
+0 -21 Td
+() Tj
+0 -21 Td
+(7. Dependency Injection) Tj
+0 -21 Td
+(- Creato Infrastructure/DependencyInjection.cs.) Tj
+0 -21 Td
+(- Aggiunto metodo AddInfrastructure\(IServiceCollection, IConfiguration\).) Tj
+0 -21 Td
+(- Registrato GestioneRistorantiDbContext con UseSqlServer.) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(8. Program.cs aggiornato) Tj
+0 -21 Td
+(- Aggiunto using Infrastructure.) Tj
+0 -21 Td
+(- Aggiunta chiamata builder.Services.AddInfrastructure\(builder.Configuration\).) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(9. Connection string) Tj
+0 -21 Td
+(- Aggiornato ProgettoGestioneRistorantiWeb/appsettings.json.) Tj
+0 -21 Td
+(- Aggiunta connection string GestioneRistoranti per SQL Server LocalDB.) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(10. Verifica build) Tj
+0 -21 Td
+(- Eseguito dotnet build ProgettoGestioneRistorantiWeb.slnx.) Tj
+0 -21 Td
+(- Risultato: Build succeeded, 0 warning, 0 error.) Tj
+0 -21 Td
+() Tj
+0 -21 Td
+(Prossimi passaggi consigliati) Tj
+0 -21 Td
+(1. Creare la migration InitialCreate.) Tj
+0 -21 Td
+(2. Eseguire database update.) Tj
+0 -21 Td
+(3. Creare repository o servizi applicativi.) Tj
+0 -21 Td
+(4. Creare controller API per Utenti, Ristoranti, Prenotazioni e Tipologie.) Tj
+0 -21 Td
+(5. Creare frontend React e collegarlo alle API.) Tj
+ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000360 00000 n 
+0000002433 00000 n 
+0000002672 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+3982
+%%EOF
