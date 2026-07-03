@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain.Entities;
 
 public class Prenotazione
@@ -12,5 +14,6 @@ public class Prenotazione
 
     public DateTime DataPrenotazione { get; set; }
 
+    [Range(1, int.MaxValue)]
     public int NumeroPersone { get; set; }
 }
