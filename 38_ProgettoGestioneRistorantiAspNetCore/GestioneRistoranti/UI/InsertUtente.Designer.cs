@@ -45,7 +45,7 @@
             button1 = new Button();
             label1 = new Label();
             button2 = new Button();
-            textBox8 = new TextBox();
+            checkBox1 = new CheckBox();
             SuspendLayout();
             // 
             // label9
@@ -206,19 +206,22 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
-            // textBox8
+            // checkBox1
             // 
-            textBox8.Location = new Point(333, 345);
-            textBox8.Name = "textBox8";
-            textBox8.Size = new Size(281, 27);
-            textBox8.TabIndex = 55;
-            textBox8.TextChanged += textBox8_TextChanged;
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(333, 357);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(18, 17);
+            checkBox1.TabIndex = 65;
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged_1;
             // 
             // InsertUtente
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 798);
+            Controls.Add(checkBox1);
             Controls.Add(button2);
             Controls.Add(label1);
             Controls.Add(button1);
@@ -227,7 +230,6 @@
             Controls.Add(textBox11);
             Controls.Add(textBox7);
             Controls.Add(textBox9);
-            Controls.Add(textBox8);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(label4);
@@ -276,6 +278,6 @@
             textBox1.Text = text;
         }
 
-        private TextBox textBox8;
+        private CheckBox checkBox1;
     }
 }

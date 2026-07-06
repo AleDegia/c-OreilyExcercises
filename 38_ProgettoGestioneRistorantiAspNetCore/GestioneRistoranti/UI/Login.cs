@@ -72,7 +72,7 @@ namespace ProgettoGestioneRistoranti
                 MessageBox.Show("Password errata.");
                 return;
             }
-            homepage = new Homepage(utente.UserName);
+            homepage = new Homepage(utente);
             homepage.Show();
             this.Hide();
         }

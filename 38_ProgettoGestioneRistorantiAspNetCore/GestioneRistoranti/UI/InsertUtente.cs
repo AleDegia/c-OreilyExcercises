@@ -4,6 +4,7 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -128,13 +129,26 @@ namespace ProgettoGestioneRistoranti
                 // Leggo i valori dalle TextBox
                 string username = textBox1.Text;
                 string password = textBox2.Text;
-                bool isAdministrator = Convert.ToBoolean(textBox8.Text);
+                bool isAdministrator = checkBox1.Checked;
                 string descrizione = textBox4.Text;
                 string email = textBox3.Text;
                 string telefono = textBox7.Text;
                 string citta = textBox11.Text;
 
                 Utente utente = new Utente(username, password, isAdministrator, descrizione, email, telefono, citta);
+
+                var validationResults = new List<ValidationResult>();
+                var validationContext = new ValidationContext(utente);
+
+                if (!Validator.TryValidateObject(utente, validationContext, validationResults, true))
+                {
+                    MessageBox.Show(
+                        string.Join(Environment.NewLine, validationResults.Select(r => r.ErrorMessage)),
+                        "Dati non validi",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
 
                 // Aggiorna il prodotto nel database
                 bl.AggiungiUtente(utente);
@@ -181,6 +195,11 @@ namespace ProgettoGestioneRistoranti
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
         {
 
         }

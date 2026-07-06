@@ -22,18 +22,28 @@ namespace UI
         private ElencoPrenotazioni elencoPrenotazioni;
         private BlPrenotazioni blPrenotazioni;
         private BlRistoranti blRistoranti;
-        private string username;
+        private Utente utente;
         private List<Ristorante> ristoranti;
         private Ristorante ristorante;
-        public Homepage(string username)
+        public Homepage(Utente utente)
         {
             InitializeComponent();
-            elencoRistoranti = new ElencoRistoranti(username);
+            elencoRistoranti = new ElencoRistoranti(utente);
             elencoPrenotazioni = new ElencoPrenotazioni();
-            this.username = username;
+            this.utente = utente;
             blPrenotazioni = new BlPrenotazioni();
             blRistoranti = new BlRistoranti();
             ristoranti = new List<Ristorante>();
+
+            if (!utente.IsAdministrator)
+            {
+                button5.Visible = false;    //utenti
+                button1.Visible = false;    //prenotazioni globali
+                chart1.Visible = false;
+                chart2.Visible = false;
+                chart3.Visible = false;
+                button2.Location = button1.Location; //sposto il bottone ristoranti al posto del bottone prenotazioni globali
+            }
         }
 
         private void toolStripTextBox1_Click(object sender, EventArgs e)
@@ -132,7 +142,7 @@ namespace UI
         {
             if (elencoRistoranti == null || elencoRistoranti.IsDisposed)
             {
-                elencoRistoranti = new ElencoRistoranti(username);
+                elencoRistoranti = new ElencoRistoranti(utente);
                 elencoRistoranti.Show();
             }
             else 

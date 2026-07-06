@@ -32,7 +32,7 @@ namespace UI
         private DateTime dataSelezionata;
         private DateTime inizioRangeSelezione = new DateTime(2001, 2, 13);
         DateTime fineRangeSelezione = new DateTime(2001, 2, 28);
-        private string username;
+        private Utente utente;
 
 
         System.Windows.Forms.Label postiOgniGiorno;
@@ -41,7 +41,7 @@ namespace UI
         Dictionary<DateTime, int> dateEposti = new Dictionary<DateTime, int>();
         List<DateTime> rangeDiDate = new List<DateTime>();
 
-        public FormPrenotazione(Ristorante ristorante, string username)
+        public FormPrenotazione(Ristorante ristorante, Utente utente )
         {
             InitializeComponent();
             this.ristorante = ristorante;
@@ -51,7 +51,7 @@ namespace UI
             blPrenotazioni = new BlPrenotazioni();
             blUtenti = new BlUtenti();
             ids = new List<int>();
-            this.username = username;
+            this.utente = utente;
         }
 
 
@@ -85,7 +85,8 @@ namespace UI
             {
                 string nomeUtente = prenotazione.NomeUtente;   //fare lista di id
                 utenti.Add(blUtenti.GetUtente(nomeUtente));
-                UtentiPrenotati.Items.Add(nomeUtente);
+                if(utente.IsAdministrator)
+                    UtentiPrenotati.Items.Add(nomeUtente);
             }
 
 
@@ -118,10 +119,26 @@ namespace UI
         {
             label6.Text = ristorante.GetNumPosti().ToString();
             prenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante()); //recupero prenotazioni di quel ristorante da db
-            textBox1.Text = username;
+            textBox1.Text = utente.UserName;
             label2.Text = ristorante.GetRagioneSociale();
             dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
             textBoxIdRist.Text = ristorante.GetIDRistorante().ToString();
+
+            if(!utente.IsAdministrator)
+            {
+                label16.Text = "Le Mie Prenotazioni";
+                var miePrenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante())
+                    .Where(p => p.IDRistorante == ristorante.IDRistorante && p.NomeUtente == utente.UserName)
+                    .ToList();
+                foreach(var prenotazione in miePrenotazioni)
+                {
+                    UtentiPrenotati.Items.Add(prenotazione.DataPrenotazione.ToShortDateString() 
+                        + " - " 
+                        + prenotazione.NumPersone
+                        + " persone"
+                    );
+                }
+            }
 
             //Aggiungo ogni coppia di dataPrenotazione e numPersonePrenotate al dizionario
             foreach (var p in prenotazioni)
@@ -142,7 +159,7 @@ namespace UI
             prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
             foreach (Prenotazione prenotazione in prenotazioniXdata)
             {
-                if (ristorante.GetIDRistorante() == prenotazione.IDRistorante)
+                if (utente.IsAdministrator && ristorante.GetIDRistorante() == prenotazione.IDRistorante)
                 {
                     string nomeUtente = prenotazione.NomeUtente;   //fare lista di id
                     utenti.Add(blUtenti.GetUtente(nomeUtente));
@@ -194,65 +211,114 @@ namespace UI
 
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
-            prenotazioni.Clear();
-            prenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante());
-            dateEposti.Clear();
-
-            inizioRangeSelezione = monthCalendar1.SelectionStart.Date;
-            fineRangeSelezione = monthCalendar1.SelectionEnd.Date;
-            dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
-
-            //vedo se è stato selezionato un range di date
-            if (inizioRangeSelezione < fineRangeSelezione)
-            {
+                prenotazioni.Clear();
+                prenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante());
                 dateEposti.Clear();
-                monthCalendar1.SelectionRange = new SelectionRange(inizioRangeSelezione, fineRangeSelezione);
-                rangeDiDate = Enumerable.Range(0, (int)(fineRangeSelezione - inizioRangeSelezione).TotalDays + 1)
-                      .Select(x => inizioRangeSelezione.AddDays(x))
-                      .ToList();
-                int sommaPrenotazioni = 0;
-                //per ogni prenotazine che ho nel db
-                foreach (var p in prenotazioni)
+
+                inizioRangeSelezione = monthCalendar1.SelectionStart.Date;
+                fineRangeSelezione = monthCalendar1.SelectionEnd.Date;
+                dateTimePicker1.Value = monthCalendar1.SelectionStart.Date;
+
+                //vedo se è stato selezionato un range di date
+                if (inizioRangeSelezione < fineRangeSelezione)
                 {
-                    //per ogni data selezionata
-                    foreach (DateTime data in rangeDiDate)
+                    dateEposti.Clear();
+                    monthCalendar1.SelectionRange = new SelectionRange(inizioRangeSelezione, fineRangeSelezione);
+                    rangeDiDate = Enumerable.Range(0, (int)(fineRangeSelezione - inizioRangeSelezione).TotalDays + 1)
+                          .Select(x => inizioRangeSelezione.AddDays(x))
+                          .ToList();
+                    int sommaPrenotazioni = 0;
+                    //per ogni prenotazine che ho nel db
+                    foreach (var p in prenotazioni)
                     {
-                        //vedo se la prenotazione è per quella data, e se si aggiungo alla somma totale il numPersone prenotate
-                        if (p.DataPrenotazione.Date == data.Date)
+                        //per ogni data selezionata
+                        foreach (DateTime data in rangeDiDate)
                         {
-                            sommaPrenotazioni += p.NumPersone;
+                            //vedo se la prenotazione è per quella data, e se si aggiungo alla somma totale il numPersone prenotate
+                            if (p.DataPrenotazione.Date == data.Date)
+                            {
+                                sommaPrenotazioni += p.NumPersone;
+                            }
                         }
                     }
-                }
 
-                HashSet<Prenotazione> prenotazioniUniche = new HashSet<Prenotazione>(); //per avere prenotazioni uniche
+                    HashSet<Prenotazione> prenotazioniUniche = new HashSet<Prenotazione>(); //per avere prenotazioni uniche
 
-                foreach (DateTime data in rangeDiDate)
-                {
-                    List<Prenotazione> prenotazioniTemp = blPrenotazioni.GetPrenotazioniPerData(data);
-
-                    // Aggiungo ogni prenotazione solo se non è già presente
-                    foreach (var prenotazione in prenotazioniTemp)
+                    foreach (DateTime data in rangeDiDate)
                     {
-                        prenotazioniUniche.Add(prenotazione);
+                        List<Prenotazione> prenotazioniTemp = blPrenotazioni.GetPrenotazioniPerData(data);
+
+                        // Aggiungo ogni prenotazione solo se non è già presente
+                        foreach (var prenotazione in prenotazioniTemp)
+                        {
+                            prenotazioniUniche.Add(prenotazione);
+                        }
+                    }
+
+                    // Aggiungo tutte le prenotazioni uniche alla lista
+                    prenotazioniXdata = prenotazioniUniche.ToList();
+
+                    if (utente.IsAdministrator)
+                        UtentiPrenotati.Items.Clear();
+
+                    foreach (Prenotazione prenotazione in prenotazioniXdata)
+                    {
+                        string username = prenotazione.NomeUtente;
+                        utenti.Add(blUtenti.GetUtente(username));
+                        if(utente.IsAdministrator) 
+                            UtentiPrenotati.Items.Add(username);
+                    }
+
+                    try
+                    {
+                        label4.Text = sommaPrenotazioni.ToString();
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        //MessageBox.Show("non ci sono prenotazioni per la data selezionata");
+                        label5.Text = label6.Text;
+                        label4.Text = "0";
                     }
                 }
 
-                // Aggiungo tutte le prenotazioni uniche alla lista
-                prenotazioniXdata = prenotazioniUniche.ToList();
+                //caricamento utenti
+                dataSelezionata = monthCalendar1.SelectionStart;
+                prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
 
-                UtentiPrenotati.Items.Clear();
+                if (utente.IsAdministrator)
+                    UtentiPrenotati.Items.Clear();
+
                 foreach (Prenotazione prenotazione in prenotazioniXdata)
                 {
-                    string username = prenotazione.NomeUtente;
-                    utenti.Add(blUtenti.GetUtente(username));
-                    UtentiPrenotati.Items.Add(username);
+                    if (ristorante.GetIDRistorante() == prenotazione.IDRistorante)
+                    {
+                        string username = prenotazione.NomeUtente;   //fare lista di id
+                        utenti.Add(blUtenti.GetUtente(username));
+                        if(utente.IsAdministrator)
+                             UtentiPrenotati.Items.Add(username);
+                    }
                 }
+
+
+
+                foreach (var p in prenotazioni)
+                {
+                    if (dateEposti.ContainsKey(p.DataPrenotazione.Date))
+                    {
+                        dateEposti[p.DataPrenotazione.Date] += p.NumPersone;
+                    }
+                    else
+                        dateEposti.Add(p.DataPrenotazione.Date, p.NumPersone);
+                }
+                //recupero data selezionata da utente
+                dataSelezionata = monthCalendar1.SelectionStart;
 
                 try
                 {
-                    label4.Text = sommaPrenotazioni.ToString();
-                    return;
+                    label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
+                    int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
+                    label5.Text = postiDisp.ToString();
                 }
                 catch (Exception ex)
                 {
@@ -261,49 +327,6 @@ namespace UI
                     label4.Text = "0";
                 }
             }
-
-            //caricamento utenti
-            dataSelezionata = monthCalendar1.SelectionStart;
-            prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
-
-            UtentiPrenotati.Items.Clear();
-            foreach (Prenotazione prenotazione in prenotazioniXdata)
-            {
-                if (ristorante.GetIDRistorante() == prenotazione.IDRistorante)
-                {
-                    string username = prenotazione.NomeUtente;   //fare lista di id
-                    utenti.Add(blUtenti.GetUtente(username));
-                    UtentiPrenotati.Items.Add(username);
-                }
-            }
-
-
-
-            foreach (var p in prenotazioni)
-            {
-                if (dateEposti.ContainsKey(p.DataPrenotazione.Date))
-                {
-                    dateEposti[p.DataPrenotazione.Date] += p.NumPersone;
-                }
-                else
-                    dateEposti.Add(p.DataPrenotazione.Date, p.NumPersone);
-            }
-            //recupero data selezionata da utente
-            dataSelezionata = monthCalendar1.SelectionStart;
-
-            try
-            {
-                label4.Text = dateEposti[monthCalendar1.SelectionStart.Date].ToString();
-                int postiDisp = Convert.ToInt32(label6.Text) - Convert.ToInt32(dateEposti[monthCalendar1.SelectionStart.Date]);
-                label5.Text = postiDisp.ToString();
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show("non ci sono prenotazioni per la data selezionata");
-                label5.Text = label6.Text;
-                label4.Text = "0";
-            }
-        }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
@@ -356,10 +379,9 @@ namespace UI
                 DateTime dataSelezionata = monthCalendar1.SelectionStart;
                 int idRistorante = Convert.ToInt32(textBoxIdRist.Text);
                 string username = textBox1.Text;
-                Utente utente = blUtenti.GetUtente(username);
-                if (utente != null) //se l'utente è gia registrato 
+                Utente utenteDb = blUtenti.GetUtente(username);
+                if (utenteDb != null) //se l'utente è gia registrato 
                 {
-
                     DateTime dataEOraCorrente = DateTime.Now.Date;
                     int numeroPersone = Convert.ToInt32(textBox4.Text);
 
@@ -367,7 +389,26 @@ namespace UI
 
                     blPrenotazioni.AggiungiPrenotazione(prenotazione);
                     MessageBox.Show("Prenotazione avvenuta con successo per il giorno " + dataSelezionata.Day);
-                    CaricaPrenotazioni();
+                    if (!this.utente.IsAdministrator)
+                    {
+                        UtentiPrenotati.Items.Clear();
+
+                        var miePrenotazioni = blPrenotazioni
+                            .GetAllPrenotazioniRistorante(ristorante.GetIDRistorante())
+                            .Where(p => p.NomeUtente == this.utente.UserName)
+                            .ToList();
+
+                        foreach (var p in miePrenotazioni)
+                        {
+                            UtentiPrenotati.Items.Add(p.DataPrenotazione.ToShortDateString()
+                                + " - "
+                                + p.NumPersone
+                                + " persone"
+                            );
+                        }
+                    }
+                    else
+                        CaricaPrenotazioni();
                 }
                 else
                 {
@@ -425,7 +466,7 @@ namespace UI
         {
             if (UtentiPrenotati.SelectedItem != null)
             {
-                Prenotazione prenotazione = blPrenotazioni.GetPrenotazionePerNome(username);
+                Prenotazione prenotazione = blPrenotazioni.GetPrenotazionePerNome(utente.UserName);
                 UpdatePrenotazione updatePrenotazione = new UpdatePrenotazione(prenotazione, this);
                 updatePrenotazione.Show();
             }
@@ -439,7 +480,7 @@ namespace UI
                 if (result == DialogResult.Yes)
                 {
                     //Prenotazione prenotazione = blPrenotazioni.GetPrenotazionePerNome(username);
-                    blPrenotazioni.CancellaPrenotazione(username);
+                    blPrenotazioni.CancellaPrenotazione(utente.UserName);
                     UtentiPrenotati.Items.Clear();
                     prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
                     foreach (Prenotazione prenotazione in prenotazioniXdata)

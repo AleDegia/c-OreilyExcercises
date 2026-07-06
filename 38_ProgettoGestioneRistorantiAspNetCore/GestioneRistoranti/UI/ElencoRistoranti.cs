@@ -16,14 +16,14 @@ namespace ProgettoGestioneRistoranti
         UpdateRistorante updateRistorante;
         private Ristorante ristorante;
         private FormPrenotazione formPrenotazione;
-        private string username;
-        public ElencoRistoranti(string username)
+        private Utente utente;
+        public ElencoRistoranti(Utente utente)
         {
             InitializeComponent();
             bl = new BlRistoranti();
             insertRistorante = new InsertRistorante(this);
             //formPrenotazione = new FormPrenotazione();
-            this.username = username;
+            this.utente = utente;
         }
 
         public Ristorante GetRistorante() { return ristorante; }
@@ -120,6 +120,16 @@ namespace ProgettoGestioneRistoranti
             dataGridView1.Columns["Tipologia"].Visible = false;
             dataGridView1.Columns["NumPosti"].Visible = false;
             dataGridView1.Columns["PartitaIva"].Visible = false;
+
+            if (!utente.IsAdministrator)
+            {
+                button1.Visible = false; // Aggiungi
+                button2.Visible = false; // Modifica
+                button3.Visible = false; // Elimina
+
+                button4.Text = "Prenota";
+                button4.Location = button1.Location; // se vuoi portarlo al posto del primo bottone
+            }
         }
 
 
@@ -202,7 +212,7 @@ namespace ProgettoGestioneRistoranti
 
                 // recupero valori celle
                 ristorante = GetRistoranteFromSelectedRow(row);
-                formPrenotazione = new FormPrenotazione(ristorante, username);
+                formPrenotazione = new FormPrenotazione(ristorante, utente);
                 formPrenotazione.Show();
             }
             else
