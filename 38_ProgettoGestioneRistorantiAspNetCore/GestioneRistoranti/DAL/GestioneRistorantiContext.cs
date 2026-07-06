@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Models;
 
-namespace DALe
+namespace DATA
 {
     public class GestioneRistorantiContext : DbContext
     {

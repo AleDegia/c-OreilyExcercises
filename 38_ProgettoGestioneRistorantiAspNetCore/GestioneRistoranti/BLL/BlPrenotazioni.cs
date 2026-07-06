@@ -1,6 +1,5 @@
 ﻿using BLL;
-using Dal;
-using DALe;
+using DATA;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

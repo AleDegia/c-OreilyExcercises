@@ -1,7 +1,6 @@
 using BLL;
 using BLLL;
-using Dal;
-using DALe;
+using DATA;
 using Engine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

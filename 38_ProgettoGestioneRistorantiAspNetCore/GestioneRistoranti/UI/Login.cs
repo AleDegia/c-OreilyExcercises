@@ -28,7 +28,7 @@ namespace ProgettoGestioneRistoranti
 
         public bool VerificaPassword()
         {
-            foreach(Utente utente in utenti)
+            foreach (Utente utente in utenti)
             {
                 if (utente.Password.Equals(textBox2.Text))
                     return true;
@@ -57,31 +57,32 @@ namespace ProgettoGestioneRistoranti
 
         private void button2_Click(object sender, EventArgs e)
         {
+            string username = textBox1.Text;
+            string password = textBox2.Text;
             //recupero nome utenti del db
-            utenti = blUtenti.GetUtenti();
+           Utente utente = blUtenti.GetUtente(username);
             //verifico presenza utente(username e pass) in tabella Utenti e se c'è -> Homepage
-            foreach (Utente utente in utenti)
+            if(utente == null)
             {
-                if (utente.GetUserName().Equals(textBox1.Text))
-                {
-                   if(VerificaPassword())
-                    {
-                        if(homepage == null)
-                        {
-                            homepage = new Homepage(utente.UserName);
-                            homepage.Show();
-                            this.Hide();
-                        }
-                        else
-                        {
-                            homepage.Show();
-                        }
-                    }
-                }
+                MessageBox.Show("Utente non trovato.");
+                return;
             }
+            if(utente.Password != password)
+            {
+                MessageBox.Show("Password errata.");
+                return;
+            }
+            homepage = new Homepage(utente.UserName);
+            homepage.Show();
+            this.Hide();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
         }
