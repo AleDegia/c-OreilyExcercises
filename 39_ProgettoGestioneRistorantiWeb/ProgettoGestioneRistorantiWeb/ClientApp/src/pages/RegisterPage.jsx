@@ -11,6 +11,7 @@ export default function RegisterPage() {
     });
 
     const [message, setMessage] = useState("");
+    const [errors, setErrors] = useState([]);
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -23,26 +24,44 @@ export default function RegisterPage() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        setMessage("");
+        setErrors([]);
 
-        const response = await fetch("http://localhost:5287/api/auth/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(form)
-        });
+        try {
+            const response = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(form)
+            });
 
-        if (response.ok) {
-            setMessage("Registrazione completata");
-            return;
+            if (response.ok) {
+                setMessage("Registrazione completata");
+                return;
+            }
+
+            if (response.status === 409) {
+                setMessage("Username gia esistente");
+                return;
+            }
+
+            if (response.status === 400) {
+                const data = await response.json();
+                const validationErrors = Object.values(data.errors ?? {}).flat();       //estraggo gli errori di validazione dal server se ci sono, e li converto in un array (da array di array a array singolo cosi con map posso ciclare sulle stringhe di errore))
+                console.log(data);
+                console.log(data.errors);
+
+                if (validationErrors.length > 0) {
+                    setErrors(validationErrors);
+                    return;
+                }
+            }
+
+            setMessage("Errore durante la registrazione");
+        } catch {
+            setMessage("Server non raggiungibile");
         }
-
-        if (response.status === 409) {
-            setMessage("Username già esistente");
-            return;
-        }
-
-        setMessage("Errore durante la registrazione");
     }
 
     return (
@@ -65,11 +84,19 @@ export default function RegisterPage() {
                 <input type="text" name="telefono" placeholder="Telefono" value={form.telefono} onChange={handleChange} />
                 <br /><br />
 
-                <input type="text" name="citta" placeholder="Città" value={form.citta} onChange={handleChange} />
+                <input type="text" name="citta" placeholder="Citta" value={form.citta} onChange={handleChange} />
                 <br /><br />
 
                 <button type="submit">Registrati</button>
             </form>
+
+            {errors.length > 0 && (
+                <ul>
+                    {errors.map((error) => (
+                        <li key={error}>{error}</li>
+                    ))}
+                </ul>
+            )}
 
             <p>{message}</p>
         </div>

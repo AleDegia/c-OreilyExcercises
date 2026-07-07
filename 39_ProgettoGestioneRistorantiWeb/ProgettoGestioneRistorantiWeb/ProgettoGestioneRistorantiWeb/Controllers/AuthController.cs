@@ -28,5 +28,24 @@ namespace ProgettoGestioneRistorantiWeb.Controllers
             utente.Password = string.Empty;
             return Created($"/api/auth/{utente.UserName}", utente);
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<Utente>> Login(LoginRequest request)                     //ricevo LoginRequest perchè arrivano solo username e pass dal login non l'intero utente
+        {
+            var existingUser = await _repository.GetByUserNameAsync(request.UserName);
+            if (existingUser is null || existingUser.Password != request.Password)
+            {
+                return Unauthorized("Invalid username or password.");
+            }
+            existingUser.Password = string.Empty; // Non restituire la password
+            return Ok(existingUser);
+        }
+    }
+
+    public class LoginRequest
+    {
+        public string UserName { get; set; } = string.Empty;
+
+        public string Password { get; set; } = string.Empty;
     }
 }

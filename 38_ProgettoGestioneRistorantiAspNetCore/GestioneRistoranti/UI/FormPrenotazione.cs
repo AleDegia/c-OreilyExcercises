@@ -33,6 +33,7 @@ namespace UI
         private DateTime inizioRangeSelezione = new DateTime(2001, 2, 13);
         DateTime fineRangeSelezione = new DateTime(2001, 2, 28);
         private Utente utente;
+        private PrenotazioneListItem prenotazioneListItem;
 
 
         System.Windows.Forms.Label postiOgniGiorno;
@@ -130,13 +131,15 @@ namespace UI
                 var miePrenotazioni = blPrenotazioni.GetAllPrenotazioniRistorante(ristorante.GetIDRistorante())
                     .Where(p => p.IDRistorante == ristorante.IDRistorante && p.NomeUtente == utente.UserName)
                     .ToList();
-                foreach(var prenotazione in miePrenotazioni)
+                foreach(var p in miePrenotazioni)
                 {
-                    UtentiPrenotati.Items.Add(prenotazione.DataPrenotazione.ToShortDateString() 
-                        + " - " 
-                        + prenotazione.NumPersone
-                        + " persone"
-                    );
+                    PrenotazioneListItem prenotazioneListItem = new PrenotazioneListItem();
+                    prenotazioneListItem.Id = p.IDPrenotazione;
+                    prenotazioneListItem.Testo = p.DataPrenotazione.ToShortDateString()
+                        + " - "
+                        + p.NumPersone
+                        + " persone";
+                    UtentiPrenotati.Items.Add(prenotazioneListItem);
                 }
             }
 
@@ -400,11 +403,13 @@ namespace UI
 
                         foreach (var p in miePrenotazioni)
                         {
-                            UtentiPrenotati.Items.Add(p.DataPrenotazione.ToShortDateString()
+                            PrenotazioneListItem prenotazioneListItem = new PrenotazioneListItem();
+                            prenotazioneListItem.Id = p.IDPrenotazione;
+                            prenotazioneListItem.Testo = p.DataPrenotazione.ToShortDateString()
                                 + " - "
                                 + p.NumPersone
-                                + " persone"
-                            );
+                                + " persone";
+                            UtentiPrenotati.Items.Add(prenotazioneListItem);
                         }
                     }
                     else
@@ -479,8 +484,15 @@ namespace UI
                 DialogResult result = MessageBox.Show("Sei sicuro di voler continuare?", "Conferma", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
-                    //Prenotazione prenotazione = blPrenotazioni.GetPrenotazionePerNome(username);
-                    blPrenotazioni.CancellaPrenotazione(utente.UserName);
+                    //cancello prenotazione da db e poi gestisco la lista di utenti prenotati/prenotazioni
+                    if (utente.IsAdministrator)
+                        blPrenotazioni.CancellaPrenotazioni(utente.UserName);
+                    else if(UtentiPrenotati.SelectedItem is PrenotazioneListItem selectedPrenotazione)    //se SelectedItem è di tipo PrenotazioneListItem, allora lo tratto come PrenotazioneListItem
+                    {
+                        blPrenotazioni.CancellaPrenotazione(selectedPrenotazione.Id);
+                        UtentiPrenotati.Items.Remove(selectedPrenotazione);
+                        return;
+                    }
                     UtentiPrenotati.Items.Clear();
                     prenotazioniXdata = blPrenotazioni.GetPrenotazioniPerData(dataSelezionata);
                     foreach (Prenotazione prenotazione in prenotazioniXdata)

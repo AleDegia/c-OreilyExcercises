@@ -96,11 +96,18 @@ namespace BLLL
             }
         }
 
-        public void CancellaPrenotazione(string username)
+        public void CancellaPrenotazioni(string username)
         {
            // dal.CancellaPrenotazione(username);
            context.Prenotazioni.RemoveRange(context.Prenotazioni.Where(p => p.NomeUtente == username));
            context.SaveChanges();
         }
+        public void CancellaPrenotazione(int id)
+        {
+            // dal.CancellaPrenotazione(username);
+            context.Prenotazioni.RemoveRange(context.Prenotazioni.Where(p => p.IDPrenotazione == id));
+            context.SaveChanges();
+        }
+
     }
 }
