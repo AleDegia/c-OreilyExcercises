@@ -38,7 +38,18 @@ namespace ProgettoGestioneRistorantiWeb.Controllers
                 return Unauthorized("Invalid username or password.");
             }
             existingUser.Password = string.Empty; // Non restituire la password
+            HttpContext.Session.SetString("UserName", request.UserName);                        //salvo sessione dell'utente loggato
             return Ok(existingUser);
+        }
+
+        [HttpGet("check")]
+        public ActionResult<bool> CheckIfLogged()                              //sessione viene mandata in automatico tramite cookie
+        {
+            var user = HttpContext.Session.GetString("UserName");
+            if (user != null)
+                return Ok(user is not null);
+            else
+                return BadRequest();
         }
     }
 

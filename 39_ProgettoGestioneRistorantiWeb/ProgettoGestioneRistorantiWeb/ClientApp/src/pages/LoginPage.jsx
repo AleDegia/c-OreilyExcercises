@@ -47,7 +47,7 @@ export default function LoginPage() {
 
             if (response.ok) {
                 setMessage("Login completato");
-                navigate("/home");                          //reindirizzo l'utente alla home page dopo il login
+                navigate("/home", { replace: true });       //reindirizzo l'utente alla homepage dopo il login (ma va a protected route, e se non è autenticato lo reindirizza a login)
                 return;
             }
             if (response.status === 401) {

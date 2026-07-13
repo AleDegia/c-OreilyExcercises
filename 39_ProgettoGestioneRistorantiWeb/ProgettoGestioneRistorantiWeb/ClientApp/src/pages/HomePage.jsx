@@ -1,4 +1,6 @@
 import { useState } from "react";
+import HomeHeader from "../components/Homepage/HomeHeader";
+import StatsGrid from "../components/Homepage/StatsGrid";
 
 export default function HomePage() {
     const [activeItem, setActiveItem] = useState("Dashboard");
@@ -72,6 +74,8 @@ export default function HomePage() {
         { name: "Bistrot del Mare", address: "Porto, Via Porto 3", bookings: 5, clients: 50, occupancy: 45 }
     ];
 
+
+
     function SidebarIcon({ name }) {
         const commonProps = {       //props comuni a tutti gli svg per dare stessa dimensione e stile
             width: "18",
@@ -135,14 +139,16 @@ export default function HomePage() {
         return icons[name] ?? null;
     }
 
+    //render di tutta la pagina completa con sidebar, header, statistiche e riepilogo ristoranti
     return (
         <div className="home-container">
+            {/* Sidebar navigation */}
             <aside className="sidebar">
                 <div className="sidebar-logo">
                     <span className="sidebar-logo-icon">R</span>
                     <div>
                         <strong>RISTO</strong>
-                        <small>Gestione Ristoranti</small>
+                        <small>Gestione Ristorantis</small>
                     </div>
                 </div>
 
@@ -184,35 +190,11 @@ export default function HomePage() {
                     <button type="button" className="logout-button">Logout</button>
                 </div>
             </aside>
-
+            
+            {/* Main content area */}
             <main className="home-page">
-                <header className="home-header">
-                    <div>
-                        <p className="home-kicker">Area gestionale</p>
-                        <h1>Gestione Ristoranti</h1>
-                        <p className="home-subtitle">
-                            Monitora ristoranti, prenotazioni e clienti da un unico pannello operativo.
-                        </p>
-                    </div>
-
-                    <div className="home-profile" aria-label="Profilo utente">
-                        <span className="home-avatar">AD</span>
-                        <div>
-                            <strong>Admin</strong>
-                            <span>Sessione attiva</span>
-                        </div>
-                    </div>
-                </header>
-
-                <section className="stats-grid" aria-label="Riepilogo">
-                    {stats.map((stat) => (
-                        <article className="stat-card" key={stat.label}>
-                            <span>{stat.label}</span>
-                            <strong>{stat.value}</strong>
-                            <small>{stat.trend}</small>
-                        </article>
-                    ))}
-                </section>
+                <HomeHeader />
+                <StatsGrid stats={stats} />
 
                 <section className="restaurant-dashboard">
                     <article className="home-panel booking-trend-panel">
