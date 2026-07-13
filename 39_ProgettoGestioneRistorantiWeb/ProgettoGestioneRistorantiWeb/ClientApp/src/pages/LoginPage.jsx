@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {            
     const [form, setForm] = useState({              //faccio state 'form' con valori di default
@@ -8,6 +8,7 @@ export default function LoginPage() {
     });
 
     const [message, setMessage] = useState(""); 
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -25,10 +26,10 @@ export default function LoginPage() {
     );
 
     function handleChange(event) {                      //chiamata ogni volta che l'utente scrive in un <input>.
-        const { name, value } = event.target;
+        const { name, value } = event.target;           
         setForm({
             ...form,
-            [name]: value
+            [name]: value                               //aggiorno lo state 'form' con il nuovo valore dell'input che ha triggerato l'evento
         });
     }
     
@@ -46,6 +47,7 @@ export default function LoginPage() {
 
             if (response.ok) {
                 setMessage("Login completato");
+                navigate("/home");                          //reindirizzo l'utente alla home page dopo il login
                 return;
             }
             if (response.status === 401) {

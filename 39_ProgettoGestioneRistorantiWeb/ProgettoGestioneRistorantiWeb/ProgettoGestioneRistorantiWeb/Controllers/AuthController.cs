@@ -23,7 +23,7 @@ namespace ProgettoGestioneRistorantiWeb.Controllers
             {
                 return Conflict("Username already exists.");
             }
-            utente.IsAdministrator = false;                          // Imposta l'utente come non amministratore per default
+            utente.IsAdministrator = false;                                                     // Imposta l'utente come non amministratore per default
             await _repository.AddAsync(utente);
             utente.Password = string.Empty;
             return Created($"/api/auth/{utente.UserName}", utente);
