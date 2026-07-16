@@ -94,8 +94,8 @@ export default function Ristoranti() {
                         <>
                             {ristoranti.map((ristorante) => (
                                 <CardRistorante
-                                key={ristorante.id}
-                                ristorante={ristorante}
+                                    key={ristorante.id}
+                                    ristorante={ristorante}
                                 />
                             ))}
                         </>

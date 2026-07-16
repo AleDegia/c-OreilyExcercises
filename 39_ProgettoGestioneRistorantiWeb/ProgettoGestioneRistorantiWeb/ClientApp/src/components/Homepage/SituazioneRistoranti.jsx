@@ -5,6 +5,7 @@ export default function SituazioneRistoranti({restaurantSummaries})
 {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [message, setMessage] = useState(""); 
+    const [immagine, setImmagine] = useState(null);
 
 
     const [form, setForm] = useState({
@@ -48,19 +49,56 @@ export default function SituazioneRistoranti({restaurantSummaries})
                 body: JSON.stringify(form)                  //converto oggetto in json da inviare al server
             });   
 
-            if (response.ok) {
-                setMessage("Ristorante aggiunto correttamente");
-                return;
-            }
-            if (response.status === 401) {
+            if (!response.ok) {
                 setMessage("Errore durante l'inserimento");
                 return;
             }
 
-            setMessage("Errore durante l'inserimento");
-        } catch {
+            const nuovoRistorante = await response.json();
+
+            if (immagine) {
+                const imageData = new FormData();
+                imageData.append("immagine", immagine);
+
+                const imageResponse = await fetch(
+                    `/api/ristoranti/${nuovoRistorante.id}/immagine`,
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        body: imageData
+                    }
+                );
+
+                if (!imageResponse.ok) {
+                    setMessage("Ristorante registrato, ma caricamento immagine non riuscito");
+                    return;
+                }
+            }
+
+            setMessage("Ristorante aggiunto correttamente");
+        } catch (error) {
+            console.error(error);
             setMessage("Server non raggiungibile");
         }
+    }
+
+    function handleImageChange(event) {
+        const file = event.target.files[0];
+
+        if (!file) {
+            setImmagine(null);
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+            setMessage("L'immagine non può superare 2 MB");
+            event.target.value = "";
+            setImmagine(null);
+            return;
+        }
+
+        setMessage("");
+        setImmagine(file);
     }
 
     return (
@@ -234,6 +272,20 @@ export default function SituazioneRistoranti({restaurantSummaries})
                                     placeholder="Es. 35"
                                 />
                             </div>
+
+                            <div className="form-group">
+                                <label htmlFor="immagine">
+                                    Immagine 
+                                </label>
+                                <input
+                                    type="file"
+                                    accept="image/png, image/jpeg"
+                                    id="immagine"
+                                    name="immagine"
+                                    onChange={handleImageChange}
+                                />
+                            </div>
+
                             <div>
                                 <button type="submit">Invio</button>
                                 {  message &&

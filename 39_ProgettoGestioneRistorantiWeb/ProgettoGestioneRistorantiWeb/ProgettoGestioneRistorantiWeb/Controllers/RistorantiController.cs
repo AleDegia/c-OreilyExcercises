@@ -62,6 +62,23 @@ public class RistorantiController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = ristorante.Id }, ristorante);
     }
 
+    [HttpPost("{id}/immagine")]
+    public async Task<IActionResult> Upload(int id, IFormFile immagine)
+    {
+        var ristorante = await _repository.GetByIdAsync(id);
+
+        if (ristorante == null)
+            return NotFound();
+
+        using var ms = new MemoryStream();
+
+        await immagine.CopyToAsync(ms);
+
+        ristorante.Immagine = ms.ToArray();
+        await _repository.UpdateAsync(ristorante);
+        return Ok();
+    }
+
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, Ristorante ristorante)
     {

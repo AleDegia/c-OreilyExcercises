@@ -21,4 +21,5 @@ public class Ristorante : AbstractClass
     [Range(0.01, 10000)]
     public decimal PrezzoMedio { get; set; }
     public string? UsernameProprietario { get; set; }
+    public byte[]? Immagine { get; set; }
 }
