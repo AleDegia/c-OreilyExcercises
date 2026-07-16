@@ -44,6 +44,12 @@ public class GestioneRistorantiDbContext : DbContext
             entity.Property(ristorante => ristorante.Citta).HasMaxLength(50);
             entity.Property(ristorante => ristorante.Telefono).HasMaxLength(20);
             entity.Property(ristorante => ristorante.PrezzoMedio).HasPrecision(10, 2);
+            entity.Property(ristorante => ristorante.UsernameProprietario).HasMaxLength(20);
+
+            entity.HasOne<Utente>()
+                .WithMany()
+                .HasForeignKey(r => r.UsernameProprietario)
+                .HasPrincipalKey(u => u.UserName);
         });
 
         modelBuilder.Entity<Prenotazione>(entity =>

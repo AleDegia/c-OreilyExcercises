@@ -16,9 +16,28 @@ public class RistorantiController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Ristorante>>> GetAll()
+    public async Task<ActionResult<List<Ristorante>>> GetAll([FromQuery] int? limit)
     {
-        var ristoranti = await _repository.GetAllAsync();
+        var ristoranti = await _repository.GetAllAsync(limit);
+        return Ok(ristoranti);
+    }
+
+    [HttpGet("miei")]
+    public async Task<ActionResult<List<Ristorante>>> GetAllByUsername()
+    {
+        string? username = HttpContext.Session.GetString("UserName");
+
+        // Sessione non presente
+        if (string.IsNullOrEmpty(username))
+        {
+            return Unauthorized("Utente non autenticato.");
+        }
+        var ristoranti = await _repository.GetAllByUsernameAsync(username);
+
+        if (!ristoranti.Any())
+        {
+            return NotFound("Nessun ristorante trovato.");
+        }
         return Ok(ristoranti);
     }
 
@@ -34,7 +53,7 @@ public class RistorantiController : ControllerBase
         return Ok(ristorante);
     }
 
-    [HttpPost]
+    [HttpPost("nuovo")]
     public async Task<ActionResult<Ristorante>> Create(Ristorante ristorante)
     {
         await _repository.AddAsync(ristorante);

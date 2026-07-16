@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import HomeHeader from "../components/Homepage/HomeHeader";
 import StatsGrid from "../components/Homepage/StatsGrid";
+import SituazioneRisoranti from "../components/Homepage/SituazioneRistoranti"
 
 export default function HomePage() {
     const [activeItem, setActiveItem] = useState("Dashboard");
@@ -67,14 +68,42 @@ export default function HomePage() {
         { table: "Tavolo 3", detail: "1 x Pizza Diavola, 1 x Birra", minutes: "8 min" }
     ];
 
-    const restaurantSummaries = [
+    const [restaurantSummaries, setRestaurantSummaries] = useState([]);
+    /*const restaurantSummaries = [
         { name: "La Terrazza", address: "Centro, Via Roma 15", bookings: 18, clients: 124, occupancy: 80 },
         { name: "Sapore Vivo", address: "Lungomare, Via Marina 8", bookings: 12, clients: 87, occupancy: 65 },
         { name: "Osteria Centro", address: "Centro, Via Verdi 23", bookings: 9, clients: 65, occupancy: 60 },
         { name: "Bistrot del Mare", address: "Porto, Via Porto 3", bookings: 5, clients: 50, occupancy: 45 }
-    ];
+    ];*/
 
+    useEffect(() => {
 
+        async function getRistoranti() {
+            try {
+                const response = await fetch(
+                    "/api/ristoranti/miei",
+                    {
+                        credentials: "include"
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("Errore nel caricamento dei ristoranti");
+                }
+
+                const data = await response.json();
+
+                console.log(data);
+
+                setRestaurantSummaries(data);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        getRistoranti();
+    }, []);
+  
 
     function SidebarIcon({ name }) {
         const commonProps = {       //props comuni a tutti gli svg per dare stessa dimensione e stile
@@ -161,7 +190,7 @@ export default function HomePage() {
                             key={item.label}
                             onClick={(event) => {
                                 event.preventDefault();
-                                setActiveItem(item.label);
+                                setActiveItem(item.label);                    //do valore di item.label a activeItem, e React facendo nuovo render poi mi mette className "active" li
                             }}
                         >
                             <span className="sidebar-item-icon"><SidebarIcon name={item.icon} /></span>
@@ -228,42 +257,8 @@ export default function HomePage() {
                         </div>
                     </article>
 
-                    <article className="home-panel restaurant-summary-panel">
-                        <h2>Riepilogo ristoranti</h2>
-
-                        <div className="restaurant-table">
-                            <div className="restaurant-table-head">
-                                <span>Ristorante</span>
-                                <span>Stato</span>
-                                <span>Prenotazioni oggi</span>
-                                <span>Clienti</span>
-                                <span>Occupazione</span>
-                            </div>
-
-                            {restaurantSummaries.map((restaurant) => (
-                                <div className="restaurant-table-row" key={restaurant.name}>
-                                    <div>
-                                        <strong>{restaurant.name}</strong>
-                                        <span>{restaurant.address}</span>
-                                    </div>
-                                    <span className="restaurant-status">Attivo</span>
-                                    <strong>{restaurant.bookings}</strong>
-                                    <strong>{restaurant.clients}</strong>
-                                    <div className="restaurant-occupancy">
-                                        <span>
-                                            <b style={{ width: `${restaurant.occupancy}%` }}></b>
-                                        </span>
-                                        <strong>{restaurant.occupancy}%</strong>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <button type="button" className="restaurant-link">
-                            Vedi tutti i ristoranti
-                            <span aria-hidden="true">-&gt;</span>
-                        </button>
-                    </article>
+                    {/*SituazioneRistoranti*/}
+                    <SituazioneRisoranti restaurantSummaries = {restaurantSummaries}/>
 
                 </section>
             </main>

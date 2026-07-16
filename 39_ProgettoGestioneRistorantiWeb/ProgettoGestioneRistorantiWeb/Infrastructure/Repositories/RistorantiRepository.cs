@@ -1,6 +1,7 @@
 using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Infrastructure.Repositories;
 
@@ -13,9 +14,23 @@ public class RistorantiRepository : IRistorantiRepository
         _context = context;
     }
 
-    public async Task<List<Ristorante>> GetAllAsync()
+    public async Task<List<Ristorante>> GetAllAsync(int? limit )
     {
-        return await _context.Ristoranti.ToListAsync();
+        var query = _context.Ristoranti
+       .OrderBy(r => r.Id)
+       .AsQueryable();
+
+        if (limit.HasValue)
+        {
+            query = query.Take(limit.Value);
+        }
+
+        return await query.ToListAsync();
+    }
+
+    public async Task<List<Ristorante>> GetAllByUsernameAsync(string username)
+    {
+        return await _context.Ristoranti.Where(r => r.UsernameProprietario == username).ToListAsync();
     }
 
     public async Task<Ristorante?> GetByIdAsync(int id)
