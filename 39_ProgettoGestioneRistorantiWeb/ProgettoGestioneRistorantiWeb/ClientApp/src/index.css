@@ -165,6 +165,105 @@ button {
   font-size: 13px;
 }
 
+.stat-card-ristoranti {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-height: 82px;
+  padding: 12px 30px;
+
+  border: 1px solid #d8e0ea;
+  border-radius: 12px;
+  background: #ffffff;
+
+  box-shadow: 0 10px 24px rgba(35, 49, 66, 0.06);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stat-card-ristoranti p {
+  margin: 2px 0 0;
+}
+
+.stat-card-ristoranti span {
+  color: #66758a;
+  font-size: 12px;
+}
+
+.stat-card-ristoranti strong {
+  color: #111827;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.stat-card-ristoranti .stat-icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border-radius: 50%;
+  color: #0b7379;
+  background: #e3f6f7;
+}
+
+.filtri-ristoranti {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-height: 82px;
+  padding: 12px 0px;
+  
+}
+
+.itemFiltroRist{
+   width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.RistEFiltriContainer
+{
+   border: 1px solid #d8deea;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 0.5vh 3vh;
+    margin-top: 3vh;
+}
+
+/*barra ricerca*/
+.search-ristorante {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 7px 14px;
+    border: 1px solid #d8deea;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.search-ristorante:focus-within {
+    border-color: #8da2c7;
+    box-shadow: 0 0 0 3px rgba(141, 162, 199, 0.15);
+}
+
+.search-ristorante input {
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.card-ristorante{
+  border: 1px solid #d8deea;
+  border-radius: 10px;
+}
+
 .home-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.8fr);
@@ -1057,6 +1156,23 @@ button {
     flex-direction: column;
     gap: 8px;
 }
+
+
+/*pagina ristoranti*/
+.restaurants-main {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    padding: 40px 48px;
+}
+
+.stats-grid-ristoranti{
+    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
 
 
 @media (max-width: 820px) {

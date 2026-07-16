@@ -56,6 +56,8 @@ public class RistorantiController : ControllerBase
     [HttpPost("nuovo")]
     public async Task<ActionResult<Ristorante>> Create(Ristorante ristorante)
     {
+        var username = HttpContext.Session.GetString("UserName");
+        ristorante.UsernameProprietario = username;
         await _repository.AddAsync(ristorante);
         return CreatedAtAction(nameof(GetById), new { id = ristorante.Id }, ristorante);
     }

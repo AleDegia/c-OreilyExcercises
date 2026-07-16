@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import HomePage2 from "./pages/HomePage2";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import Ristoranti from "./pages/Ristoranti";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -20,6 +21,15 @@ function App() {
                       <HomePage />
                   </ProtectedRoute>
                 }
+      />
+
+      <Route
+        path="/ristoranti"
+        element={
+          <ProtectedRoute>
+            <Ristoranti />
+          </ProtectedRoute>
+        }
       />
 
       <Route path="/" element={<Navigate to="/login" replace />} />

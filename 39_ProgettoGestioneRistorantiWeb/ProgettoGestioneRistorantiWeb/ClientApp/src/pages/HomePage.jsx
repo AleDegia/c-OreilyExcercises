@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import HomeHeader from "../components/Homepage/HomeHeader";
 import StatsGrid from "../components/Homepage/StatsGrid";
 import SituazioneRisoranti from "../components/Homepage/SituazioneRistoranti"
+import Sidebar from "../components/Sidebar";
 
 export default function HomePage() {
     const [activeItem, setActiveItem] = useState("Dashboard");
@@ -104,7 +105,7 @@ export default function HomePage() {
         getRistoranti();
     }, []);
   
-
+    /*
     function SidebarIcon({ name }) {
         const commonProps = {       //props comuni a tutti gli svg per dare stessa dimensione e stile
             width: "18",
@@ -166,12 +167,13 @@ export default function HomePage() {
         };
 
         return icons[name] ?? null;
-    }
+    }*/
 
     //render di tutta la pagina completa con sidebar, header, statistiche e riepilogo ristoranti
     return (
         <div className="home-container">
             {/* Sidebar navigation */}
+            {/*}
             <aside className="sidebar">
                 <div className="sidebar-logo">
                     <span className="sidebar-logo-icon">R</span>
@@ -218,7 +220,8 @@ export default function HomePage() {
 
                     <button type="button" className="logout-button">Logout</button>
                 </div>
-            </aside>
+            </aside> */}
+            <Sidebar/>
             
             {/* Main content area */}
             <main className="home-page">
