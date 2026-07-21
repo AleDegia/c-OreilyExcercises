@@ -18,6 +18,18 @@ export default function Ristoranti() {
     const [caricamento, setCaricamento] = useState(true);
     const [errore, setErrore] = useState("");
 
+    //filtri
+    const [ricerca, setRicerca] = useState("");
+
+    const ristorantiFiltrati = ristoranti           
+    .filter((ristorante) => {                                                     //rieseguito al rerender
+        const matchRicerca = ristorante.ragioneSociale
+            .toLowerCase()
+            .includes(ricerca.toLowerCase());
+        return matchRicerca;
+    })
+
+    //statistiche hardcoded
     const stats = [
         {
             label: "Totale ristoranti",
@@ -91,9 +103,10 @@ export default function Ristoranti() {
 
                     <div className="RistEFiltriContainer">
                     
-                        <Filtri/>
+                        <Filtri ricerca={ricerca} setRicerca={setRicerca}/>
                         <>
-                            {ristoranti.map((ristorante) => (
+                            {/*dato che questo metodo si trova all'interno del componente viene rieseguito a ogni rerender*/}
+                            {ristorantiFiltrati.map((ristorante) => (
                                 <CardRistorante
                                     key={ristorante.id}
                                     ristorante={ristorante}

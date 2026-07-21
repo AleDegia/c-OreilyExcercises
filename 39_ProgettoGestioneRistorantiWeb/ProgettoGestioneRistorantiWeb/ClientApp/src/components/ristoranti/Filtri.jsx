@@ -3,20 +3,20 @@ import BarraRicerca from "./BarraRicerca";
 import { useState } from "react";
 
 
-function Filtri() {
-    const [ricerca, setRicerca] = useState("");
+function Filtri({ricerca, setRicerca}) {
+   // const [ricerca, setRicerca] = useState("");
     const [citta, setCitta] = useState("");
     const [stato, setStato] = useState("");
 
     return (
         <section className="filtri-ristoranti">
             <div className="itemFiltroRist filtro-ricerca">
-                <BarraRicerca />
+                <BarraRicerca ricerca={ricerca} setRicerca={setRicerca}/>
             </div>
 
             <label className="filtro-select" >
                 <MapPin size={16} />
-                <select defaultValue="">
+                <select defaultValue="" onChange={(e) => {setCitta(e.target.value)}}>
                     <option value="">Tutte le città</option>
                     <option value="Roma">Roma</option>
                     <option value="Milano">Milano</option>
