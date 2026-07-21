@@ -22,6 +22,13 @@ public class RistorantiController : ControllerBase
         return Ok(ristoranti);
     }
 
+    //[HttpGet]
+    //public async Task<ActionResult<List<Ristorante>>> GetAllRistFiltrati([FiltroRistoranti filtroRist)
+    //{
+    //    var ristoranti = await _repository.GetAllAsync(limit);
+    //    return Ok(ristoranti);
+    //}
+
     [HttpGet("miei")]
     public async Task<ActionResult<List<Ristorante>>> GetAllByUsername()
     {
@@ -80,9 +87,9 @@ public class RistorantiController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, Ristorante ristorante)
+    public async Task<IActionResult> Update(int id, Ristorante ristorante)          //id da url, ristorante dal body
     {
-        if (id != ristorante.Id)
+        if (id != ristorante.Id)                                                    //Controllo in + per coerenza dati
         {
             return BadRequest();
         }
@@ -93,7 +100,14 @@ public class RistorantiController : ControllerBase
             return NotFound();
         }
 
-        await _repository.UpdateAsync(ristorante);
+        existing.RagioneSociale = ristorante.RagioneSociale;
+        existing.PartitaIva = ristorante.PartitaIva;
+        existing.Indirizzo = ristorante.Indirizzo;
+        existing.TipologiaId = ristorante.TipologiaId;
+        existing.NumeroPosti = ristorante.NumeroPosti;
+        existing.PrezzoMedio = ristorante.PrezzoMedio;
+
+        await _repository.UpdateAsync(existing);
         return NoContent();
     }
 
@@ -109,4 +123,11 @@ public class RistorantiController : ControllerBase
         await _repository.DeleteAsync(id);
         return NoContent();
     }
+}
+
+
+public class FiltroRistoranti
+{
+    public string citta { get; set; }
+    public string stato { get; set; }
 }

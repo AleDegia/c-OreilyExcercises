@@ -45,8 +45,7 @@ export default function Ristoranti() {
         },
     ];
 
-    useEffect(() => {
-        async function caricaRistoranti() {
+    async function caricaRistoranti() {
             try {
                 const response = await fetch("/api/ristoranti/miei", {
                     credentials: "include"
@@ -69,6 +68,8 @@ export default function Ristoranti() {
                 setCaricamento(false);
             }
         }
+
+    useEffect(() => {
 
         caricaRistoranti();
     }, []);
@@ -96,6 +97,7 @@ export default function Ristoranti() {
                                 <CardRistorante
                                     key={ristorante.id}
                                     ristorante={ristorante}
+                                    refreshRistoranti={caricaRistoranti}
                                 />
                             ))}
                         </>

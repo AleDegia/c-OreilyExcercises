@@ -28,7 +28,7 @@ export default function SituazioneRistoranti({restaurantSummaries})
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target;               {/*e.target è l'elemento html che genera l'evento, name è nome label e valore assegnato*/}
 
         setForm((prevForm) => ({
             ...prevForm,
@@ -182,7 +182,7 @@ export default function SituazioneRistoranti({restaurantSummaries})
                                     id="ragioneSociale"
                                     name="ragioneSociale"
                                     value={form.ragioneSociale}
-                                    onChange={(e) =>
+                                    onChange={(e) =>            
                                         setForm({
                                             ...form,
                                             ragioneSociale: e.target.value

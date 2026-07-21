@@ -1,7 +1,25 @@
 import { ChevronRight, Euro, MapPin, MoreVertical, Phone, Users } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import MenuAzioniRistorante from "./MenuAzioniRistorante";
 
-function CardRistorante({ ristorante }) {
+function CardRistorante({ ristorante, refreshRistoranti }) {
   const attivo = ristorante.attivo !== false;
+  const [menuAperto, setMenuAperto] = useState(false);
+  const menuRef = useRef(null);                                                         //riferimento a un div
+
+  useEffect(() => {
+    function chiudiMenuAlClickEsterno(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {                 //event.target è l'elemento su cui clicco (verifica se ho cliccato fuori dal div)
+        setMenuAperto(false);
+      }
+    }
+
+    document.addEventListener("mousedown", chiudiMenuAlClickEsterno);                   //Aggiungo un ascoltatore di eventi all' intera pagina html.
+
+    return () => {
+      document.removeEventListener("mousedown", chiudiMenuAlClickEsterno);
+    };
+  }, []);
 
   return (
     <article className="restaurant-card">
@@ -41,13 +59,25 @@ function CardRistorante({ ristorante }) {
         <small>Prezzo medio</small>
       </div>
 
-      <div className="restaurant-card_actions">
+      <div className="restaurant-card_actions" ref={menuRef}>           
         <button type="button" className="restaurant-card_details-button">
           Vedi dettagli <ChevronRight size={16} />
         </button>
-        <button type="button" className="restaurant-card_more" aria-label="Altre azioni">
+        <button
+          type="button"
+          className="restaurant-card_more"
+          aria-label="Altre azioni"
+          aria-expanded={menuAperto}
+          onClick={() => setMenuAperto((aperto) => !aperto)}            //aperto rappresenta il corrente stato di menuAperto
+        >   
           <MoreVertical size={18} />
         </button>
+
+        {menuAperto && (
+            <MenuAzioniRistorante
+                onChiudi={() => setMenuAperto(false)} ristorante={ristorante} refreshRistoranti={refreshRistoranti}
+            />
+        )}
       </div>
     </article>
   );

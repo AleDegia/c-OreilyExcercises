@@ -210,20 +210,49 @@ button {
 }
 
 .filtri-ristoranti {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 150px 150px 170px;
   align-items: center;
   gap: 12px;
-
   min-height: 82px;
-  padding: 12px 0px;
-  
+  padding: 12px 0;
 }
 
 .itemFiltroRist{
-   width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filtro-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid #d8deea;
+  border-radius: 9px;
+  color: #526783;
+  background: #ffffff;
+}
+
+.filtro-select select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: #26364d;
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.filtro-select:focus-within {
+  border-color: #8da2c7;
+  box-shadow: 0 0 0 3px rgba(141, 162, 199, 0.15);
 }
 
 .RistEFiltriContainer
@@ -361,6 +390,7 @@ button {
 }
 
 .restaurant-card_actions {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -389,6 +419,42 @@ button {
 
 .restaurant-card_more {
   width: 40px;
+}
+
+.restaurant-card_menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 20;
+  display: grid;
+  min-width: 140px;
+  padding: 6px;
+  border: 1px solid #d5deea;
+  border-radius: 9px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(30, 45, 65, 0.16);
+}
+
+.restaurant-card_menu button {
+  padding: 9px 11px;
+  border: 0;
+  border-radius: 6px;
+  color: #26364d;
+  background: transparent;
+  font-weight: 650;
+  text-align: left;
+}
+
+.restaurant-card_menu button:hover {
+  background: #f0f4f8;
+}
+
+.restaurant-card_menu .restaurant-card_delete {
+  color: #c0392b;
+}
+
+.restaurant-card_menu .restaurant-card_delete:hover {
+  background: #fff0ee;
 }
 
 @media (max-width: 1050px) {
