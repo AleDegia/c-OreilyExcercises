@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {    
     const [activeItem, setActiveItem] = useState("Dashboard");
     const menuItems = [
-        { label: "Dashboard", icon: "home", badge: null },
-        { label: "Ristoranti", icon: "restaurant", badge: null },
-        { label: "Prenotazioni", icon: "calendar", badge: "8" },
+        { label: "Dashboard", icon: "home", badge: null, to: "/home" },
+        { label: "Ristoranti", icon: "restaurant", badge: null, to: "/ristoranti" },
+        { label: "Prenotazioni", icon: "calendar", badge: "8", to: "/prenotazioni" },
         { label: "Clienti", icon: "users", badge: null },
         { label: "Tipologie", icon: "tag", badge: null }
     ];
@@ -91,19 +92,19 @@ export default function Sidebar() {
                     <nav className="sidebar-nav" aria-label="Menu principale">
                         <span className="sidebar-section-title">Menu</span>
                         {menuItems.map((item) => (
-                            <a
+                            <Link
                                 className={activeItem === item.label ? "active" : ""}
-                                href="#"
+                                to={item.to ?? "#"}
                                 key={item.label}
                                 onClick={(event) => {
-                                    event.preventDefault();
+                                    if (!item.to) event.preventDefault();
                                     setActiveItem(item.label);                    //do valore di item.label a activeItem, e React facendo nuovo render poi mi mette className "active" li
                                 }}
                             >
                                 <span className="sidebar-item-icon"><SidebarIcon name={item.icon} /></span>
                                 <span>{item.label}</span>
                                 {item.badge && <span className="sidebar-badge">{item.badge}</span>}
-                            </a>
+                            </Link>
                         ))}
                     </nav>
 

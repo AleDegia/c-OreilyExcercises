@@ -4,6 +4,8 @@ import HomePage2 from "./pages/HomePage2";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import Ristoranti from "./pages/Ristoranti";
+import DettaglioRistorante from "./pages/DettaglioRistorante";
+import Prenotazioni from "./pages/Prenotazioni";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -28,6 +30,24 @@ function App() {
         element={
           <ProtectedRoute>
             <Ristoranti />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/ristoranti/:id"
+        element={
+          <ProtectedRoute>
+            <DettaglioRistorante />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/prenotazioni"
+        element={
+          <ProtectedRoute>
+            <Prenotazioni />
           </ProtectedRoute>
         }
       />

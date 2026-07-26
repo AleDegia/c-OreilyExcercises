@@ -3,9 +3,9 @@ import BarraRicerca from "./BarraRicerca";
 import { useState } from "react";
 
 
-function Filtri({ricerca, setRicerca}) {
-   // const [ricerca, setRicerca] = useState("");
-    const [citta, setCitta] = useState("");
+function Filtri({ricerca, setRicerca, citta, setCitta, ordinamento, setOrdinamento}) {
+    //const [ricerca, setRicerca] = useState("");
+    //const [citta, setCitta] = useState("");
     const [stato, setStato] = useState("");
 
     return (
@@ -36,7 +36,7 @@ function Filtri({ricerca, setRicerca}) {
 
             <label className="filtro-select">
                 <ArrowUpDown size={16} />
-                <select defaultValue="az">
+                <select defaultValue="az" onChange={(e) => setOrdinamento(e.target.value)}>
                     <option value="az">Ordina: A-Z</option>
                     <option value="za">Ordina: Z-A</option>
                     <option value="prezzo-crescente">Prezzo crescente</option>

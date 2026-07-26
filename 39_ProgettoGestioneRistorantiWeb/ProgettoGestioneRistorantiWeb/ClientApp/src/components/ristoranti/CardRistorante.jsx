@@ -1,5 +1,6 @@
 import { ChevronRight, Euro, MapPin, MoreVertical, Phone, Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import MenuAzioniRistorante from "./MenuAzioniRistorante";
 
 function CardRistorante({ ristorante, refreshRistoranti }) {
@@ -60,9 +61,9 @@ function CardRistorante({ ristorante, refreshRistoranti }) {
       </div>
 
       <div className="restaurant-card_actions" ref={menuRef}>           
-        <button type="button" className="restaurant-card_details-button">
+        <Link to={`/ristoranti/${ristorante.id}`} className="restaurant-card_details-button">
           Vedi dettagli <ChevronRight size={16} />
-        </button>
+        </Link>
         <button
           type="button"
           className="restaurant-card_more"

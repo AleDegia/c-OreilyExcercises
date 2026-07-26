@@ -21,12 +21,35 @@ export default function HomePage() {
         { label: "Impostazioni", icon: "settings" }
     ];
 
-    const stats = [
-        { label: "Ristoranti", value: "12", trend: "+2 questo mese" },
-        { label: "Prenotazioni", value: "48", trend: "8 oggi" },
-        { label: "Clienti", value: "326", trend: "+18%" },
-        { label: "Tipologie", value: "7", trend: "Catalogo attivo" }
-    ];
+    const [dashboardStats, setDashboardStats] = useState({
+      ristoranti: 0,
+      prenotazioni: 0,
+      clienti: 0,
+      tipologie: 0
+  });
+
+  const stats = [
+      {
+          label: "Ristoranti",
+          value: dashboardStats.ristoranti,
+          trend: "Totale registrati"
+      },
+      {
+          label: "Prenotazioni",
+          value: dashboardStats.prenotazioni,
+          trend: "Totale prenotazioni"
+      },
+      {
+          label: "Clienti",
+          value: dashboardStats.clienti,
+          trend: "Clienti distinti"
+      },
+      {
+          label: "Tipologie",
+          value: dashboardStats.tipologie,
+          trend: "Tipologie utilizzate"
+      }
+  ];
 
     const bookingTrendData = {
         "1g": [
@@ -77,6 +100,29 @@ export default function HomePage() {
         { name: "Bistrot del Mare", address: "Porto, Via Porto 3", bookings: 5, clients: 50, occupancy: 45 }
     ];*/
 
+    async function caricaStatistiche() {
+        try {
+            const response = await fetch(
+                "/api/dashboard/stats",
+                {
+                    credentials: "include"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Errore durante il caricamento delle statistiche"
+                );
+            }
+
+            const dati = await response.json();
+
+            setDashboardStats(dati);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     useEffect(() => {
 
         async function getRistoranti() {
@@ -97,6 +143,7 @@ export default function HomePage() {
                 console.log(data);
 
                 setRestaurantSummaries(data);
+                caricaStatistiche();
             }
             catch (error) {
                 console.error(error);

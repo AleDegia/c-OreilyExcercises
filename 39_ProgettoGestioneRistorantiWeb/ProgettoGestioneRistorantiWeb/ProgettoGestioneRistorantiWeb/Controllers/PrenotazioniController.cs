@@ -51,9 +51,17 @@ public class PrenotazioniController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Prenotazione>> Create(Prenotazione prenotazione)
     {
+        var username = HttpContext.Session.GetString("UserName");
+
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            return Unauthorized("Utente non autenticato.");
+        }
+        //aggiungo i 2 campi mancanti per avere ogg prenotazione completo e faccio l'Adds
+        prenotazione.NomeUtente = username;
         prenotazione.DataRichiesta = DateTime.Now;
         await _repository.AddAsync(prenotazione);
-        return CreatedAtAction(nameof(GetById), new { id = prenotazione.Id }, prenotazione);
+        return CreatedAtAction(nameof(GetById), new { id = prenotazione.Id }, prenotazione);            //CreatedAtAction si usa per Create, restituisce 201 Created
     }
 
     [HttpPut("{id:int}")]

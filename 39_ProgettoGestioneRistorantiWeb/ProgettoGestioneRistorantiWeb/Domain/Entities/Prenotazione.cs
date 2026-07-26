@@ -8,7 +8,9 @@ public class Prenotazione
 
     public int RistoranteId { get; set; }
 
+    //admin
     public string NomeUtente { get; set; } = string.Empty;
+    public string NomeCliente { get; set; } = string.Empty;
 
     public DateTime DataRichiesta { get; set; }
 

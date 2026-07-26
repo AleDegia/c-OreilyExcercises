@@ -20,13 +20,41 @@ export default function Ristoranti() {
 
     //filtri
     const [ricerca, setRicerca] = useState("");
+    const [citta, setCitta] = useState("");
+    const [ordinamento, setOrdinamento] = useState("az");
 
-    const ristorantiFiltrati = ristoranti           
-    .filter((ristorante) => {                                                     //rieseguito al rerender
+    const ristorantiFiltrati = ristoranti  
+    //ricerca per nome         
+    .filter((ristorante) => {                                                     //rieseguito al rerender (filter, x ogni rist, restituisce i rist per cui ritorna true)
         const matchRicerca = ristorante.ragioneSociale
             .toLowerCase()
             .includes(ricerca.toLowerCase());
-        return matchRicerca;
+
+        //controllo se città selezionata con filtro (con setCitta) è uguale a ristorante.citta (citta del rist su cui sto looppando)
+        const matchCitta = citta === "" || ristorante.citta === citta;   
+
+        return matchRicerca && matchCitta;
+    })
+        
+    //ordinamento
+    .sort((a, b) => {
+        switch (ordinamento) {
+            case "az":
+                return a.ragioneSociale.localeCompare(b.ragioneSociale, "it");
+
+            case "za":
+                return b.ragioneSociale.localeCompare(a.ragioneSociale, "it");
+
+            case "prezzo-crescente":
+                return Number(a.prezzoMedio) - Number(b.prezzoMedio);
+
+            case "prezzo-decrescente":
+                return Number(b.prezzoMedio) - Number(a.prezzoMedio);
+
+            default:
+                return 0;
+        
+        }
     })
 
     //statistiche hardcoded
@@ -58,28 +86,28 @@ export default function Ristoranti() {
     ];
 
     async function caricaRistoranti() {
-            try {
-                const response = await fetch("/api/ristoranti/miei", {
-                    credentials: "include"
-                });
+        try {
+            const response = await fetch("/api/ristoranti/miei", {
+                credentials: "include"
+            });
 
-                if (response.status === 404) {
-                    setRistoranti([]);
-                    return;
-                }
-
-                if (!response.ok) {
-                    throw new Error("Errore durante il caricamento dei ristoranti");
-                }
-
-                const dati = await response.json();         //response.json legge il body e converte il json in array (o ogg se è un solo elemento) javascript
-                setRistoranti(dati);                        //carico l'array in ristoranti
-            } catch (error) {
-                setErrore(error.message);
-            } finally {
-                setCaricamento(false);
+            if (response.status === 404) {
+                setRistoranti([]);
+                return;
             }
+
+            if (!response.ok) {
+                throw new Error("Errore durante il caricamento dei ristoranti");
+            }
+
+            const dati = await response.json();         //response.json legge il body e converte il json in array (o ogg se è un solo elemento) javascript
+            setRistoranti(dati);                        //carico l'array in ristoranti
+        } catch (error) {
+            setErrore(error.message);
+        } finally {
+            setCaricamento(false);
         }
+    }
 
     useEffect(() => {
 
@@ -103,7 +131,7 @@ export default function Ristoranti() {
 
                     <div className="RistEFiltriContainer">
                     
-                        <Filtri ricerca={ricerca} setRicerca={setRicerca}/>
+                        <Filtri ricerca={ricerca} setRicerca={setRicerca} citta={citta} setCitta={setCitta} ordinamento={ordinamento} setOrdinamento={setOrdinamento}/>
                         <>
                             {/*dato che questo metodo si trova all'interno del componente viene rieseguito a ogni rerender*/}
                             {ristorantiFiltrati.map((ristorante) => (
