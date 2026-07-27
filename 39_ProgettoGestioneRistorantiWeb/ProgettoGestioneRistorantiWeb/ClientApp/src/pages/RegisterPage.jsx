@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Eye, EyeOff, FileText, LockKeyhole, Mail, MapPin, Phone, UserRound } from "lucide-react";
+import AuthLayout from "../components/AuthLayout";
 
 export default function RegisterPage() {
     const [form, setForm] = useState({
@@ -12,6 +15,8 @@ export default function RegisterPage() {
 
     const [message, setMessage] = useState("");
     const [errors, setErrors] = useState([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -26,6 +31,7 @@ export default function RegisterPage() {
         event.preventDefault();
         setMessage("");
         setErrors([]);
+        setIsSubmitting(true);
 
         try {
             const response = await fetch("/api/auth/register", {
@@ -61,44 +67,100 @@ export default function RegisterPage() {
             setMessage("Errore durante la registrazione");
         } catch {
             setMessage("Server non raggiungibile");
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
     return (
-        <div>
-            <h1>Registrazione</h1>
+        <AuthLayout
+            eyebrow="Inizia da qui"
+            title="Crea il tuo account"
+            subtitle="Configura il tuo profilo per iniziare a gestire i tuoi ristoranti."
+            footer={<>Hai già un account? <Link to="/login">Accedi</Link></>}
+        >
+            <form className="auth-form auth-form-register" onSubmit={handleSubmit}>
+                <AuthField label="Username" icon={<UserRound size={18} />} input={{
+                    type: "text", name: "userName", placeholder: "Almeno 4 caratteri",
+                    value: form.userName, autoComplete: "username", minLength: 4, required: true
+                }} onChange={handleChange} />
 
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="userName" placeholder="Username" value={form.userName} onChange={handleChange} />
-                <br /><br />
+                <label className="auth-field">
+                    <span>Password</span>
+                    <div className="auth-input">
+                        <LockKeyhole size={18} aria-hidden="true" />
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            placeholder="Almeno 8 caratteri"
+                            value={form.password}
+                            onChange={handleChange}
+                            autoComplete="new-password"
+                            minLength="8"
+                            required
+                        />
+                        <button
+                            className="auth-password-toggle"
+                            type="button"
+                            onClick={() => setShowPassword((visible) => !visible)}
+                            aria-label={showPassword ? "Nascondi password" : "Mostra password"}
+                        >
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                    </div>
+                    <small>Usa lettere, un numero e un carattere speciale.</small>
+                </label>
 
-                <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} />
-                <br /><br />
+                <AuthField label="Email" icon={<Mail size={18} />} input={{
+                    type: "email", name: "email", placeholder: "nome@esempio.it",
+                    value: form.email, autoComplete: "email"
+                }} onChange={handleChange} />
 
-                <input type="text" name="descrizione" placeholder="Descrizione" value={form.descrizione} onChange={handleChange} />
-                <br /><br />
+                <AuthField label="Telefono" icon={<Phone size={18} />} input={{
+                    type: "tel", name: "telefono", placeholder: "+39 333 123 4567",
+                    value: form.telefono, autoComplete: "tel"
+                }} onChange={handleChange} />
 
-                <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} />
-                <br /><br />
+                <AuthField label="Città" icon={<MapPin size={18} />} input={{
+                    type: "text", name: "citta", placeholder: "La tua città",
+                    value: form.citta, autoComplete: "address-level2"
+                }} onChange={handleChange} />
 
-                <input type="text" name="telefono" placeholder="Telefono" value={form.telefono} onChange={handleChange} />
-                <br /><br />
+                <AuthField label="Descrizione" icon={<FileText size={18} />} input={{
+                    type: "text", name: "descrizione", placeholder: "Il tuo ruolo o la tua attività",
+                    value: form.descrizione
+                }} onChange={handleChange} />
 
-                <input type="text" name="citta" placeholder="Citta" value={form.citta} onChange={handleChange} />
-                <br /><br />
+                {(errors.length > 0 || message) && (
+                    <div
+                        className={`auth-message ${message === "Registrazione completata" ? "auth-message-success" : "auth-message-error"}`}
+                        role="alert"
+                    >
+                        {message && <p>{message}</p>}
+                        {errors.length > 0 && (
+                            <ul>
+                                {errors.map((error, index) => <li key={`${error}-${index}`}>{error}</li>)}
+                            </ul>
+                        )}
+                    </div>
+                )}
 
-                <button type="submit">Registrati</button>
+                <button className="auth-submit auth-register-submit" type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? "Creazione account..." : "Crea account"}
+                </button>
             </form>
+        </AuthLayout>
+    );
+}
 
-            {errors.length > 0 && (
-                <ul>
-                    {errors.map((error) => (
-                        <li key={error}>{error}</li>
-                    ))}
-                </ul>
-            )}
-
-            <p>{message}</p>
-        </div>
+function AuthField({ label, icon, input, onChange }) {
+    return (
+        <label className="auth-field">
+            <span>{label}</span>
+            <div className="auth-input">
+                <span aria-hidden="true">{icon}</span>
+                <input {...input} onChange={onChange} />
+            </div>
+        </label>
     );
 }
