@@ -20,7 +20,7 @@ export default function SelettoreRistorante({
                             className={`booking-restaurant-card ${selezionato ? "selected" : ""}`}
                             onClick={() => onSeleziona(ristorante.id)}
                         >
-                            {ristorante.immagine ? (
+                            {ristorante.immagine ? (            /*se esiste, sennò..*/
                                 <img
                                     src={`data:image/jpeg;base64,${ristorante.immagine}`}
                                     alt={ristorante.ragioneSociale}

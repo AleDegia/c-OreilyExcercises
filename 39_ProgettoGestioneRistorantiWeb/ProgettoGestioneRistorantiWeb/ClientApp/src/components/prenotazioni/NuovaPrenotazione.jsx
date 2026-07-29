@@ -1,15 +1,11 @@
 import { useState } from "react";
 
-function dataLocaleInput() {
-    const data = new Date();
-    const anno = data.getFullYear();
-    const mese = String(data.getMonth() + 1).padStart(2, "0");
-    const giorno = String(data.getDate()).padStart(2, "0");
-    return `${anno}-${mese}-${giorno}`;
-}
-
-export default function NuovaPrenotazione({ ristoranteId, onCreata }) {
-    const [data, setData] = useState(dataLocaleInput());
+export default function NuovaPrenotazione({
+    ristoranteId,
+    data,
+    onDataChange,
+    onCreata
+}) {
     const [orario, setOrario] = useState("13:00");
     const [numeroPersone, setNumeroPersone] = useState(2);
     const [nomeCliente, setNomeCliente] = useState("");
@@ -23,6 +19,13 @@ export default function NuovaPrenotazione({ ristoranteId, onCreata }) {
         if (!ristoranteId) {
             setMessage("Seleziona prima un ristorante");
             return;
+        }
+
+        const oggi = new Date();
+        const dataSelezionata = new Date(`${data}T${orario}:00`);
+        if (dataSelezionata < oggi) {
+        setMessage("Non è possibile prenotare per una data passata");
+        return;
         }
 
         setIsModalOpen(true);
@@ -77,7 +80,7 @@ export default function NuovaPrenotazione({ ristoranteId, onCreata }) {
                     <input
                         type="date"
                         value={data}
-                        onChange={(event) => setData(event.target.value)}
+                        onChange={(event) => onDataChange(event.target.value)}
                     />
                 </label>
 

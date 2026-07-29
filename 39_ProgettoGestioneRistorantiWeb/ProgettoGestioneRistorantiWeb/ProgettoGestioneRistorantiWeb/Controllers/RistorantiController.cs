@@ -114,10 +114,20 @@ public class RistorantiController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
+        var username = HttpContext.Session.GetString("UserName");
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            return Unauthorized("Utente non autenticato.");
+        }
         var existing = await _repository.GetByIdAsync(id);
         if (existing is null)
         {
             return NotFound();
+        }
+        // Autorizzazione
+        if (existing.UsernameProprietario != username)
+        {
+            return Forbid();
         }
 
         await _repository.DeleteAsync(id);

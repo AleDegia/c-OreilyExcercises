@@ -13,19 +13,32 @@ const tavoli = [
     { nome: "T12", posti: 6, stato: "disabled" }
 ];
 
-export default function PanoramicaTavoli() {
+export default function PanoramicaTavoli({ numeroPosti, prenotazioni, data }) {
+    const postiOccupati = prenotazioni
+        .filter((prenotazione) =>
+            prenotazione.dataPrenotazione?.slice(0, 10) === data
+        )
+        .reduce(
+            (totale, prenotazione) => totale + prenotazione.numeroPersone,
+            0
+        );
+    const postiDisponibili = Math.max(numeroPosti - postiOccupati, 0);
+    const occupazione = numeroPosti > 0
+        ? Math.min(Math.round((postiOccupati / numeroPosti) * 100), 100)
+        : 0;
+
     return (
         <aside className="booking-tables-panel">
             <div className="booking-panel-title">
                 <h2>Panoramica tavoli</h2>
-                <strong>44 posti totali</strong>
+                <strong>{postiDisponibili} posti disponibili</strong>
             </div>
 
             <div className="booking-table-stats">
                 <span><strong>12</strong><small>Tavoli</small></span>
-                <span><strong>44</strong><small>Posti totali</small></span>
-                <span><strong>28</strong><small>Occupati</small></span>
-                <span><strong>63%</strong><small>Occupazione</small></span>
+                <span><strong>{numeroPosti}</strong><small>Posti totali</small></span>
+                <span><strong>{postiOccupati}</strong><small>Occupati</small></span>
+                <span><strong>{occupazione}%</strong><small>Occupazione</small></span>
             </div>
 
             <div className="booking-room-tabs">

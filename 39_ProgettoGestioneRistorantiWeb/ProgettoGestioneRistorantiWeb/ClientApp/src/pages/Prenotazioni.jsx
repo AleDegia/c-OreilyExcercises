@@ -7,10 +7,19 @@ import PanoramicaTavoli from "../components/prenotazioni/PanoramicaTavoli";
 import RiepilogoPrenotazioni from "../components/prenotazioni/RiepilogoPrenotazioni";
 import SelettoreRistorante from "../components/prenotazioni/SelettoreRistorante";
 
+function dataLocaleInput() {
+    const data = new Date();
+    const anno = data.getFullYear();
+    const mese = String(data.getMonth() + 1).padStart(2, "0");
+    const giorno = String(data.getDate()).padStart(2, "0");
+    return `${anno}-${mese}-${giorno}`;
+}
+
 export default function Prenotazioni() {
     const [ristoranti, setRistoranti] = useState([]);
     const [ristoranteId, setRistoranteId] = useState(null);
     const [prenotazioni, setPrenotazioni] = useState([]);
+    const [dataPrenotazione, setDataPrenotazione] = useState(dataLocaleInput());
     const [ricerca, setRicerca] = useState("");
     const [errore, setErrore] = useState("");
 
@@ -67,6 +76,9 @@ export default function Prenotazioni() {
             .toLowerCase()
             .includes(ricerca.trim().toLowerCase())
     );
+    const ristoranteSelezionato = ristoranti.find(
+        (ristorante) => ristorante.id === ristoranteId
+    );
 
     return (
         <div className="home-container">
@@ -93,9 +105,15 @@ export default function Prenotazioni() {
                     <ElencoPrenotazioni prenotazioni={prenotazioniFiltrate} />
 
                     <div className="bookings-side">
-                        <PanoramicaTavoli />
+                        <PanoramicaTavoli
+                            numeroPosti={ristoranteSelezionato?.numeroPosti ?? 0}
+                            prenotazioni={prenotazioni}
+                            data={dataPrenotazione}
+                        />
                         <NuovaPrenotazione
                             ristoranteId={ristoranteId}
+                            data={dataPrenotazione}
+                            onDataChange={setDataPrenotazione}
                             onCreata={(prenotazione) =>
                                 setPrenotazioni((correnti) => [...correnti, prenotazione])
                             }

@@ -51,7 +51,7 @@ public class RistorantiRepository : IRistorantiRepository
     }
 
     public async Task DeleteAsync(int id)
-    {
+    {   
         var ristorante = await _context.Ristoranti.FindAsync(id);
         if (ristorante is null)
         {
